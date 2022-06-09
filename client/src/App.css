@@ -1,38 +1,32 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.item1 {
+    grid-area: header;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.item2 {
+    grid-area: game;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.item3 {
+    grid-area: chat;
 }
 
-.App-link {
-  color: #61dafb;
+.grid-container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: auto auto auto 20%;
+    grid-template-rows: 5% auto;
+    grid-template-areas:
+    'header header header header'
+    'game game game  chat';
+    gap: 10px;
+    background-color: #2196F3;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.grid-container > div {
+    background-color: rgba(255, 255, 255, 0.8);
 }
