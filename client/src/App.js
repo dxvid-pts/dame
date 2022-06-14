@@ -1,6 +1,6 @@
 import './App.css';
-import GameArea from './GameArea';
-import ChatArea from './ChatArea';
+import GameArea from './components/GameArea';
+import ChatArea from './components/ChatArea';
 
 function App() {
     return (
