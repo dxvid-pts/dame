@@ -1,14 +1,18 @@
-var http = require("http");
+const Constants = require("shared/constants")
 
-http.createServer(function (request, response) {
-    // Send the HTTP header
-    // HTTP Status: 200 : OK
-    // Content Type: text/plain
-    response.writeHead(200, {'Content-Type': 'text/plain'});
+const http = require('http').createServer();
 
-    // Send the response body as "Hello World"
-    response.end('Hello World\n');
-}).listen(8081);
+const io = require('socket.io')(http, {
+    cors: {origin: "*"}
+});
 
-// Console will print the message
-console.log('Server running at http://127.0.0.1:8081/');
+io.on('connection', (socket) => {
+    console.log('a user connected');
+
+    socket.on('message', (message) => {
+        console.log(message);
+        io.emit('message', `${socket.id.substr(0, 2)} said ${message}`);
+    });
+});
+
+http.listen(Constants.CONNECTION_PORT, () => console.log('listening on http://localhost:' + Constants.CONNECTION_PORT));
