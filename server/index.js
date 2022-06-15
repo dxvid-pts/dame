@@ -1,8 +1,8 @@
 const path = require("path");
 
 const handler = require("./handler");
-
 const constants = require("shared/constants");
+const actions = require("./actions");
 
 const http = require("http").createServer();
 
@@ -11,18 +11,23 @@ const io = require("socket.io")(http, {
 });
 
 io.on("connection", (socket) => {
-    socket.on("message", (message) => {
-        console.log(message);
-        io.emit("message", `${socket.id.substr(0, 2)} said ${message}`);
-    });
+    console.log("Player " + socket.id + " connected");
 
-    socket.on("joinGame", (gameid) => {
-        if (typeof gameid === "string") {
-            if (handler.gameExists(gameid)) {
+    socket.on("joinGame", (args) => {
+        if (typeof args === "object" &&
+        args.hasOwnProperty("gameid") &&
+        args.hasOwnProperty("nick")) {
+            if (handler.gameExists(args.gameid)) {
                 if (!handler.isPlayerIngame(socket.id)) {
+                    if (handler.joinGame({id: socket.id, nick: args.nick}, args.gameid)) {
+                        console.log("Player " + socket.id + " joined Game " + args.gameid);
+                        actions.initPlayer(io, socket,  handler.getGameByID(args.gameid));
+                    }else{
+                        actions.reportError(io, socket, 1, "Cannot join. Game "+ args.gameid+"  is full.");
+                    }
                 }
-            }else{
-                //report wrong game id
+            } else {
+                actions.reportError(io, socket, 2, "Cannot join. Game "+ args.gameid+" does not exist.");
             }
         }
     });
@@ -31,10 +36,19 @@ io.on("connection", (socket) => {
         if (
             typeof args === "object" &&
             args.hasOwnProperty("public") &&
-            args.hasOwnProperty("guests")
+            args.hasOwnProperty("guests") &&
+            args.hasOwnProperty("nick")
         ) {
             if (!handler.isPlayerIngame(socket.id)) {
-                handler.createGame(socket.id, args.public, args.guests);
+                game = handler.createGame(
+                    {id: socket.id, nick: args.nick},
+                    args.public,
+                    args.guests
+                );
+                console.log("Player " + socket.id + " created Game " + game.id);
+                actions.initPlayer(io, socket, game);
+            }else{
+                actions.reportError(io, socket, 3, "Cannot create Game. Your are ingame.");
             }
         }
     });

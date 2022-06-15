@@ -2,7 +2,7 @@ games = [];
 openGames = 0;
 searchingGames = 0;
 
-function initBoard(){
+function initBoard() {
     return [
         [1, 0, 1, 0, 1, 0, 1, 0],
         [0, 1, 0, 1, 0, 1, 0, 1],
@@ -15,9 +15,14 @@ function initBoard(){
     ];
 }
 
-function createGame(player, public, guests){
+function createGame(player, public, guests) {
     openGames++;
-    const id = (openGames.toString() + Math.floor(Math.random()*10000)).substring(0,5).toString();
+    if (public) {
+        searchingGames++;
+    }
+    const id = (openGames.toString() + Math.floor(Math.random() * 10000))
+        .substring(0, 5)
+        .toString();
     games.push({
         id: id,
         board: initBoard(),
@@ -25,39 +30,46 @@ function createGame(player, public, guests){
         playertwo: null,
         moves: [],
         public: public,
-        guests: guests
+        guests: guests,
     });
-    console.log("Player "+ player + " created Game " + id);
-    return id;
+    return getGameByID(id);
 }
 
-function joinGame(gameid, player) {
-    i = rooms.map((val) => val.id).indexOf(roomid);
-
-    if (i < 0) {
-        return -1;
-    }
-    if (rooms[i].player2 != null) {
-        return -2;
-    }
-    rooms[i].player2 = playerid;
-    return 0;
+function joinGame(player, gameid) {
+    var game = getGameByID(gameid);
+    join = (gameplayer) => {
+        if (game[gameplayer] == null) {
+            if (game.public) {
+                searchingGames--;
+            }
+            game[gameplayer] = player;
+            console.log(gameplayer + ": " + game[gameplayer]);
+            return true;
+        }
+        return false;
+    };
+    return join("playerone") || join("playertwo");
 }
 
-function getGameByPlayer(player){
-    return games.find(game => game.playerone === player || game.playertwo === player);
+function getGameByPlayerID(playerid) {
+    checkPlayer = (gameplayer) => {
+        return gameplayer != null && gameplayer.id === playerid;
+    };
+    return games.find(
+        (game) => checkPlayer(game.playerone) || checkPlayer(game.playertwo)
+    );
 }
 
-function getGameByID(gameid){
-    return games.find(game => game.id === gameid);
+function getGameByID(gameid) {
+    return games.find((game) => game.id === gameid);
 }
 
-function gameExists(gameid){
+function gameExists(gameid) {
     return getGameByID(gameid) != null;
 }
 
-function isPlayerIngame(player){
-    return getGameByPlayer(player) != null;
+function isPlayerIngame(player) {
+    return getGameByPlayerID(player) != null;
 }
 
-module.exports = {createGame, gameExists, isPlayerIngame};
+module.exports = { createGame, joinGame, gameExists, isPlayerIngame, getGameByID };
