@@ -72,4 +72,5 @@ function isPlayerIngame(player) {
     return getGameByPlayerID(player) != null;
 }
 
+
 module.exports = { createGame, joinGame, gameExists, isPlayerIngame, getGameByID };

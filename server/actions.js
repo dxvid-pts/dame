@@ -1,9 +1,18 @@
 function initPlayer(io, socket, game){
 
-    console.log(game);
     socket.join(game.id);
-    socket.on("message", (msg) => {
-        io.in(gameid).emit("message", {sender: socket.id});
+
+    if(socket.id == game.playerone.id){
+        var me = game.playerone;
+        var enemy = game.playertwo;
+    }else{
+        var me = game.playertwo;
+        var enemy = game.playerone;
+    }
+
+
+    socket.on("message", (args) => {
+        io.in(game.id).emit("message", {sender: me.nick});
     });
 
 

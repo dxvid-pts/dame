@@ -14,7 +14,6 @@ socket.on("error", (error) => {
 
 function onClick() {
     const text = document.querySelector("input").value;
-    console.log(text);
     socket.emit("message", text);
 }
 
