@@ -16,13 +16,29 @@ function onClick() {
     socket.emit('message', text);
 }
 
+function createGame() {
+    socket.emit('createGame', {public: true, guests: true});
+}
+
+function joinGame() {
+    socket.emit('joinGame', document.querySelector('input').value);
+}
+
 export default function ChatArea() {
     return <div className="item3">
         <p id={"chatBox"}></p>
         <input></input>
         <button onClick={
             onClick
-        }>Send
+        }>Text Message
+        </button>
+        <button onClick={
+            createGame
+        }>createGame
+        </button>
+        <button onClick={
+            joinGame
+        }>joinGame
         </button>
     </div>;
 }

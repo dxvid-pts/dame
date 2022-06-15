@@ -1,34 +1,45 @@
-import {joinRoom} from "utils/rooms";
+const path = require("path");
 
-const Constants = require("shared/constants")
+const handler = require("./handler");
 
-const http = require('http').createServer();
+const constants = require("shared/constants");
 
-const io = require('socket.io')(http, {
-    cors: {origin: "*"}
+const http = require("http").createServer();
+
+const io = require("socket.io")(http, {
+    cors: { origin: "*" },
 });
 
-io.on('connection', (socket) => {
-    console.log('a user connected');
-
-    socket.on('message', (message) => {
+io.on("connection", (socket) => {
+    socket.on("message", (message) => {
         console.log(message);
-        io.emit('message', `${socket.id.substr(0, 2)} said ${message}`);
+        io.emit("message", `${socket.id.substr(0, 2)} said ${message}`);
     });
 
-    socket.on('join', (room) => {
-        if(room == null){
-            //send back a created room with id!
+    socket.on("joinGame", (gameid) => {
+        if (typeof gameid === "string") {
+            if (handler.gameExists(gameid)) {
+                if (!handler.isPlayerIngame(socket.id)) {
+                }
+            }else{
+                //report wrong game id
+            }
         }
-        
-        console.log(socket.id);
-        tryJoin = joinRoom(room, socket.id);
-
-        //send back result of joinRoom and cick user if it fails
-
-
     });
 
+    socket.on("createGame", (args) => {
+        if (
+            typeof args === "object" &&
+            args.hasOwnProperty("public") &&
+            args.hasOwnProperty("guests")
+        ) {
+            if (!handler.isPlayerIngame(socket.id)) {
+                handler.createGame(socket.id, args.public, args.guests);
+            }
+        }
+    });
 });
 
-http.listen(Constants.CONNECTION_PORT, () => console.log('listening on http://localhost:' + Constants.CONNECTION_PORT));
+http.listen(constants.CONNECTION_PORT, () =>
+    console.log("listening on http://localhost:" + constants.CONNECTION_PORT)
+);
