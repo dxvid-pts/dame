@@ -1,5 +1,6 @@
-const Constants = {
-    CONNECTION_PORT: 3983
+const constants = {
+    CONNECTION_PORT: 4000,
+    BOARD_SIZE: 8
 }
 
-module.exports = Constants
+module.exports = constants
