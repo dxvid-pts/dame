@@ -1,3 +1,6 @@
+import {useState} from "react";
+import mixColors from "../../utils";
+
 const Constants = require("shared/constants");
 
 const tileSize = 80;
@@ -30,17 +33,27 @@ function initiateChessBoard() {
 initiateChessBoard();
 
 export function ChessBoardTile(props) {
+    const [isShown, setIsShown] = useState(false);
+
     //set grid colors
     let white = (props.row % 2 === 0);
     if (props.column % 2 === 0) {
         white = !white;
     }
 
-    return <div style={{
-        width: tileSize,
-        height: tileSize,
-        backgroundColor: white ? Constants.COLOR_CHESSBOARD_EVEN : Constants.COLOR_CHESSBOARD_ODD
-    }}></div>;
+    let tileColor = white ? Constants.COLOR_CHESSBOARD_EVEN : Constants.COLOR_CHESSBOARD_ODD;
+    if(isShown){
+        tileColor = mixColors(tileColor, '#B5FDA4');
+    }
+
+    return <div
+        onMouseEnter={() => setIsShown(true)}
+        onMouseLeave={() => setIsShown(false)}
+        style={{
+            width: tileSize,
+            height: tileSize,
+            backgroundColor: tileColor
+        }}></div>;
 }
 
 export function ChessRow(props) {
