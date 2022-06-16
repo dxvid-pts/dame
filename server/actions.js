@@ -12,7 +12,7 @@ function initPlayer(io, socket, game){
 
 
     socket.on("message", (args) => {
-        io.in(game.id).emit("message", {sender: me.nick});
+        io.in(game.id).emit("message", {sender: me.nick, msg: args.msg, time: Date.now()});
     });
 
 
@@ -28,7 +28,7 @@ function initPlayer(io, socket, game){
 }
 
 function reportError(io, socket, code, msg){
-    io.to(socket.id).emit("error", {code: code, msg: msg});
+    io.to(socket.id).emit("error", {code: code, msg: msg, time: Date.now()});
 }
 
 module.exports = {initPlayer, reportError};
