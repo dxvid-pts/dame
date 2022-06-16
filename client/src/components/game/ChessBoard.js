@@ -42,7 +42,7 @@ export function ChessBoardTile(props) {
     }
 
     let tileColor = white ? Constants.COLOR_CHESSBOARD_EVEN : Constants.COLOR_CHESSBOARD_ODD;
-    if(isShown){
+    if (isShown) {
         tileColor = mixColors(tileColor, '#B5FDA4');
     }
 
@@ -59,7 +59,8 @@ export function ChessBoardTile(props) {
 export function ChessRow(props) {
     const tiles = [];
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
-        tiles.push(<ChessBoardTile column={props.column} row={i}></ChessBoardTile>);
+        //use coordinate as id (column/row)
+        tiles.push(<ChessBoardTile column={props.column} row={i} key={props.column + "" + i}></ChessBoardTile>);
     }
     return <div style={{display: "flex"}}>{tiles}</div>;
 }
@@ -67,7 +68,8 @@ export function ChessRow(props) {
 export default function ChessBoard() {
     const rows = [];
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
-        rows.push(<ChessRow column={i}></ChessRow>);
+        //use index as id key
+        rows.push(<ChessRow column={i} key={i}></ChessRow>);
     }
     return <div>{rows}</div>;
 }
