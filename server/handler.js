@@ -15,9 +15,9 @@ function initBoard() {
     ];
 }
 
-function createGame(player, public, guests) {
+function createGame(player, visible, guests) {
     openGames++;
-    if (public) {
+    if (visible) {
         searchingGames++;
     }
     const id = (openGames.toString() + Math.floor(Math.random() * 10000))
@@ -29,7 +29,7 @@ function createGame(player, public, guests) {
         playerone: player,
         playertwo: null,
         moves: [],
-        public: public,
+        visible: visible,
         guests: guests,
     });
     return getGameByID(id);
@@ -39,11 +39,10 @@ function joinGame(player, gameid) {
     var game = getGameByID(gameid);
     join = (gameplayer) => {
         if (game[gameplayer] == null) {
-            if (game.public) {
+            if (game.visible) {
                 searchingGames--;
             }
             game[gameplayer] = player;
-            console.log(gameplayer + ": " + game[gameplayer]);
             return true;
         }
         return false;
