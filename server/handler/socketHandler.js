@@ -1,8 +1,8 @@
 module.exports =  (io, socket) => {
 
-    const joinGame = require("../socketEvents/onJoinGame")(io, socket);
-    const createGame = require("../socketEvents/onCreateGame")(io, socket);
-    const disconnect = require("../socketEvents/onDisconnect")(io, socket);
+    const joinGame = require("../events/socketEvents/onJoinGame")(io, socket);
+    const createGame = require("../events/socketEvents/onCreateGame")(io, socket);
+    const disconnect = require("../events/socketEvents/onDisconnect")(io, socket);
 
 
     console.log("Player " + socket.id + " connected");

@@ -1,6 +1,7 @@
 module.exports = (io, socket) => {
-    const gameHandler = require("../handler/gameHandler")();
-    const isValidObject = require("../utils/isValidObject.js");
+    const gameHandler = require("../../handler/gameHandler")();
+    const inGameHandler = require("../../handler/socketInGameHandler")(io, socket);
+    const isValidObject = require("../../utils/isValidObject.js");
     const reportError = require("./sendError")(io, socket);
     const createGame = require("../gameEvents/createGame");
 
@@ -16,7 +17,8 @@ module.exports = (io, socket) => {
 
                 console.log("Player " + socket.id + " created Game " + game.id);
 
-                //handle game
+                inGameHandler(game);
+                
             } else {
                 reportError(
                     21,
