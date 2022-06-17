@@ -1,24 +1,26 @@
 module.exports = (io, socket) => {
-    const handler = require("../handler/gameHandler");
-    const actions = require("../actions");
+    const gameHandler = require("../handler/gameHandler")();
     const isValidObject = require("../utils/isValidObject.js");
-    const reportError = require("./reportError")(io, socket);
-
+    const reportError = require("./sendError")(io, socket);
+    const createGame = require("../gameEvents/createGame");
 
     return (args) => {
         if (isValidObject(args, ["nick", "visible", "guests"])) {
-            if (!handler.isPlayerIngame(socket.id)) {
-                game = handler.createGame(
+            if (gameHandler.getGameByPlayerID(socket.id) == null) {
+                game = createGame(
                     { id: socket.id, nick: args.nick },
                     args.visible,
                     args.guests
                 );
+                gameHandler.addNewGame(game);
+
                 console.log("Player " + socket.id + " created Game " + game.id);
-                actions.initPlayer(io, socket, game);
+
+                //handle game
             } else {
                 reportError(
-                    3,
-                    "Cannot create Game. Your are ingame."
+                    21,
+                    "Cannot create Game. Your are already in a Game."
                 );
             }
         }

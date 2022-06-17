@@ -1,18 +1,19 @@
 module.exports = (io, socket) => {
-    const handler = require("../handler/gameHandler");
-    const actions = require("../actions");
+    const gameHandler = require("../handler/gameHandler")();
     const isValidObject = require("../utils/isValidObject.js");
-    const reportError = require("./reportError")(io, socket);
+    const reportError = require("./sendError")(io, socket);
+    const joinGame = require("../gameEvents/joinGame");
 
     return (args) => {
         if (isValidObject(args, ["nick", "gameid"])) {
-            if (handler.gameExists(args.gameid)) {
-                if (!handler.isPlayerIngame(socket.id)) {
+            if (gameHandler.getGameByPlayerID(socket.id) == null) {
+                game = gameHandler.getGameByID(args.gameid);
+                if (game != null) {
                     if (
-                        handler.joinGame(
-                            { id: socket.id, nick: args.nick },
-                            args.gameid
-                        )
+                        joinGame(game, {
+                            id: socket.id,
+                            nick: args.nick,
+                        })
                     ) {
                         console.log(
                             "Player " +
@@ -20,22 +21,29 @@ module.exports = (io, socket) => {
                                 " joined Game " +
                                 args.gameid
                         );
-                        actions.initPlayer(
-                            io,
-                            socket,
-                            handler.getGameByID(args.gameid)
-                        );
+
+                        //handle game
+                        
                     } else {
                         reportError(
-                            1,
-                            "Cannot join. Game " + args.gameid + "  is full."
+                            14,
+                            "Cannot join Game. Game " +
+                                args.gameid +
+                                "  is full."
                         );
                     }
+                } else {
+                    reportError(
+                        13,
+                        "Cannot join Game. Game " +
+                            args.gameid +
+                            " does not exist."
+                    );
                 }
             } else {
                 reportError(
-                    2,
-                    "Cannot join. Game " + args.gameid + " does not exist."
+                    12,
+                    "Cannot join Game. Your are already in a Game."
                 );
             }
         }
