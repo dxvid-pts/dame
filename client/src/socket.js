@@ -20,6 +20,18 @@ function listenOnError(func) {
     });
 }
 
+function listenOnLog(func){
+    socket.on("log", (args) => {
+        func(args);
+    });
+}
+
+function listenOnJoinConfirmation(func){
+    socket.on("joinConfirmation", (args) => {
+        func(args);
+    });
+}
+
 //Send Functions
 
 function sendCreateGame(nick, visible, guests) {
@@ -37,4 +49,4 @@ function sendJoinGame(nick, gameid) {
     });
 }
 
-export { initSocket, sendCreateGame, sendJoinGame, listenOnMessage, listenOnError};
+export { initSocket, sendCreateGame, sendJoinGame, listenOnMessage, listenOnError, listenOnJoinConfirmation, listenOnLog};
