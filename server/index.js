@@ -35,14 +35,14 @@ io.on("connection", (socket) => {
     socket.on("createGame", (args) => {
         if (
             typeof args === "object" &&
-            args.hasOwnProperty("public") &&
+            args.hasOwnProperty("visible") &&
             args.hasOwnProperty("guests") &&
             args.hasOwnProperty("nick")
         ) {
             if (!handler.isPlayerIngame(socket.id)) {
                 game = handler.createGame(
                     {id: socket.id, nick: args.nick},
-                    args.public,
+                    args.visible,
                     args.guests
                 );
                 console.log("Player " + socket.id + " created Game " + game.id);
