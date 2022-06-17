@@ -27,8 +27,4 @@ function initPlayer(io, socket, game){
       });
 }
 
-function reportError(io, socket, code, msg){
-    io.to(socket.id).emit("error", {code: code, msg: msg, time: Date.now()});
-}
-
-module.exports = {initPlayer, reportError};
+module.exports = {initPlayer};
