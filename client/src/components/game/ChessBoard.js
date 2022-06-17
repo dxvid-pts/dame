@@ -1,5 +1,7 @@
 import {useState} from "react";
 import mixColors from "../../utils";
+import Char from "./char/Char.js";
+
 
 const Constants = require("shared/constants");
 
@@ -37,6 +39,7 @@ export function ChessBoardTile(props) {
 
     //set grid colors
     let white = (props.row % 2 === 0);
+    
     if (props.column % 2 === 0) {
         white = !white;
     }
@@ -45,15 +48,19 @@ export function ChessBoardTile(props) {
     if (isShown) {
         tileColor = mixColors(tileColor, '#B5FDA4');
     }
-
-    return <div
-        onMouseEnter={() => setIsShown(true)}
-        onMouseLeave={() => setIsShown(false)}
-        style={{
-            width: tileSize,
-            height: tileSize,
-            backgroundColor: tileColor
-        }}></div>;
+    const blue = {player: "blue"};
+    return (
+        <div
+            onMouseEnter={() => setIsShown(true)}
+            onMouseLeave={() => setIsShown(false)}
+            style={{
+                width: tileSize,
+                height: tileSize,
+                backgroundColor: tileColor,
+            }}>
+                <Char test={blue}></Char>
+            </div>
+    );
 }
 
 export function ChessRow(props) {
