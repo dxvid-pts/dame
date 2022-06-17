@@ -1,4 +1,5 @@
 import {useState} from "react";
+import { COLOR_CHESSBOARD_EVEN } from "shared/constants";
 import mixColors from "../../utils";
 import Char from "./char/Char.js";
 
@@ -25,6 +26,7 @@ function initiateChessBoard() {
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
+        
         chessboard.set(alphabet.charAt(i), generateRow());
     }
 
@@ -36,15 +38,15 @@ initiateChessBoard();
 
 export function ChessBoardTile(props) {
     const [isShown, setIsShown] = useState(false);
-
+    let player;
     //set grid colors
     let white = (props.row % 2 === 0);
     
     if (props.column % 2 === 0) {
         white = !white;
     }
-
     let tileColor = white ? Constants.COLOR_CHESSBOARD_EVEN : Constants.COLOR_CHESSBOARD_ODD;
+
     if (isShown) {
         tileColor = mixColors(tileColor, '#B5FDA4');
     }
@@ -58,19 +60,21 @@ export function ChessBoardTile(props) {
                 height: tileSize,
                 backgroundColor: tileColor,
             }}>
-                <Char test={blue}></Char>
+                <Char test={props.char}></Char>
             </div>
     );
 }
 
 export function ChessRow(props) {
     const tiles = [];
+    if(props.initiateChessBoard)
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
         //use coordinate as id (column/row)
-        tiles.push(<ChessBoardTile column={props.column} row={i} key={props.column + "" + i}></ChessBoardTile>);
+        tiles.push(<ChessBoardTile char={char} column={props.column} row={i} key={props.column + "" + i}></ChessBoardTile>);
     }
     return <div style={{display: "flex"}}>{tiles}</div>;
 }
+
 
 export default function ChessBoard() {
     const rows = [];
