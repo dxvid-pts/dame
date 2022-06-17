@@ -1,4 +1,4 @@
-import {sendCreateGame, sendJoinGame, initSocket, listenOnError} from "./../../socket.js"; //Pfad anpassen !! nicht gut 
+import {sendCreateGame, sendJoinGame, initSocket, listenOnError} from "../../socket.js"; //Pfad anpassen !! nicht gut 
 
 const constants = require("shared/constants");
 
