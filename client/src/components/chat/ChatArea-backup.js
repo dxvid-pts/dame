@@ -2,6 +2,7 @@ import {sendCreateGame, sendJoinGame, initSocket, listenOnError} from "./../../s
 
 const constants = require("shared/constants");
 
+
 initSocket(constants.CONNECTION_PORT);
 
 listenOnError((error) => console.log(error));
