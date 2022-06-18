@@ -1,6 +1,0 @@
-module.exports = (io, socket, game) => {
-    return () =>
-    io
-    .to(socket.id)
-            .emit("joinConfirmation", {time: Date.now()});
-};

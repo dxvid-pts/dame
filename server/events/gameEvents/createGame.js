@@ -2,6 +2,7 @@ module.exports = (player, visible, guests) => {
     const id = (openGames.toString() + Math.floor(Math.random() * 10000))
         .substring(0, 5)
         .toString();
+
     return {
         id: id,
         board: [
@@ -17,6 +18,7 @@ module.exports = (player, visible, guests) => {
         playerone: player,
         playertwo: null,
         moves: [],
+        nextTurn: null,
         visible: visible,
         guests: guests,
     };

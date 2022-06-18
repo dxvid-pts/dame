@@ -1,19 +1,18 @@
-module.exports = (io, socket) => {
-    const gameHandler = require("../../handler/gameHandler")();
-    const inGameHandler = require("../../handler/socketInGameHandler")(io, socket);
+module.exports = (io, socket, gameHandler) => {
+    const inGameHandler = require("../../handler/socketInGameHandler")(io, socket, gameHandler);
     const isValidObject = require("../../utils/isValidObject.js");
     const reportError = require("./sendError")(io, socket);
     const joinGame = require("../gameEvents/joinGame");
 
     return (args) => {
         if (isValidObject(args, ["nick", "gameid"])) {
-            if (gameHandler.getGameByPlayerID(socket.id) == null) {
+            if (gameHandler.getGameBySocketID(socket.id) == null) {
                 game = gameHandler.getGameByID(args.gameid);
                 if (game != null) {
                     if (
                         joinGame(game, {
-                            id: socket.id,
-                            nick: args.nick,
+                            socketid: socket.id,
+                            nick: args.nick
                         })
                     ) {
                         console.log(
@@ -22,7 +21,6 @@ module.exports = (io, socket) => {
                                 " joined Game " +
                                 args.gameid
                         );
-
                         inGameHandler(game);
                         
                     } else {

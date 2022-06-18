@@ -1,15 +1,17 @@
 import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 
-var socket;
+var socket = null;
+var socketid = null;
 
 function initSocket(port) {
     socket = io("ws://localhost:" + port);
+    socket.on("socketid", (id) => (socketid = id));
 }
 
 //Listening Functions
 
 function listenOnMessage(func) {
-    socket.on("message", (args) => {
+    socket.on("msg", (args) => {
         func(args);
     });
 }
@@ -20,16 +22,26 @@ function listenOnError(func) {
     });
 }
 
-function listenOnLog(func){
+function listenOnLog(func) {
     socket.on("log", (args) => {
         func(args);
     });
 }
 
-function listenOnJoinConfirmation(func){
-    socket.on("joinConfirmation", (args) => {
+function listenOnPlayerJoin(func) {
+    socket.on("playerJoin", (args) => {
         func(args);
     });
+}
+
+function listenOnGameState(func) {
+    socket.on("gameState", (args) => {
+        func(args);
+    });
+}
+
+function listenOnPlayerLeave(func) {
+    socket.on("playerLeave", func);
 }
 
 //Send Functions
@@ -49,4 +61,39 @@ function sendJoinGame(nick, gameid) {
     });
 }
 
-export { initSocket, sendCreateGame, sendJoinGame, listenOnMessage, listenOnError, listenOnJoinConfirmation, listenOnLog};
+function sendMessage(msg) {
+    socket.emit("msg", {
+        msg: msg,
+    });
+}
+
+function sendLeaveGame() {
+    socket.emit("leaveGame");
+}
+
+
+function sendMove(fX, fY, tX, tY){
+    socket.emit("move", {move: {from: {x: fX, y: fY}, to: {x: tX, y: tY}}});
+}
+
+//Getters + Setters
+
+function getSocketID() {
+    return socketid;
+}
+
+export {
+    getSocketID,
+    initSocket,
+    sendCreateGame,
+    sendJoinGame,
+    listenOnMessage,
+    listenOnError,
+    listenOnLog,
+    listenOnGameState,
+    listenOnPlayerJoin,
+    sendMessage,
+    sendLeaveGame,
+    listenOnPlayerLeave,
+    sendMove
+};

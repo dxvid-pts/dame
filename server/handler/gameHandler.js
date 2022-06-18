@@ -3,9 +3,9 @@ module.exports = () => {
     openGames = 0;
     searchingGames = 0; // not used!!!
 
-    function getGameByPlayerID(playerid) {
+    function getGameBySocketID(socketid) {
         checkPlayer = (gameplayer) => {
-            return gameplayer != null && gameplayer.id === playerid;
+            return gameplayer != null && gameplayer.socketid === socketid;
         };
         return games.find(
             (game) => checkPlayer(game.playerone) || checkPlayer(game.playertwo)
@@ -25,5 +25,9 @@ module.exports = () => {
         return openGames;
     }
 
-    return {addNewGame, getOpenGames, getGameByPlayerID, getGameByID};
+    function removeGame(game){
+        games = games.filter( obj => obj.id !== game.id)
+    }
+
+    return {addNewGame, getOpenGames, getGameBySocketID, getGameByID, removeGame};
 };
