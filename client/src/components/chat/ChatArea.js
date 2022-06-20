@@ -1,73 +1,65 @@
-import {
-    sendCreateGame,
-    sendJoinGame,
-    initSocket,
-    listenOnError,
-    listenOnLog,
-    listenOnGameState,
-    listenOnMessage,
-    sendMessage,
-    listenOnPlayerJoin,
-    sendLeaveGame,
-    listenOnPlayerLeave,
-    sendMove
-} from "../../socket.js"; //Pfad anpassen !! nicht gut
+import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
+import "./ChatMessage"
+import ChatMessage from "./ChatMessage";
+const Constants = require("shared/constants");
 
-const constants = require("shared/constants");
+const socket = io("ws://localhost:" + Constants.CONNECTION_PORT);
 
-initSocket(constants.CONNECTION_PORT);
+socket.on("message", (text) => {
+    const t = document.getElementById("chatBox");
+    t.innerText = text;
+});
 
-listenOnError((error) => console.log({type: "error", payload: error}));
+socket.on("error", (error) => {
+    console.log(error);
+});
 
-listenOnLog((error) => console.log({type: "log", payload: error}));
+function onClick() {
+    const text = document.querySelector("input").value;
+    socket.emit("message", text);
+}
 
+function createGame() {
+    socket.emit("createGame", { nick: "Player1", public: true, guests: true });
+}
 
-listenOnGameState((error) => console.log({type: "gameState", payload: error}));
+function joinGame() {
+    socket.emit("joinGame", {nick: "Player2", gameid: document.querySelector("input").value});
+}
 
-listenOnPlayerJoin((error) => console.log({type: "playerJoined", payload: error}));
+function generateMessages () {
+    const messages = [];
+    const user = {name: "Jan"};
+    const msg = {
+        ownedByCurrentUser: true, user: user, room: "test", body: "Dies ist ein Test"
+    };
+    messages.push(msg);
+    const user2 = {name: "Anderer Spieler"};
+    const msg2 = {
+        ownedByCurrentUser: false, user: user2, room: "test", body: "Eine Antwort auf den Test"
+    };
+    messages.push(msg2);
+    return messages;
 
-listenOnMessage((error) => console.log({type: "message", payload: error}));
-
-listenOnPlayerLeave((error) => console.log({type: "message", payload: error}));
-
+}
 
 export default function ChatArea() {
+    const messages = generateMessages();
     return (
         <div className="item3">
-            <p id={"chatBox"}></p><button onClick={() => sendCreateGame("Philipp", true, true)}>
-                createGame
-            </button>
-            <input id="1"></input>
-            
-            <button
-                onClick={() =>
-                    sendJoinGame("David", document.getElementById("1").value)
-                }
-            >
-                joinGame
-            </button>
-            <input id="2"></input>
-            <button
-                onClick={() =>
-                    sendMessage(document.getElementById("2").value)
-                }
-                >
-                sendMessage
-            </button>
-            <button
-                onClick={() =>
-                    sendLeaveGame()
-                }
-                >
-                leaveGame
-            </button>
-            <button
-                onClick={() =>
-                    sendMove(1,1,1,1)
-                }
-                >
-                sendMove
-            </button>
+            <p id={"chatBox"}></p>
+            <h1>Chat Window</h1>
+            <p>
+             {messages.map((message, i) => (
+                <li key={i}>
+                    <ChatMessage message={message}></ChatMessage>
+                </li>
+             ))}
+            </p>
+            <input></input>
+            <button onClick={onClick}>Text Message</button>
+            <button onClick={createGame}>createGame</button>
+            <button onClick={joinGame}>joinGame</button>
         </div>
     );
 }

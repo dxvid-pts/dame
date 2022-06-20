@@ -1,17 +1,24 @@
+
 module.exports = (io, socket, game, iam) => {
+    const sendGameState = require("./sendGameState")(io, socket, game);
     const sendError = require("../socketEvents/sendError")(io, socket);
     const isValidObject = require("../../utils/isValidObject");
-    const checkers = require("shared/checkers");
+    const executeMove = require("../gameEvents/executeMove");
+
 
     return (args) => {
-        if (isValidObject(args, "move") && (isValidObject(args.move, ["from", "to"])) {
+        console.log(args);
+        if (isValidObject(args, ["move"]) && (isValidObject(args.move, ["from", "to"]))) {
             if (
                 isValidObject(args.move.from, ["x", "y"]) &&
                 isValidObject(args.move.to, ["x", "y"])
             ) {
                 if (game.nextTurn == iam) {
-                    if(checkers.moveIsAllowed(game.board, iam == "playerone" ? 1 : -1, args.move)){
-                        
+                    if(executeMove(game, args.move)){
+                        sendGameState();
+                        // check if smb won and handle it
+                    }else{
+                        sendError(41, "Cannot move. This is not allowed.");
                     }
                 } else {
                     sendError(40, "Cannot move. It is not your turn.");
