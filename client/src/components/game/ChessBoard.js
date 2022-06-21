@@ -11,28 +11,6 @@ function generateRow() {
     return Array.from(Array(Constants.BOARD_SIZE).keys());
 }
 
-//saved chessboard state
-const chessboard = new Map();
-
-//initializes chessboard with empty fields
-function initiateChessBoard() {
-    //already initialized -> return;
-    if (chessboard.size > 0) {
-        return;
-    }
-
-    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    for (let i = 0; i < Constants.BOARD_SIZE; i++) {
-
-        chessboard.set(alphabet.charAt(i), generateRow());
-    }
-
-    console.log(chessboard);
-}
-
-//create columns & rows in chessboard
-initiateChessBoard();
 
 export function PlayerTile(props) {
     return <img alt={"self-Logo"} src={props.img} style={{
