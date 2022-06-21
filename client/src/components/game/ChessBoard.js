@@ -32,6 +32,13 @@ function initiateChessBoard() {
 //create columns & rows in chessboard
 initiateChessBoard();
 
+export function PlayerTile() {
+    return <img alt={"self-Logo"} src={Constants.PLAYER_SVG} style={{
+        width: tileSize,
+        height: tileSize,
+    }}></img>;
+}
+
 export function ChessBoardTile(props) {
     const [isShown, setIsShown] = useState(false);
 
@@ -46,14 +53,21 @@ export function ChessBoardTile(props) {
         tileColor = mixColors(tileColor, '#B5FDA4');
     }
 
+    var p = null;
+    if (props.column === 0 || props.column === 1) {
+        p = <PlayerTile></PlayerTile>;
+    }
+
     return <div
         onMouseEnter={() => setIsShown(true)}
         onMouseLeave={() => setIsShown(false)}
         style={{
             width: tileSize,
             height: tileSize,
-            backgroundColor: tileColor
-        }}></div>;
+            backgroundColor: tileColor,
+        }}>
+        {p}
+    </div>;
 }
 
 export function ChessRow(props) {
