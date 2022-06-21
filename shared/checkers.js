@@ -82,4 +82,19 @@ function tileJumpTo(board, from, to) {
     return board;
 }
 
-module.exports = { tileCanMoveTo, tileCanJumpTo, tileMoveTo, tileJumpTo, getField, tileInBounds };
+// 1 = playerone won, -1 = playertwo won, 0 = nobody won, 2 = tie
+function gameIsFinished(board){
+    return 0;
+}
+
+function playerCanJump(board, player){
+    return false;
+}
+
+function tileCanJump(board, location){
+    return false;
+}
+
+
+
+module.exports = { tileCanMoveTo, tileCanJumpTo, tileMoveTo, tileJumpTo, getField, tileInBounds, gameIsFinished, playerCanJump, tileCanJump};
