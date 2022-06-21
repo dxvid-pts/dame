@@ -36,8 +36,8 @@ function initiateChessBoard() {
 initiateChessBoard();
 
 export function ChessBoardTile(props) {
-    const [isShown, setIsShown] = useState(false);
     console.log("test");
+    const [isShown, setIsShown] = useState(false);
     //set grid colors
     let white = (props.row % 2 === 0);
     
@@ -66,11 +66,10 @@ export function ChessBoardTile(props) {
 export function ChessRow(props) {
     const tiles = [];
     const chars = props.chars;
-    if(props.initiateChessBoard)
-    console.log("test");
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
         tiles.push(<ChessBoardTile char={chars[i]} column={props[i].column} row={i} key={props[i].column + "" + i}></ChessBoardTile>);
     }
+    
     return <div style={{display: "flex"}}>{tiles}</div>;
 }
 
