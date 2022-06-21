@@ -1,6 +1,5 @@
 import {useState} from "react";
 import mixColors from "../../utils";
-import Char from "./char/Char.js";
 
 
 const Constants = require("shared/constants");
@@ -35,10 +34,12 @@ function initiateChessBoard() {
 //create columns & rows in chessboard
 initiateChessBoard();
 
-export function PlayerTile() {
-    return <img alt={"self-Logo"} src={Constants.PLAYER_SVG} style={{
+export function PlayerTile(props) {
+    return <img alt={"self-Logo"} src={props.img} style={{
         width: tileSize,
         height: tileSize,
+        "pointer-events": "none",
+        "user-select": "none"
     }}></img>;
 }
 
@@ -57,10 +58,14 @@ export function ChessBoardTile(props) {
         tileColor = mixColors(tileColor, '#B5FDA4');
     }
 
-    var p = null;
-    test={props.char}
-    if (props.column === 0 || props.column === 1) {
-        p = <PlayerTile></PlayerTile>;
+    let p = null;
+    switch (props.char) {
+        case -1:
+            p = <PlayerTile img={Constants.PLAYER_SVG_WHITE}></PlayerTile>;
+            break;
+        case 1:
+            p = <PlayerTile img={Constants.PLAYER_SVG_BLACK}></PlayerTile>;
+            break;
     }
 
     return <div
@@ -77,9 +82,9 @@ export function ChessBoardTile(props) {
 
 export function ChessRow(props) {
     const tiles = [];
-    const chars = props.chars;
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
-        tiles.push(<ChessBoardTile char={chars[i]} column={props[i].column} row={i} key={props[i].column + "" + i}></ChessBoardTile>);
+        tiles.push(<ChessBoardTile char={props.chars[i]} column={props.column} row={i}
+                                   key={props.column + "" + i}></ChessBoardTile>);
     }
 
     return <div style={{display: "flex"}}>{tiles}</div>;
