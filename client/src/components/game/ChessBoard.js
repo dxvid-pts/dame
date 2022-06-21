@@ -58,6 +58,7 @@ export function ChessBoardTile(props) {
     }
 
     var p = null;
+    test={props.char}
     if (props.column === 0 || props.column === 1) {
         p = <PlayerTile></PlayerTile>;
     }
@@ -76,18 +77,29 @@ export function ChessBoardTile(props) {
 
 export function ChessRow(props) {
     const tiles = [];
+    const chars = props.chars;
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
-        //use coordinate as id (column/row)
-        tiles.push(<ChessBoardTile char={char} column={props.column} row={i} key={props.column + "" + i}></ChessBoardTile>);
+        tiles.push(<ChessBoardTile char={chars[i]} column={props[i].column} row={i} key={props[i].column + "" + i}></ChessBoardTile>);
     }
+
     return <div style={{display: "flex"}}>{tiles}</div>;
 }
 
 export default function ChessBoard() {
     const rows = [];
+    const props = [
+        [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, -1, 0, -1, 0, -1, 0, -1],
+        [-1, 0, -1, 0, -1, 0, -1, 0],
+        [0, -1, 0, -1, 0, -1, 0, -1],
+    ];
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
         //use index as id key
-        rows.push(<ChessRow column={i} key={i}></ChessRow>);
+        rows.push(<ChessRow chars={props[i]} column={i} key={i}></ChessRow>);
     }
     return <div>{rows}</div>;
 }
