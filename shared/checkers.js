@@ -82,4 +82,8 @@ function tileJumpTo(board, from, to) {
     return board;
 }
 
-module.exports = { tileCanMoveTo, tileCanJumpTo, tileMoveTo, tileJumpTo, getField, tileInBounds };
+function gameIsFinished(board){
+    return 0;
+}
+
+module.exports = { tileCanMoveTo, tileCanJumpTo, tileMoveTo, tileJumpTo, getField, tileInBounds, gameIsFinished};

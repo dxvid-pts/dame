@@ -21,5 +21,6 @@ module.exports = (player, visible, guests) => {
         nextTurn: null,
         visible: visible,
         guests: guests,
+        winner: null
     };
 };
