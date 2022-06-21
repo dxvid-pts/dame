@@ -20,8 +20,10 @@ module.exports = (io, socket, game, iam) => {
                         winner = checkers.gameIsFinished(game.board);
                         if (winner != 0) {
                             game.nextTurn = null;
-                            game.winner =
-                                1 == winner ? "playerone" : "playertwo";
+                            if (winner != 2) {
+                                game.winner =
+                                    1 == winner ? "playerone" : "playertwo";
+                            }
                         }
                         sendGameState();
                     } else {
