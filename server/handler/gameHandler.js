@@ -26,7 +26,8 @@ module.exports = () => {
     }
 
     function removeGame(game){
-        games = games.filter( obj => obj.id !== game.id)
+        games = games.filter( obj => obj.id !== game.id);
+        openGames--;
     }
 
     return {addNewGame, getOpenGames, getGameBySocketID, getGameByID, removeGame};
