@@ -1,5 +1,4 @@
 import {useState} from "react";
-import { COLOR_CHESSBOARD_EVEN } from "shared/constants";
 import mixColors from "../../utils";
 import Char from "./char/Char.js";
 
@@ -38,7 +37,7 @@ initiateChessBoard();
 
 export function ChessBoardTile(props) {
     const [isShown, setIsShown] = useState(false);
-    let player;
+    console.log("test");
     //set grid colors
     let white = (props.row % 2 === 0);
     
@@ -50,7 +49,6 @@ export function ChessBoardTile(props) {
     if (isShown) {
         tileColor = mixColors(tileColor, '#B5FDA4');
     }
-    const blue = {player: "blue"};
     return (
         <div
             onMouseEnter={() => setIsShown(true)}
@@ -67,10 +65,11 @@ export function ChessBoardTile(props) {
 
 export function ChessRow(props) {
     const tiles = [];
+    const chars = props.chars;
     if(props.initiateChessBoard)
+    console.log("test");
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
-        //use coordinate as id (column/row)
-        tiles.push(<ChessBoardTile char={char} column={props.column} row={i} key={props.column + "" + i}></ChessBoardTile>);
+        tiles.push(<ChessBoardTile char={chars[i]} column={props[i].column} row={i} key={props[i].column + "" + i}></ChessBoardTile>);
     }
     return <div style={{display: "flex"}}>{tiles}</div>;
 }
@@ -78,9 +77,19 @@ export function ChessRow(props) {
 
 export default function ChessBoard() {
     const rows = [];
+    const props = [
+        [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, -1, 0, -1, 0, -1, 0, -1],
+        [-1, 0, -1, 0, -1, 0, -1, 0],
+        [0, -1, 0, -1, 0, -1, 0, -1],
+    ];
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
         //use index as id key
-        rows.push(<ChessRow column={i} key={i}></ChessRow>);
+        rows.push(<ChessRow chars={props[i]} column={i} key={i}></ChessRow>);
     }
     return <div>{rows}</div>;
 }
