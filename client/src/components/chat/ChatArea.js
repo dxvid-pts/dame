@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
     sendCreateGame,
     sendJoinGame,
@@ -12,8 +13,10 @@ import {
     listenOnPlayerLeave,
     sendMove,
 } from "../../socket.js"; //Pfad anpassen !! nicht gut
-
+import ChatMessage from "./ChatMessage.js";
+import "./ChatArea.css"
 const constants = require("shared/constants");
+
 
 initSocket(constants.CONNECTION_PORT);
 
@@ -25,33 +28,68 @@ listenOnGameState((error) =>
     console.log({ type: "gameState", payload: error })
 );
 
-listenOnPlayerJoin((error) =>
-    console.log({ type: "playerJoined", payload: error })
-);
 
 listenOnMessage((error) => console.log({ type: "message", payload: error }));
 
 listenOnPlayerLeave((error) =>
-    console.log({ type: "message", payload: error })
+console.log({ type: "message", payload: error })
 );
 
 export default function ChatArea() {
+    listenOnPlayerJoin((payload) => playerJoined(payload)
+    );
+    const [msgs, setMsgs] = useState([]);
+    const [gameId, setGameId] = useState("");
+    const [nickname, setNickname] = useState("");
+    function createGame(nickname) {
+        if(nickname === "" || nickname === null) alert("Nickname can not be empty");
+        else {
+            sendCreateGame(nickname, true, true);
+            setNickname(nickname);
+        }
+    }
+    
+    function joinGame(nickname, gameId) {
+        console.log("test" + nickname + gameId);
+        if((nickname === "" || nickname === null) && (gameId === "" || gameId === null)) alert("Nickname and GameId fields cannot be empty");
+        else if((nickname === "" || nickname === null)) alert("Nickname cannot be empty");
+        else if((gameId === "" || gameId === null)) alert("GameId cannot be empty");
+        else {
+            sendJoinGame(nickname, gameId);
+            console.log(nickname + " joins game: " + gameId);
+            setNickname(nickname);
+        }
+    }
+    function playerJoined(payload){
+        setGameId(payload.game);
+        setMsgs(
+            [...msgs,
+                {
+                    user: {nickname},
+                    body: "Player joined the room"
+                }
+            ]
+        );
+        console.log("player joined"); 
+
+    }
+    
+    console.log("gameid: " + gameId + "     nick " + nickname + " msgs " + msgs.length); 
+    
     return (
-        <div className="item3">
-            <p id={"chatBox"}></p>
-            <button onClick={() => sendCreateGame("Philipp", true, true)}>
+        <div>
+            <p id={"chatBox"}>GameId: {gameId}</p>
+            <button onClick={() => createGame(document.getElementById("nick").value)}>
                 createGame
             </button>
-            <input id="1"></input>
+            <input id="nick" placeholder="Nickname"></input>
 
             <button
-                onClick={() =>
-                    sendJoinGame("David", document.getElementById("1").value)
-                }
+                onClick={() => joinGame(document.getElementById("nick").value, document.getElementById("gameId").value)}
             >
                 joinGame
             </button>
-            <input id="2"></input>
+            <input id="gameId" placeholder="gameId"></input>
             <button
                 onClick={() => sendMessage(document.getElementById("2").value)}
             >
@@ -60,6 +98,17 @@ export default function ChatArea() {
             <button onClick={() => sendLeaveGame()}>leaveGame</button>
             <button onClick={() => sendMove(0, 2, 1, 3)}>sendMoveP1</button>
             <button onClick={() => sendMove(1, 5, 2, 4)}>sendMovePw</button>
+            <p>Chatroom:
+            </p>
+               <ul>
+                    {msgs.map((m) => (
+                        <li>
+                            <ChatMessage message={m} nickname={nickname}></ChatMessage>
+                        </li>
+                    ))}
+               </ul>
+                
         </div>
     );
+   
 }
