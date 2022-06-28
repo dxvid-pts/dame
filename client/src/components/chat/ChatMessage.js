@@ -2,7 +2,6 @@ import React from "react";
 import "./ChatMessage.css"
 
 const ChatMessage = ({ message }, nickname) => {
-    console.log("joa los gehts");
     if(message.user.nickname === nickname) message.ownedByCurrentUser = "my-message";
     return (
         <div 

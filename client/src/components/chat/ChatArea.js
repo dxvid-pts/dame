@@ -61,17 +61,18 @@ export default function ChatArea() {
         }
     }
     function playerJoined(payload){
+        console.log(payload);
         setGameId(payload.game);
         setMsgs(
             [...msgs,
                 {
-                    user: {nickname},
-                    body: "Player joined the room"
+                    user: {nickname: "System"},
+                    body: "Player " + payload.player.nick + " joined the game"
                 }
             ]
         );
         console.log("player joined"); 
-
+        
     }
     
     console.log("gameid: " + gameId + "     nick " + nickname + " msgs " + msgs.length); 
