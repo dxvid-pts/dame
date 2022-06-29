@@ -35,18 +35,27 @@ listenOnPlayerLeave((error) =>
 console.log({ type: "message", payload: error })
 );
 
+function checkNickname(nickname) {
+    if(nickname.toLowerCase() === "system") return false;
+    else return true;
+}
+
 export default function ChatArea() {
-    listenOnPlayerJoin((payload) => playerJoined(payload)
-    );
     const [msgs, setMsgs] = useState([]);
     const [gameId, setGameId] = useState("");
     const [nickname, setNickname] = useState("");
+    
+    
+    listenOnPlayerJoin((payload) => playerJoined(payload));
+
+    
     function createGame(nickname) {
         if(nickname === "" || nickname === null) alert("Nickname can not be empty");
-        else {
+        else if(checkNickname(nickname)) {
             sendCreateGame(nickname, true, true);
             setNickname(nickname);
         }
+        else alert("Nickname is not valid");
     }
     
     function joinGame(nickname, gameId) {
@@ -54,21 +63,19 @@ export default function ChatArea() {
         if((nickname === "" || nickname === null) && (gameId === "" || gameId === null)) alert("Nickname and GameId fields cannot be empty");
         else if((nickname === "" || nickname === null)) alert("Nickname cannot be empty");
         else if((gameId === "" || gameId === null)) alert("GameId cannot be empty");
-        else {
+        else if(checkNickname(nickname)){
             sendJoinGame(nickname, gameId);
             console.log(nickname + " joins game: " + gameId);
             setNickname(nickname);
-        }
+        } else alert("Username is not valid");
     }
     function playerJoined(payload){
-        console.log("Player joined: " + payload);
         setGameId(payload.game);
         AddMessage({ user: {nickname: "System"}, body: "Player " + payload.player.nick + " joined the game"})
         
     }
 
     function AddMessage(message){
-        console.log("Message: " + message);
         setMsgs(
             [...msgs,
                 {
@@ -79,8 +86,7 @@ export default function ChatArea() {
         );
         
     }
-    
-    console.log("gameid: " + gameId + "     nick " + nickname + " msgs " + msgs.length); 
+
     
     return (
         <div>
