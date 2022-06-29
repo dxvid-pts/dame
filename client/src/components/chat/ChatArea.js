@@ -29,8 +29,6 @@ listenOnGameState((error) =>
 );
 
 
-listenOnMessage((error) => console.log({ type: "message", payload: error }));
-
 listenOnPlayerLeave((error) =>
 console.log({ type: "message", payload: error })
 );
@@ -47,7 +45,7 @@ export default function ChatArea() {
     
     
     listenOnPlayerJoin((payload) => playerJoined(payload));
-
+    listenOnMessage((payload) => recMsg(payload));
     
     function createGame(nickname) {
         if(nickname === "" || nickname === null) alert("Nickname can not be empty");
@@ -75,6 +73,23 @@ export default function ChatArea() {
         
     }
 
+    function sendMsg(body){
+        console.log(body);
+        if(gameId !== "" && nickname !== "") {
+            const message = {
+            user: {nickname: nickname},
+            body: body,
+            room: gameId
+        }
+        console.log(message);
+        sendMessage(message);
+    }
+        else alert("Error: Message not sent");
+    }
+    function recMsg(msg){
+        console.log("Message rec: " + msg);
+        //AddMessage(msg);
+    }
     function AddMessage(message){
         setMsgs(
             [...msgs,
@@ -103,10 +118,11 @@ export default function ChatArea() {
             </button>
             <input id="gameId" placeholder="gameId"></input>
             <button
-                onClick={() => sendMessage(document.getElementById("2").value)}
+                onClick={() => sendMsg(document.getElementById("msgBody").value)}
             >
                 sendMessage
             </button>
+            <input id="msgBody" placeholder="Your message"></input>
             <button onClick={() => sendLeaveGame()}>leaveGame</button>
             <button onClick={() => sendMove(0, 2, 1, 3)}>sendMoveP1</button>
             <button onClick={() => sendMove(1, 5, 2, 4)}>sendMovePw</button>
