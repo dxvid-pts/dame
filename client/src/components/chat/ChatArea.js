@@ -42,10 +42,9 @@ function checkNickname(nickname) {
 
 export default function ChatArea() {
     const [msgs, setMsgs] = useState([]);
-    const [gameId, setGameId] = useState("123");
-    const [nickname, setNickname] = useState("none");
-    const [socketid, setSocketId] = useState("none");
-    console.log("GameId: " + gameId);
+    const [gameId, setGameId] = useState("");
+    const [nickname, setNickname] = useState("");
+    
     listenOnPlayerJoin((payload) => playerJoined(payload));
     listenOnMessage((payload) => recMsg(payload));
     
@@ -66,7 +65,6 @@ export default function ChatArea() {
         else if((gameId === "" || gameId === null)) alert("GameId cannot be empty");
         else if(checkNickname(nickname)){
             setNickname(nickname);
-            setSocketId(getSocketID());
             sendJoinGame(nickname, gameId);
         } else alert("Username is not valid");
     }
