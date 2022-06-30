@@ -12,6 +12,7 @@ import {
     sendLeaveGame,
     listenOnPlayerLeave,
     sendMove,
+    getSocketID
 } from "../../socket.js"; //Pfad anpassen !! nicht gut
 import ChatMessage from "./ChatMessage.js";
 import "./ChatArea.css"
@@ -38,12 +39,13 @@ function checkNickname(nickname) {
     else return true;
 }
 
+
 export default function ChatArea() {
     const [msgs, setMsgs] = useState([]);
-    const [gameId, setGameId] = useState("");
-    const [nickname, setNickname] = useState("");
-    
-    
+    const [gameId, setGameId] = useState("123");
+    const [nickname, setNickname] = useState("none");
+    const [socketid, setSocketId] = useState("none");
+    console.log("GameId: " + gameId);
     listenOnPlayerJoin((payload) => playerJoined(payload));
     listenOnMessage((payload) => recMsg(payload));
     
@@ -52,6 +54,7 @@ export default function ChatArea() {
         else if(checkNickname(nickname)) {
             sendCreateGame(nickname, true, true);
             setNickname(nickname);
+            console.log(getSocketID())
         }
         else alert("Nickname is not valid");
     }
@@ -62,47 +65,53 @@ export default function ChatArea() {
         else if((nickname === "" || nickname === null)) alert("Nickname cannot be empty");
         else if((gameId === "" || gameId === null)) alert("GameId cannot be empty");
         else if(checkNickname(nickname)){
-            sendJoinGame(nickname, gameId);
-            console.log(nickname + " joins game: " + gameId);
             setNickname(nickname);
+            setSocketId(getSocketID());
+            sendJoinGame(nickname, gameId);
         } else alert("Username is not valid");
     }
     function playerJoined(payload){
         setGameId(payload.game);
-        AddMessage({ user: {nickname: "System"}, body: "Player " + payload.player.nick + " joined the game"})
+        AddMessage({ me: {nick: nickname, socketid: getSocketID()}, player: {nick: "system", socketid: "0"}, msg: "Player " + payload.player.nick + " joined the game"})
         
     }
 
     function sendMsg(body){
         console.log(body);
         if(gameId !== "" && nickname !== "") {
-            const message = {
-            user: {nickname: nickname},
-            body: body,
-            room: gameId
+            sendMessage(body);
         }
-        console.log(message);
-        sendMessage(message);
-    }
         else alert("Error: Message not sent");
     }
     function recMsg(msg){
-        console.log("Message rec: " + msg);
-        //AddMessage(msg);
+        var message = {
+            me: {
+                nick: nickname, 
+                socketid: getSocketID()
+            },
+            msg: msg.msg,
+            player: msg.player
+        }
+        AddMessage(message)      
     }
     function AddMessage(message){
+        console.log(message);
         setMsgs(
             [...msgs,
                 {
-                    user: {nickname: message.nickname},
-                    body: message.body
+                    me: message.me,
+                    player: {
+                        socketid: message.player.socketid,
+                        nick: message.player.nick
+                    },
+                    msg: message.msg
                 }
             ]
         );
         
     }
-
     
+ 
     return (
         <div>
             <p id={"chatBox"}>GameId: {gameId}</p>
@@ -131,7 +140,7 @@ export default function ChatArea() {
                <ul>
                     {msgs.map((m) => (
                         <li>
-                            <ChatMessage message={m} nickname={nickname}></ChatMessage>
+                            <ChatMessage message={m}></ChatMessage>
                         </li>
                     ))}
                </ul>

@@ -8,6 +8,9 @@
   .received-message {
     justify-content: flex-start;
   }
+  .sys-message {
+    justify-content: flex-start;
+  }
   .message-body-container {
     max-width: 30%;
   }
@@ -28,5 +31,9 @@
   }
   .received-message .message-body {
     background-color: gray;
+    color: white;
+  }
+  .sys-message .message-body {
+    background-color: blue;
     color: white;
   }
