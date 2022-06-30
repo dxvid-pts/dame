@@ -16,6 +16,8 @@ import {
 } from "../../socket.js"; //Pfad anpassen !! nicht gut
 import ChatMessage from "./ChatMessage.js";
 import "./ChatArea.css"
+import Button from '@mui/material/Button';
+import Input from '@mui/material/TextField'
 const constants = require("shared/constants");
 
 
@@ -42,8 +44,8 @@ function checkNickname(nickname) {
 
 export default function ChatArea() {
     const [msgs, setMsgs] = useState([]);
-    const [gameId, setGameId] = useState("");
-    const [nickname, setNickname] = useState("");
+    const [gameId, setGameId] = useState(null);
+    const [nickname, setNickname] = useState(null);
     
     listenOnPlayerJoin((payload) => playerJoined(payload));
     listenOnMessage((payload) => recMsg(payload));
@@ -108,41 +110,47 @@ export default function ChatArea() {
         );
         
     }
-    
- 
+   
     return (
-        <div>
+        <div className="Chatside">
             <p id={"chatBox"}>GameId: {gameId}</p>
-            <button onClick={() => createGame(document.getElementById("nick").value)}>
-                createGame
-            </button>
-            <input id="nick" placeholder="Nickname"></input>
+            <div className={(gameId === null) ? "test" : "hidden"}>
+            <Input variant="outlined" label="Nickname" id="nick" value={nickname}></Input>
+            <Button onClick={() => createGame(document.getElementById("nick").value)}>
+                create Game
+            </Button>
+            </div>
+            <div className={(gameId === null) ? "test" : "hidden"}>
+                {(gameId === null) ? <Input variant="outlined" id="gameId" label="gameId" value={gameId}></Input> : null}
+                {(gameId === null) ? <Button onClick={() => joinGame(document.getElementById("nick").value, document.getElementById("gameId").value)}>join Game</Button> : null}
+            </div>
+            <div className="test">
+                <Input variant="outlined" id="msgBody" label="Your message"></Input>
+                <Button
+                    onClick={() => sendMsg(document.getElementById("msgBody").value)}
+                >
+                    send Message
+                </Button>
+            </div>
+            <br />
 
-            <button
-                onClick={() => joinGame(document.getElementById("nick").value, document.getElementById("gameId").value)}
-            >
-                joinGame
-            </button>
-            <input id="gameId" placeholder="gameId"></input>
-            <button
-                onClick={() => sendMsg(document.getElementById("msgBody").value)}
-            >
-                sendMessage
-            </button>
-            <input id="msgBody" placeholder="Your message"></input>
-            <button onClick={() => sendLeaveGame()}>leaveGame</button>
-            <button onClick={() => sendMove(0, 2, 1, 3)}>sendMoveP1</button>
-            <button onClick={() => sendMove(1, 5, 2, 4)}>sendMovePw</button>
-            <p>Chatroom:
-            </p>
-               <ul>
-                    {msgs.map((m) => (
-                        <li>
-                            <ChatMessage message={m}></ChatMessage>
-                        </li>
-                    ))}
-               </ul>
-                
+            <div className="test">
+                <Button onClick={() => sendLeaveGame()}>leaveGame</Button>
+                <Button onClick={() => sendMove(0, 2, 1, 3)}>sendMoveP1</Button>
+                <Button onClick={() => sendMove(1, 5, 2, 4)}>sendMovePw</Button>
+            </div>
+            <div className="Chat">
+                <p>Chatroom:
+                </p>
+                <ul>
+                        {msgs.map((m) => (
+                            <li>
+                                <ChatMessage message={m}></ChatMessage>
+                            </li>
+                        ))}
+                </ul>
+                    
+            </div>
         </div>
     );
    

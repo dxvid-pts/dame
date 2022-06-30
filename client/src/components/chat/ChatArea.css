@@ -2,3 +2,18 @@ ul {
     list-style-type: none;
     padding-inline-start: 5px;
   }
+.test {
+  display: grid;
+  padding-right: 5%;
+  padding-left: 5%;
+}
+.Chat {
+  max-height: max-content;
+  background-color: aqua;
+}
+.Chatside {
+  background-color: rgb(255, 255, 255);
+}
+.hidden {
+  visibility: hidden
+}
