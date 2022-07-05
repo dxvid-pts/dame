@@ -1,5 +1,6 @@
 import {createContext, useState} from "react";
-import mixColors from "../../utils";
+
+const checkers = require("shared/checkers");
 
 const Constants = require("shared/constants");
 
@@ -131,6 +132,25 @@ export default function ChessBoard() {
 
                     //player on field -> highlight fields
                     if (fieldState === 1 || fieldState === -1) {
+
+                        console.log("abc");
+
+                        try {
+                            const a = checkers.possiblePlayerTurns([
+                                [1, 0, 1, 0, 1, 0, 1, 0],
+                                [0, 1, 0, 1, 0, 1, 0, 1],
+                                [1, 0, 1, 0, 1, 0, 1, 0],
+                                [0, 0, 0, 0, 0, 0, 0, 0],
+                                [0, 0, 0, 0, 0, 0, 0, 0],
+                                [0, -1, 0, -1, 0, -1, 0, -1],
+                                [-1, 0, -1, 0, -1, 0, -1, 0],
+                                [0, -1, 0, -1, 0, -1, 0, -1],
+                            ], 1);
+                        } catch (err) {
+                            console.log("err");
+                            console.log(err);
+                        }
+
 
                         //TODO: PHILIPP: state logic here
                         //highlighted fields are stored inside an array in the global state.

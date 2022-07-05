@@ -101,22 +101,22 @@ function possiblePlayerTurns(board, player) {
     var jump = false;
     var turns = [];
 
-    for (x = 0; x < 8; x++) {
-        for (y = 0; y < 8; y++) {
-            location = { x: x, y: y };
+    for (var x = 0; x < 8; x++) {
+        for (var y = 0; y < 8; y++) {
+            var location = { x: x, y: y };
 
             if (player * getField(board, location) <= 0) {
                 continue;
             }
 
-            jump_targets = [
+            var jump_targets = [
                 { x: x - 2, y: y + 2 },
                 { x: x + 2, y: y + 2 },
                 { x: x - 2, y: y - 2 },
                 { x: x - 2, y: y - 2 },
             ];
 
-            tileTurns = possibleTileTurns(
+            var tileTurns = possibleTileTurns(
                 board,
                 location,
                 jump_targets,
@@ -131,7 +131,7 @@ function possiblePlayerTurns(board, player) {
                 continue;
             }
 
-            move_targets = [
+            var move_targets = [
                 { x: x - 1, y: y + 1 },
                 { x: x + 1, y: y + 1 },
                 { x: x - 1, y: y - 1 },
@@ -152,7 +152,7 @@ function possiblePlayerTurns(board, player) {
 }
 
 function possibleTileTurns(board, location, targets, tileCanTurnTo) {
-    turns = [];
+    var turns = [];
 
     targets.forEach((target) => {
         if (tileInBounds(target) && tileCanTurnTo(board, location, target)) {
