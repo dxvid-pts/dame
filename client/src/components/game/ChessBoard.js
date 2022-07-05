@@ -48,22 +48,26 @@ export function ChessBoardTile(props) {
     if (props.column % 2 === 0) {
         white = !white;
     }
-    let tileColor = white ? Constants.COLOR_CHESSBOARD_EVEN : Constants.COLOR_CHESSBOARD_ODD;
+
+    const opacity = 0.4;
+    let tileColor = ""; //white ? Constants.COLOR_CHESSBOARD_EVEN : Constants.COLOR_CHESSBOARD_ODD;
 
     if (isHovered) {
-        tileColor = mixColors(tileColor, '#B5FDA4');
+        tileColor = "rgba(181,253,164,"+opacity+")";
     }
 
     //render highlighted fields
     for (let position of props.globalState.highlightedFields) {
         if (position.row === props.row && position.column === props.column) {
-            tileColor = mixColors(tileColor, '#FF0000');
+            tileColor =  tileColor = "rgba(255,0,0,"+opacity+")";
+            //tileColor = mixColors(tileColor, '#FF0000');
         }
     }
 
     //check if selected
     if (props.globalState.selectedTile != null && props.globalState.selectedTile.row === props.row && props.globalState.selectedTile.column === props.column) {
-        tileColor = mixColors(tileColor, '#f5ad42');
+        tileColor =  tileColor = "rgba(245,173,66,"+opacity+")";
+       // tileColor = mixColors(tileColor, '#f5ad42');
     }
 
     let p = null;
@@ -76,6 +80,8 @@ export function ChessBoardTile(props) {
             break;
     }
 
+    const backgroundImgUrl = white ? Constants.BOARD_WHITE : Constants.BOARD_BLACK;
+
     return <div
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -83,9 +89,14 @@ export function ChessBoardTile(props) {
         style={{
             width: tileSize,
             height: tileSize,
-            backgroundColor: tileColor,
+            backgroundImage: "url(" + backgroundImgUrl + ")"
         }}>
-        {p}
+        <div style={{
+            width: tileSize,
+            height: tileSize,
+            backgroundColor: tileColor,
+        }}
+        >{p}</div>
     </div>;
 }
 
