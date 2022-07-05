@@ -1,4 +1,4 @@
-import {createContext, useContext, useState} from "react";
+import {createContext, useState} from "react";
 import mixColors from "../../utils";
 
 const Constants = require("shared/constants");
@@ -42,17 +42,14 @@ export function PlayerTile(props) {
     }}></img>;
 }
 
-const globalState = {
-    selectedField: [0,0],
+const initialGlobalState = {
+    highlightedFields: [{column: 0, row: 0}],
 };
 
-const globalStateContext = createContext(globalState);
+const globalStateContext = createContext(initialGlobalState);
 
 export function ChessBoardTile(props) {
     const [isHovered, setIsHovered] = useState(false);
-    const { selectedField } = useContext(globalStateContext);
-
-    console.log(selectedField);
 
     //set grid colors
     let white = (props.row % 2 === 0);
@@ -66,8 +63,12 @@ export function ChessBoardTile(props) {
         tileColor = mixColors(tileColor, '#B5FDA4');
     }
 
-    if (selectedField[0] === props.row && selectedField[1] === props.column) {
-        tileColor = "red";
+    //render highlighted fields
+    for (let position of props.globalState.highlightedFields) {
+        console.log(position);
+        if (position.row === props.row && position.column === props.column) {
+            tileColor = mixColors(tileColor, '#FF0000');
+        }
     }
 
     let p = null;
@@ -83,7 +84,7 @@ export function ChessBoardTile(props) {
     return <div
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onClick={() => globalState.selectedField=[1, 1]}
+        onClick={() => props.onClick({row: props.row, column: props.column})}
         style={{
             width: tileSize,
             height: tileSize,
@@ -94,9 +95,12 @@ export function ChessBoardTile(props) {
 }
 
 export function ChessRow(props) {
+    //const [user, setUser] = useState(false);
+
     const tiles = [];
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
-        tiles.push(<ChessBoardTile char={props.chars[i]} column={props.column} row={i}
+        tiles.push(<ChessBoardTile char={props.chars[i]} column={props.column} row={i} onClick={props.onClick}
+                                   globalState={props.globalState}
                                    key={props.column + "" + i}></ChessBoardTile>);
     }
 
@@ -104,7 +108,12 @@ export function ChessRow(props) {
 }
 
 export default function ChessBoard() {
+    //  const [user, setUser] = useState(false);
+    const [globalState, setGlobalState] = useState(initialGlobalState);
+
     const rows = [];
+
+    //TODO: replace with server code
     const props = [
         [1, 0, 1, 0, 1, 0, 1, 0],
         [0, 1, 0, 1, 0, 1, 0, 1],
@@ -117,7 +126,20 @@ export default function ChessBoard() {
     ];
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
         //use index as id key
-        rows.push(<ChessRow chars={props[i]} column={i} key={i}></ChessRow>);
+        rows.push(<ChessRow chars={props[i]} column={i} key={i} onClick={(selectedField) => {
+
+            //TODO: PHILIPP: state logic here
+            //highlighted fields are stored inside an array in the global state.
+            //fields are objects {row: 0, column: 0}
+            setGlobalState({
+                highlightedFields: [{
+                    row: selectedField.row - 1,
+                    column: selectedField.column - 1
+                }, {row: selectedField.row + 1, column: selectedField.column - 1},],
+            });
+        }
+
+        } globalState={globalState}></ChessRow>);
     }
     return <globalStateContext.Provider value={globalState}>
         <div>{rows}</div>
