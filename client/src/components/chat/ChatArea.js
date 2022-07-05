@@ -17,7 +17,7 @@ import {
 import ChatMessage from "./ChatMessage.js";
 import "./ChatArea.css"
 import Button from '@mui/material/Button';
-import Input from '@mui/material/TextField'
+import Input from '@mui/material/TextField';
 const constants = require("shared/constants");
 
 
@@ -32,10 +32,6 @@ listenOnGameState((error) =>
 );
 
 
-listenOnPlayerLeave((error) =>
-console.log({ type: "message", payload: error })
-);
-
 function checkNickname(nickname) {
     if(nickname.toLowerCase() === "system") return false;
     else return true;
@@ -49,19 +45,18 @@ export default function ChatArea() {
     
     listenOnPlayerJoin((payload) => playerJoined(payload));
     listenOnMessage((payload) => recMsg(payload));
+    listenOnPlayerLeave((payload) => playerLeft(payload));
     
     function createGame(nickname) {
         if(nickname === "" || nickname === null) alert("Nickname can not be empty");
         else if(checkNickname(nickname)) {
             sendCreateGame(nickname, true, true);
             setNickname(nickname);
-            console.log(getSocketID())
         }
         else alert("Nickname is not valid");
     }
     
     function joinGame(nickname, gameId) {
-        console.log("test" + nickname + gameId);
         if((nickname === "" || nickname === null) && (gameId === "" || gameId === null)) alert("Nickname and GameId fields cannot be empty");
         else if((nickname === "" || nickname === null)) alert("Nickname cannot be empty");
         else if((gameId === "" || gameId === null)) alert("GameId cannot be empty");
@@ -70,14 +65,18 @@ export default function ChatArea() {
             sendJoinGame(nickname, gameId);
         } else alert("Username is not valid");
     }
+
     function playerJoined(payload){
         setGameId(payload.game);
         AddMessage({ me: {nick: nickname, socketid: getSocketID()}, player: {nick: "system", socketid: "0"}, msg: "Player " + payload.player.nick + " joined the game"})
         
     }
 
+    function playerLeft(payload){
+        AddMessage({ me: {nick: nickname, socketid: getSocketID()}, player: {nick: "system", socketid: "0"}, msg: "Player " + payload.player.nick + " left the game"})
+    }
+
     function sendMsg(body){
-        console.log(body);
         if(gameId !== "" && nickname !== "") {
             sendMessage(body);
         }
@@ -95,7 +94,6 @@ export default function ChatArea() {
         AddMessage(message)      
     }
     function AddMessage(message){
-        console.log(message);
         setMsgs(
             [...msgs,
                 {
@@ -109,6 +107,13 @@ export default function ChatArea() {
             ]
         );
         
+    }
+    
+    function leaveGame(){
+        setGameId(null);
+        setMsgs([])
+        setNickname(null)
+        sendLeaveGame();
     }
    
     return (
@@ -135,7 +140,7 @@ export default function ChatArea() {
             <br />
 
             <div className="test">
-                <Button onClick={() => sendLeaveGame()}>leaveGame</Button>
+                <Button onClick={() => leaveGame()}>leaveGame</Button>
                 <Button onClick={() => sendMove(0, 2, 1, 3)}>sendMoveP1</Button>
                 <Button onClick={() => sendMove(1, 5, 2, 4)}>sendMovePw</Button>
             </div>
