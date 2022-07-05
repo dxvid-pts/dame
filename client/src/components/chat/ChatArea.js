@@ -11,6 +11,7 @@ import {
     sendLeaveGame,
     listenOnPlayerLeave,
     sendMove,
+    sendSpectateGame
 } from "../../socket.js"; //Pfad anpassen !! nicht gut
 
 const constants = require("shared/constants");
@@ -50,6 +51,13 @@ export default function ChatArea() {
                 }
             >
                 joinGame
+            </button>
+            <button
+                onClick={() =>
+                    sendSpectateGame(document.getElementById("1").value)
+                }
+            >
+                specatateGame
             </button>
             <input id="2"></input>
             <button
