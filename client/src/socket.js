@@ -61,6 +61,12 @@ function sendJoinGame(nick, gameid) {
     });
 }
 
+function sendSpectateGame(gameid) {
+    socket.emit("spectateGame", {
+        gameid: gameid,
+    });
+}
+
 function sendMessage(msg) {
     socket.emit("msg", {
         msg: msg,
@@ -95,5 +101,6 @@ export {
     sendMessage,
     sendLeaveGame,
     listenOnPlayerLeave,
-    sendMove
+    sendMove,
+    sendSpectateGame
 };
