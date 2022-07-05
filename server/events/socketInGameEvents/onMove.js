@@ -6,7 +6,6 @@ module.exports = (io, socket, game, iam) => {
     const checkers = require("shared/checkers");
 
     return (args) => {
-        console.log(args);
         if (
             isValidObject(args, ["move"]) &&
             isValidObject(args.move, ["from", "to"])

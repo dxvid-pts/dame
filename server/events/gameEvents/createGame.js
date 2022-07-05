@@ -3,6 +3,7 @@ module.exports = (player, visible, guests) => {
         .substring(0, 5)
         .toString();
 
+
     return {
         id: id,
         board: [

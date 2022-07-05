@@ -98,8 +98,8 @@ function tileCanJump(board, location) {
 // NEW
 
 function possiblePlayerTurns(board, player) {
-    jump = false;
-    turns = [];
+    var jump = false;
+    var turns = [];
 
     for (x = 0; x < 8; x++) {
         for (y = 0; y < 8; y++) {
@@ -122,13 +122,12 @@ function possiblePlayerTurns(board, player) {
                 jump_targets,
                 tileCanJumpTo
             );
-
-            if (tileTurns !== 0) {
+            if (tileTurns.length !== 0) {
                 jump = true;
             }
 
             if (jump) {
-                turns.concat(tileTurns);
+                turns = turns.concat(tileTurns);
                 continue;
             }
 
@@ -142,11 +141,11 @@ function possiblePlayerTurns(board, player) {
             tileTurns = possibleTileTurns(
                 board,
                 location,
-                jump_targets,
+                move_targets,
                 tileCanMoveTo
             );
 
-            turns.concat(tileTurns);
+            turns = turns.concat(tileTurns);
         }
     }
     return turns;
