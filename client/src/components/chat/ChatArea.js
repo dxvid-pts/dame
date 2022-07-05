@@ -12,6 +12,7 @@ import {
     sendLeaveGame,
     listenOnPlayerLeave,
     sendMove,
+    sendSpectateGame,
     getSocketID
 } from "../../socket.js"; //Pfad anpassen !! nicht gut
 import ChatMessage from "./ChatMessage.js";

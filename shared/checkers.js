@@ -83,18 +83,95 @@ function tileJumpTo(board, from, to) {
 }
 
 // 1 = playerone won, -1 = playertwo won, 0 = nobody won, 2 = tie
-function gameIsFinished(board){
+function gameIsFinished(board) {
     return 0;
 }
 
-function playerCanJump(board, player){
+function playerCanJump(board, player) {
     return false;
 }
 
-function tileCanJump(board, location){
+function tileCanJump(board, location) {
     return false;
 }
 
+// NEW
 
+function possiblePlayerTurns(board, player) {
+    var jump = false;
+    var turns = [];
 
-module.exports = { tileCanMoveTo, tileCanJumpTo, tileMoveTo, tileJumpTo, getField, tileInBounds, gameIsFinished, playerCanJump, tileCanJump};
+    for (var x = 0; x < 8; x++) {
+        for (var y = 0; y < 8; y++) {
+            var location = { x: x, y: y };
+
+            if (player * getField(board, location) <= 0) {
+                continue;
+            }
+
+            var jump_targets = [
+                { x: x - 2, y: y + 2 },
+                { x: x + 2, y: y + 2 },
+                { x: x - 2, y: y - 2 },
+                { x: x - 2, y: y - 2 },
+            ];
+
+            var tileTurns = possibleTileTurns(
+                board,
+                location,
+                jump_targets,
+                tileCanJumpTo
+            );
+            if (tileTurns.length !== 0) {
+                jump = true;
+            }
+
+            if (jump) {
+                turns = turns.concat(tileTurns);
+                continue;
+            }
+
+            var move_targets = [
+                { x: x - 1, y: y + 1 },
+                { x: x + 1, y: y + 1 },
+                { x: x - 1, y: y - 1 },
+                { x: x - 1, y: y - 1 },
+            ];
+
+            tileTurns = possibleTileTurns(
+                board,
+                location,
+                move_targets,
+                tileCanMoveTo
+            );
+
+            turns = turns.concat(tileTurns);
+        }
+    }
+    return turns;
+}
+
+function possibleTileTurns(board, location, targets, tileCanTurnTo) {
+    var turns = [];
+
+    targets.forEach((target) => {
+        if (tileInBounds(target) && tileCanTurnTo(board, location, target)) {
+            turns.push({ from: location, to: target });
+        }
+    });
+
+    return turns;
+}
+
+module.exports = {
+    tileCanMoveTo,
+    tileCanJumpTo,
+    tileMoveTo,
+    tileJumpTo,
+    getField,
+    tileInBounds,
+    gameIsFinished,
+    playerCanJump,
+    tileCanJump,
+    possiblePlayerTurns,
+};

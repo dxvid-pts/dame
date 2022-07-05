@@ -6,5 +6,6 @@ module.exports = (game, player) => {
         }
         return false;
     };
+
     return join("playerone") || join("playertwo");
 };
