@@ -1,6 +1,5 @@
-import {useState} from "react";
+import {createContext, useContext, useState} from "react";
 import mixColors from "../../utils";
-
 
 const Constants = require("shared/constants");
 
@@ -43,8 +42,17 @@ export function PlayerTile(props) {
     }}></img>;
 }
 
+const globalState = {
+    selectedField: [0,0],
+};
+
+const globalStateContext = createContext(globalState);
+
 export function ChessBoardTile(props) {
-    const [isShown, setIsShown] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
+    const { selectedField } = useContext(globalStateContext);
+
+    console.log(selectedField);
 
     //set grid colors
     let white = (props.row % 2 === 0);
@@ -54,8 +62,12 @@ export function ChessBoardTile(props) {
     }
     let tileColor = white ? Constants.COLOR_CHESSBOARD_EVEN : Constants.COLOR_CHESSBOARD_ODD;
 
-    if (isShown) {
+    if (isHovered) {
         tileColor = mixColors(tileColor, '#B5FDA4');
+    }
+
+    if (selectedField[0] === props.row && selectedField[1] === props.column) {
+        tileColor = "red";
     }
 
     let p = null;
@@ -69,8 +81,9 @@ export function ChessBoardTile(props) {
     }
 
     return <div
-        onMouseEnter={() => setIsShown(true)}
-        onMouseLeave={() => setIsShown(false)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={() => globalState.selectedField=[1, 1]}
         style={{
             width: tileSize,
             height: tileSize,
@@ -106,5 +119,7 @@ export default function ChessBoard() {
         //use index as id key
         rows.push(<ChessRow chars={props[i]} column={i} key={i}></ChessRow>);
     }
-    return <div>{rows}</div>;
+    return <globalStateContext.Provider value={globalState}>
+        <div>{rows}</div>
+    </globalStateContext.Provider>;
 }
