@@ -1,3 +1,5 @@
+const Constants = require("shared/constants");
+
 module.exports = (player, visible, guests) => {
     const id = (openGames.toString() + Math.floor(Math.random() * 10000))
         .substring(0, 5)
@@ -6,16 +8,7 @@ module.exports = (player, visible, guests) => {
 
     return {
         id: id,
-        board: [
-            [1, 0, 1, 0, 1, 0, 1, 0],
-            [0, 1, 0, 1, 0, 1, 0, 1],
-            [1, 0, 1, 0, 1, 0, 1, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, -1, 0, -1, 0, -1, 0, -1],
-            [-1, 0, -1, 0, -1, 0, -1, 0],
-            [0, -1, 0, -1, 0, -1, 0, -1],
-        ],
+        board: Constants.INITIAL_BOARD,
         playerone: player,
         playertwo: null,
         moves: [],

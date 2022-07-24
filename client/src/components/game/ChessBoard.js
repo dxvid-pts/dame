@@ -6,12 +6,6 @@ const Constants = require("shared/constants");
 
 const tileSize = 80;
 
-//returns [0, 1, 2, 3, ..., n] until board_size is reached
-function generateRow() {
-    return Array.from(Array(Constants.BOARD_SIZE).keys());
-}
-
-
 export function PlayerTile(props) {
     return <img alt={"self-Logo"} src={props.img} style={{
         width: tileSize,
@@ -26,16 +20,7 @@ const initialGlobalState = {
     highlightedFields: [],
 
     //TODO: replace with server code
-    tilePositions: [
-        [1, 0, 1, 0, 1, 0, 1, 0],
-        [0, 1, 0, 1, 0, 1, 0, 1],
-        [1, 0, 1, 0, 1, 0, 1, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, -1, 0, -1, 0, -1, 0, -1],
-        [-1, 0, -1, 0, -1, 0, -1, 0],
-        [0, -1, 0, -1, 0, -1, 0, -1],
-    ],
+    tilePositions: Constants.INITIAL_BOARD,
 };
 
 const globalStateContext = createContext(initialGlobalState);
