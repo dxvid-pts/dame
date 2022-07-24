@@ -54,21 +54,21 @@ export function ChessBoardTile(props) {
     let tileColor = ""; //white ? Constants.COLOR_CHESSBOARD_EVEN : Constants.COLOR_CHESSBOARD_ODD;
 
     if (isHovered) {
-        tileColor = "rgba(181,253,164,"+opacity+")";
+        tileColor = "rgba(181,253,164," + opacity + ")";
     }
 
     //render highlighted fields
     for (let position of props.globalState.highlightedFields) {
         if (position.row === props.row && position.column === props.column) {
-            tileColor =  tileColor = "rgba(255,0,0,"+opacity+")";
+            tileColor = tileColor = "rgba(255,0,0," + opacity + ")";
             //tileColor = mixColors(tileColor, '#FF0000');
         }
     }
 
     //check if selected
     if (props.globalState.selectedTile != null && props.globalState.selectedTile.row === props.row && props.globalState.selectedTile.column === props.column) {
-        tileColor =  tileColor = "rgba(245,173,66,"+opacity+")";
-       // tileColor = mixColors(tileColor, '#f5ad42');
+        tileColor = tileColor = "rgba(245,173,66," + opacity + ")";
+        // tileColor = mixColors(tileColor, '#f5ad42');
     }
 
     let p = null;
@@ -133,33 +133,21 @@ export default function ChessBoard() {
                     //player on field -> highlight fields
                     if (fieldState === 1 || fieldState === -1) {
 
-                        console.log("abc");
+                        //get highlightedFields (fields where a tile can possibly move to) from shared code
+                        let highlightedFields = [];
+                        for (let element of checkers.possiblePlayerTurns(globalState.tilePositions, fieldState)) {
+                            if (element.from.y === selectedField.column && element.from.x === selectedField.row) {
+                                highlightedFields = element.to.map(e => {
+                                    return {"row": e.x, "column": e.y};
+                                });
+                                break;
+                            }
 
-                        try {
-                            const a = checkers.possiblePlayerTurns([
-                                [1, 0, 1, 0, 1, 0, 1, 0],
-                                [0, 1, 0, 1, 0, 1, 0, 1],
-                                [1, 0, 1, 0, 1, 0, 1, 0],
-                                [0, 0, 0, 0, 0, 0, 0, 0],
-                                [0, 0, 0, 0, 0, 0, 0, 0],
-                                [0, -1, 0, -1, 0, -1, 0, -1],
-                                [-1, 0, -1, 0, -1, 0, -1, 0],
-                                [0, -1, 0, -1, 0, -1, 0, -1],
-                            ], 1);
-                        } catch (err) {
-                            console.log("err");
-                            console.log(err);
                         }
 
-
-                        //TODO: PHILIPP: state logic here
-                        //highlighted fields are stored inside an array in the global state.
-                        //fields are objects {row: 0, column: 0}
+                        //update renderer
                         setGlobalState({
-                            highlightedFields: [{
-                                row: selectedField.row - 1,
-                                column: selectedField.column - 1
-                            }, {row: selectedField.row + 1, column: selectedField.column - 1},],
+                            highlightedFields: highlightedFields,
                             tilePositions: globalState.tilePositions,
                             selectedTile: {
                                 row: selectedField.row,
