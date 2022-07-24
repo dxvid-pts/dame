@@ -95,8 +95,27 @@ function tileCanJump(board, location) {
     return false;
 }
 
-// NEW
-
+/*
+    return struct:
+    [
+        //field with 2+ possible moves
+        {
+            from: {x: 1, y: 1},
+            to: [
+                {x: 2, y: 0},
+                {x: 2, y: 2},
+                ]
+        },
+        //field with 1 possible move
+        {
+            from: {x: 1, y: 5},
+            to: [
+                {x: 2, y: 4},
+                ]
+        },
+        //fields with 0 possible moves are not included in the array
+    ]
+ */
 function possiblePlayerTurns(board, player) {
     let jump = false;
     let turns = [];
@@ -112,7 +131,7 @@ function possiblePlayerTurns(board, player) {
             const jump_targets = [
                 {x: x - 2, y: y + 2},
                 {x: x + 2, y: y + 2},
-                {x: x - 2, y: y - 2},
+                {x: x + 2, y: y - 2},
                 {x: x - 2, y: y - 2},
             ];
 
@@ -134,7 +153,7 @@ function possiblePlayerTurns(board, player) {
             const move_targets = [
                 {x: x - 1, y: y + 1},
                 {x: x + 1, y: y + 1},
-                {x: x - 1, y: y - 1},
+                {x: x + 1, y: y - 1},
                 {x: x - 1, y: y - 1},
             ];
 
@@ -148,7 +167,28 @@ function possiblePlayerTurns(board, player) {
             turns = turns.concat(tileTurns);
         }
     }
-    return turns;
+
+    //bring raw data into final form as described above
+    const formattedArray = [];
+    for (let e of turns) {
+        if (formattedArray.map(x => x.from).includes(e.from)) {
+
+            let oldIndex;
+            for (const index in formattedArray) {
+                if (formattedArray[index].from === e.from) {
+                    oldIndex = index;
+                    break;
+                }
+            }
+
+            const updatedElement = {"from": e.from, "to": formattedArray[oldIndex].to.concat([e.to])};
+            //replaces element at old index with new element
+            formattedArray.splice(oldIndex, 1, updatedElement);
+        } else
+            formattedArray.push({"from": e.from, "to": [e.to]});
+    }
+
+    return formattedArray;
 }
 
 function possibleTileTurns(board, location, targets, tileCanTurnTo) {
@@ -156,7 +196,7 @@ function possibleTileTurns(board, location, targets, tileCanTurnTo) {
 
     targets.forEach((target) => {
         if (tileInBounds(target) && tileCanTurnTo(board, location, target)) {
-            turns.push({ from: location, to: target });
+            turns.push({from: location, to: target});
         }
     });
 
