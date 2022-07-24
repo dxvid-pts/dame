@@ -15,14 +15,14 @@ function setField(board, location, value) {
 function tileCanMoveTo(board, from, to) {
     from.value = getField(board, from);
     to.value = getField(board, to);
-    if (from.value != 0 && to.value == 0) {
+    if (from.value !== 0 && to.value === 0) {
         if (from.value > 0 || Math.abs(from.value) > 1) {
-            if (to.y - from.y == 1 && Math.abs(to.x - from.x) == 1) {
+            if (to.y - from.y === 1 && Math.abs(to.x - from.x) === 1) {
                 return true;
             }
         }
         if (from.value < 0 || Math.abs(from.value) > 1) {
-            if (to.y - from.y == -1 && Math.abs(to.x - from.x) == 1) {
+            if (to.y - from.y === -1 && Math.abs(to.x - from.x) === 1) {
                 return true;
             }
         }
@@ -33,9 +33,9 @@ function tileCanMoveTo(board, from, to) {
 function tileCanJumpTo(board, from, to) {
     from.value = getField(board, from);
     to.value = getField(board, to);
-    if (from.value != 0 && to.value == 0) {
+    if (from.value !== 0 && to.value === 0) {
         if (from.value > 0 || Math.abs(from.value) > 1) {
-            if (to.y - from.y == 2 && Math.abs(to.x - from.x) == 2) {
+            if (to.y - from.y === 2 && Math.abs(to.x - from.x) === 2) {
                 if (
                     getField(board, {
                         x: from.x + Math.floor((to.x - from.x) / 2),
@@ -47,7 +47,7 @@ function tileCanJumpTo(board, from, to) {
             }
         }
         if (from.value < 0 || Math.abs(from.value) > 1) {
-            if (to.y - from.y == -2 && Math.abs(to.x - from.x) == 2) {
+            if (to.y - from.y === -2 && Math.abs(to.x - from.x) === 2) {
                 if (
                     getField(board, {
                         x: from.x + Math.floor((to.x - from.x) / 2),
@@ -98,25 +98,25 @@ function tileCanJump(board, location) {
 // NEW
 
 function possiblePlayerTurns(board, player) {
-    var jump = false;
-    var turns = [];
+    let jump = false;
+    let turns = [];
 
-    for (var x = 0; x < 8; x++) {
-        for (var y = 0; y < 8; y++) {
-            var location = { x: x, y: y };
+    for (let x = 0; x < 8; x++) {
+        for (let y = 0; y < 8; y++) {
+            const location = {x: x, y: y};
 
             if (player * getField(board, location) <= 0) {
                 continue;
             }
 
-            var jump_targets = [
-                { x: x - 2, y: y + 2 },
-                { x: x + 2, y: y + 2 },
-                { x: x - 2, y: y - 2 },
-                { x: x - 2, y: y - 2 },
+            const jump_targets = [
+                {x: x - 2, y: y + 2},
+                {x: x + 2, y: y + 2},
+                {x: x - 2, y: y - 2},
+                {x: x - 2, y: y - 2},
             ];
 
-            var tileTurns = possibleTileTurns(
+            let tileTurns = possibleTileTurns(
                 board,
                 location,
                 jump_targets,
@@ -131,11 +131,11 @@ function possiblePlayerTurns(board, player) {
                 continue;
             }
 
-            var move_targets = [
-                { x: x - 1, y: y + 1 },
-                { x: x + 1, y: y + 1 },
-                { x: x - 1, y: y - 1 },
-                { x: x - 1, y: y - 1 },
+            const move_targets = [
+                {x: x - 1, y: y + 1},
+                {x: x + 1, y: y + 1},
+                {x: x - 1, y: y - 1},
+                {x: x - 1, y: y - 1},
             ];
 
             tileTurns = possibleTileTurns(
@@ -152,7 +152,7 @@ function possiblePlayerTurns(board, player) {
 }
 
 function possibleTileTurns(board, location, targets, tileCanTurnTo) {
-    var turns = [];
+    const turns = [];
 
     targets.forEach((target) => {
         if (tileInBounds(target) && tileCanTurnTo(board, location, target)) {
