@@ -1,6 +1,6 @@
-import {useState} from "react";
-import mixColors from "../../utils";
+import {createContext, useState} from "react";
 
+const checkers = require("shared/checkers");
 
 const Constants = require("shared/constants");
 
@@ -21,8 +21,27 @@ export function PlayerTile(props) {
     }}></img>;
 }
 
+const initialGlobalState = {
+    selectedTile: null,
+    highlightedFields: [],
+
+    //TODO: replace with server code
+    tilePositions: [
+        [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, -1, 0, -1, 0, -1, 0, -1],
+        [-1, 0, -1, 0, -1, 0, -1, 0],
+        [0, -1, 0, -1, 0, -1, 0, -1],
+    ],
+};
+
+const globalStateContext = createContext(initialGlobalState);
+
 export function ChessBoardTile(props) {
-    const [isShown, setIsShown] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
     //set grid colors
     let white = (props.row % 2 === 0);
@@ -30,10 +49,26 @@ export function ChessBoardTile(props) {
     if (props.column % 2 === 0) {
         white = !white;
     }
-    let tileColor = white ? Constants.COLOR_CHESSBOARD_EVEN : Constants.COLOR_CHESSBOARD_ODD;
 
-    if (isShown) {
-        tileColor = mixColors(tileColor, '#B5FDA4');
+    const opacity = 0.4;
+    let tileColor = ""; //white ? Constants.COLOR_CHESSBOARD_EVEN : Constants.COLOR_CHESSBOARD_ODD;
+
+    if (isHovered) {
+        tileColor = "rgba(181,253,164,"+opacity+")";
+    }
+
+    //render highlighted fields
+    for (let position of props.globalState.highlightedFields) {
+        if (position.row === props.row && position.column === props.column) {
+            tileColor =  tileColor = "rgba(255,0,0,"+opacity+")";
+            //tileColor = mixColors(tileColor, '#FF0000');
+        }
+    }
+
+    //check if selected
+    if (props.globalState.selectedTile != null && props.globalState.selectedTile.row === props.row && props.globalState.selectedTile.column === props.column) {
+        tileColor =  tileColor = "rgba(245,173,66,"+opacity+")";
+       // tileColor = mixColors(tileColor, '#f5ad42');
     }
 
     let p = null;
@@ -46,22 +81,33 @@ export function ChessBoardTile(props) {
             break;
     }
 
+    const backgroundImgUrl = white ? Constants.BOARD_WHITE : Constants.BOARD_BLACK;
+
     return <div
-        onMouseEnter={() => setIsShown(true)}
-        onMouseLeave={() => setIsShown(false)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={() => props.onClick({row: props.row, column: props.column})}
         style={{
             width: tileSize,
             height: tileSize,
-            backgroundColor: tileColor,
+            backgroundImage: "url(" + backgroundImgUrl + ")"
         }}>
-        {p}
+        <div style={{
+            width: tileSize,
+            height: tileSize,
+            backgroundColor: tileColor,
+        }}
+        >{p}</div>
     </div>;
 }
 
 export function ChessRow(props) {
+    //const [user, setUser] = useState(false);
+
     const tiles = [];
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
-        tiles.push(<ChessBoardTile char={props.chars[i]} column={props.column} row={i}
+        tiles.push(<ChessBoardTile char={props.chars[i]} column={props.column} row={i} onClick={props.onClick}
+                                   globalState={props.globalState}
                                    key={props.column + "" + i}></ChessBoardTile>);
     }
 
@@ -69,20 +115,89 @@ export function ChessRow(props) {
 }
 
 export default function ChessBoard() {
+    //  const [user, setUser] = useState(false);
+    const [globalState, setGlobalState] = useState(initialGlobalState);
+
     const rows = [];
-    const props = [
-        [1, 0, 1, 0, 1, 0, 1, 0],
-        [0, 1, 0, 1, 0, 1, 0, 1],
-        [1, 0, 1, 0, 1, 0, 1, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, -1, 0, -1, 0, -1, 0, -1],
-        [-1, 0, -1, 0, -1, 0, -1, 0],
-        [0, -1, 0, -1, 0, -1, 0, -1],
-    ];
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
         //use index as id key
-        rows.push(<ChessRow chars={props[i]} column={i} key={i}></ChessRow>);
+        rows.push(
+            <ChessRow
+                chars={globalState.tilePositions[i]}
+                column={i}
+                key={i}
+                globalState={globalState}
+                onClick={(selectedField) => {
+                    const fieldState = globalState.tilePositions[selectedField.column][selectedField.row]
+
+                    //player on field -> highlight fields
+                    if (fieldState === 1 || fieldState === -1) {
+
+                        console.log("abc");
+
+                        try {
+                            const a = checkers.possiblePlayerTurns([
+                                [1, 0, 1, 0, 1, 0, 1, 0],
+                                [0, 1, 0, 1, 0, 1, 0, 1],
+                                [1, 0, 1, 0, 1, 0, 1, 0],
+                                [0, 0, 0, 0, 0, 0, 0, 0],
+                                [0, 0, 0, 0, 0, 0, 0, 0],
+                                [0, -1, 0, -1, 0, -1, 0, -1],
+                                [-1, 0, -1, 0, -1, 0, -1, 0],
+                                [0, -1, 0, -1, 0, -1, 0, -1],
+                            ], 1);
+                        } catch (err) {
+                            console.log("err");
+                            console.log(err);
+                        }
+
+
+                        //TODO: PHILIPP: state logic here
+                        //highlighted fields are stored inside an array in the global state.
+                        //fields are objects {row: 0, column: 0}
+                        setGlobalState({
+                            highlightedFields: [{
+                                row: selectedField.row - 1,
+                                column: selectedField.column - 1
+                            }, {row: selectedField.row + 1, column: selectedField.column - 1},],
+                            tilePositions: globalState.tilePositions,
+                            selectedTile: {
+                                row: selectedField.row,
+                                column: selectedField.column
+                            }
+                        });
+                    }
+
+                    //check if clicked field is highlighted
+                    let highlighted = false;
+                    for (let position of globalState.highlightedFields) {
+                        if (position.row === selectedField.row && position.column === selectedField.column) {
+                            highlighted = true;
+                            break;
+                        }
+                    }
+
+                    //click on highlighted field -> move player to field
+                    if (highlighted) {
+                        const fieldTo = selectedField;
+                        const fieldFrom = {column: globalState.selectedTile.column, row: globalState.selectedTile.row}
+                        const chessField = globalState.tilePositions;
+
+                        chessField[fieldTo.column][fieldTo.row] = chessField[fieldFrom.column][fieldFrom.row];
+                        chessField[fieldFrom.column][fieldFrom.row] = 0;
+
+                        setGlobalState({
+                            highlightedFields: [],
+                            tilePositions: chessField,
+                            selectedTile: null
+                        });
+                    }
+
+
+                }}
+            ></ChessRow>);
     }
-    return <div>{rows}</div>;
+    return <globalStateContext.Provider value={globalState}>
+        <div>{rows}</div>
+    </globalStateContext.Provider>;
 }
