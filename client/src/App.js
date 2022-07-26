@@ -7,10 +7,11 @@ const socketConnection = require("./socket.js");
 const socket = socketConnection.connect(constants.CONNECTION_PORT);
 
 function App() {
+
     return <div className="App">
         <div className="grid-container">
             <div id="header">Header</div>
-            <GameArea></GameArea>
+            <GameArea socket={socket}></GameArea>
             <ChatArea socket={socket}/>
         </div>
     </div>;

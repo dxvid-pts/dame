@@ -31,7 +31,7 @@ export function ChessBoardTile(props) {
     const [isHovered, setIsHovered] = useState(false);
 
     //set grid colors
-    let white = (props.row % 2 === 0);
+    let white = props.row % 2 === 0;
 
     if (props.column % 2 === 0) {
         white = !white;
@@ -53,7 +53,11 @@ export function ChessBoardTile(props) {
     }
 
     //check if selected
-    if (props.globalState.selectedTile != null && props.globalState.selectedTile.row === props.row && props.globalState.selectedTile.column === props.column) {
+    if (
+        props.globalState.selectedTile != null &&
+        props.globalState.selectedTile.row === props.row &&
+        props.globalState.selectedTile.column === props.column
+    ) {
         tileColor = tileColor = "rgba(245,173,66," + opacity + ")";
         // tileColor = mixColors(tileColor, '#f5ad42');
     }
@@ -68,7 +72,9 @@ export function ChessBoardTile(props) {
             break;
     }
 
-    const backgroundImgUrl = white ? Constants.BOARD_WHITE : Constants.BOARD_BLACK;
+    const backgroundImgUrl = white
+        ? Constants.BOARD_WHITE
+        : Constants.BOARD_BLACK;
 
     return <div
         onMouseEnter={() => setIsHovered(true)}
@@ -87,12 +93,19 @@ export function ChessBoardTile(props) {
 export function ChessRow(props) {
     const tiles = [];
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
-        tiles.push(<ChessBoardTile char={props.chars[i]} column={props.column} row={i} onClick={props.onClick}
-                                   globalState={props.globalState}
-                                   key={props.column + "" + i}></ChessBoardTile>);
+        tiles.push(
+            <ChessBoardTile
+                char={props.chars[i]}
+                column={props.column}
+                row={i}
+                onClick={props.onClick}
+                globalState={props.globalState}
+                key={props.column + "" + i}
+            ></ChessBoardTile>
+        );
     }
 
-    return <div style={{display: "flex"}}>{tiles}</div>;
+    return <div style={{ display: "flex" }}>{tiles}</div>;
 }
 
 export function BoardDescriptionSide(props) {
@@ -135,10 +148,21 @@ export function BoardDescriptionBottomTop(props) {
     </div>;
 }
 
-export function ChessBoardGrid() {
+export function ChessBoardGrid(props) {
     const [globalState, setGlobalState] = useState(initialGlobalState);
 
     const rows = [];
+    
+    const socket = props.socket;
+
+    socket.listenOnGameState((state) =>{
+        setGlobalState({
+            highlightedFields: [],
+            selectedTile: null,
+            tilePositions: state.board,
+        });
+    });
+
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
         //use index as id key
         rows.push(<ChessRow
@@ -209,7 +233,7 @@ export function ChessBoardGrid() {
         }}>{rows}</div>;
 }
 
-export default function ChessBoard() {
+export default function ChessBoard(props) {
     const [globalState, setGlobalState] = useState(initialGlobalState);
 
     return <globalStateContext.Provider value={globalState}>
@@ -217,7 +241,7 @@ export default function ChessBoard() {
             <BoardDescriptionBottomTop rotate={true}
                                        style={{gridArea: "board-description-top"}}></BoardDescriptionBottomTop>
             <BoardDescriptionSide rotate={false} style={{gridArea: "board-description-left"}}></BoardDescriptionSide>
-            <div style={{gridArea: "board-grid"}}><ChessBoardGrid></ChessBoardGrid></div>
+            <div style={{gridArea: "board-grid"}}><ChessBoardGrid socket={props.socket}></ChessBoardGrid></div>
             <BoardDescriptionSide rotate={true}></BoardDescriptionSide>
             <BoardDescriptionBottomTop rotate={false}
                                        style={{gridArea: "board-description-bottom"}}></BoardDescriptionBottomTop>
