@@ -9,7 +9,6 @@ const socketConnection = require("./socket.js");
 const socket = socketConnection.connect(constants.CONNECTION_PORT);
 
 function App() {
-    var old = <div className="App"></div>;
 
     return (
         <div className="App">

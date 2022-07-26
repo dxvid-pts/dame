@@ -3,11 +3,9 @@ import "./ChatMessage.css"
 
 
 const ChatMessage = ({ message }) => {
-    console.log("Rendering Message: ");
-    console.log(message);
     let user = message.me
     if(message.player.nick.toLowerCase() === "system" && message.player.socketid === "0")  message.ownedByCurrentUser = "sys-message";
-    else if(message.player.nick === user.nick && message.player.socketid === user.socketid ) message.ownedByCurrentUser = "my-message";
+    else if(message.player.nick === user.nick ) message.ownedByCurrentUser = "my-message";
     else message.ownedByCurrentUser = "received-message"
     if(message.ownedByCurrentUser === "sys-message"){
         return( 

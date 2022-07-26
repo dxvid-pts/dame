@@ -83,7 +83,7 @@ export default function ChatArea(props) {
         socket.sendLeaveGame();
     }
 
-    return <div id={"chat"}>
+    return <div className="ChatNavSide" id={"chat"}>
         <div className="Chatside">
             <p id={"chatBox"}>GameId: {gameId}</p>
             <div className={gameId === null ? "test" : "hidden"}>
@@ -112,21 +112,8 @@ export default function ChatArea(props) {
                     join Game
                 </Button>) : null}
             </div>
-            <div className="test">
-                <Input
-                    variant="outlined"
-                    id="msgBody"
-                    label="Your message"
-                ></Input>
-                <Button
-                    onClick={() => sendMsg(document.getElementById("msgBody").value)}
-                >
-                    send Message
-                </Button>
-            </div>
-            <br/>
-
-            <div className="test">
+            
+            <div className={gameId === null ? "hidden" : "ControlCenter"}>
                 <Button onClick={() => leaveGame()}>leaveGame</Button>
                 <Button onClick={() => socket.sendMove(0, 2, 1, 3)}>
                     sendMoveP1
@@ -135,13 +122,28 @@ export default function ChatArea(props) {
                     sendMovePw
                 </Button>
             </div>
-            <div className="Chat">
-                <p>Chatroom:</p>
-                <ul>
-                    {msgs.map((m) => (<li>
-                        <ChatMessage message={m}></ChatMessage>
-                    </li>))}
-                </ul>
+            <div className={gameId === null ? "hidden" : "ChatBox"}>
+            <p>Chatroom:</p>
+                <div className="Chat">
+                    <ul>
+                        {msgs.map((m) => (<li>
+                            <ChatMessage message={m}></ChatMessage>
+                        </li>))}
+                    </ul>
+                </div>
+                <br />
+                <div className="test">
+                    <Input
+                        variant="outlined"
+                        id="msgBody"
+                        label="Your message"
+                    ></Input>
+                    <Button
+                        onClick={() => sendMsg(document.getElementById("msgBody").value)}
+                    >
+                        send Message
+                    </Button>
+                </div>
             </div>
         </div>
     </div>;

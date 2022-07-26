@@ -7,13 +7,30 @@ ul {
   padding-right: 5%;
   padding-left: 5%;
 }
-.Chat {
-  max-height: max-content;
-  background-color: aqua;
-}
-.Chatside {
+.ChatBox {
+  height: 75vh;
   background-color: rgb(255, 255, 255);
 }
+.Chat {
+  height: 60vh;
+  overflow: scroll;
+}
+.Chatside {
+  padding-right: 5%;
+  padding-left: 5%;
+  background-color: rgb(255, 255, 255);
+}
+.ControlCenter {
+  padding-right: 5%;
+  padding-left: 5%;
+  height: auto;
+  min-height: 8vh;
+  max-height: 25vh;
+}
 .hidden {
-  visibility: hidden
+  visibility: hidden;
+  max-height: 0vh;
+}
+.ChatNavSide {
+  height: 95vh;
 }
