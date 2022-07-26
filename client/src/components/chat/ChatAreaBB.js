@@ -46,7 +46,7 @@ function generateMessages () {
 export default function ChatArea() {
     const messages = generateMessages();
     return (
-        <div className="item3">
+        <div id="chat">
             <p id={"chatBox"}></p>
             <h1>Chat Window</h1>
             <p>

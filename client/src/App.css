@@ -2,15 +2,15 @@
     text-align: center;
 }
 
-.item1 {
+#header {
     grid-area: header;
 }
 
-.item2 {
+#game {
     grid-area: game;
 }
 
-.item3 {
+#chat {
     grid-area: chat;
 }
 
