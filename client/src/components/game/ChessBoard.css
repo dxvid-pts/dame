@@ -1,0 +1,31 @@
+#board-description-top {
+    grid-area: board-description-top;
+}
+
+#board-description-bottom {
+    grid-area: board-description-bottom;
+}
+
+#board-description-side {
+    grid-area: board-description-side;
+}
+
+#board-grid {
+    grid-area: board-grid;
+}
+
+#board-grid-container {
+    display: grid;
+    grid-template-columns: 35px 648px 35px;
+    grid-template-rows: 35px 648px 35px;
+    grid-template-areas:
+    'board-description-top board-description-top board-description-top'
+    'board-description-left board-grid board-description-right'
+    'board-description-bottom board-description-bottom board-description-bottom';
+    gap: 0;
+    background-color: black;
+}
+
+.grid-container > div {
+    background-color: rgba(255, 255, 255, 0.8);
+}
