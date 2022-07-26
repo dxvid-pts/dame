@@ -29,3 +29,32 @@
 .grid-container > div {
     background-color: rgba(255, 255, 255, 0.8);
 }
+
+.container_row {
+    position: relative;
+    grid-area: board-description-top;
+}
+
+#player-turn-info {
+    position: absolute;
+    z-index: 2;
+    left: 314px;
+    top: 0;
+    padding: 7px;
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 20px;
+}
+#player-turn-info p{
+    color: yellow;
+    font-weight: bold;
+    padding: 0;
+    margin: 0;
+}
+
+.layer2 {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+}
