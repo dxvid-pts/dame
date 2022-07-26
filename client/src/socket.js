@@ -43,10 +43,10 @@ export function connect(port) {
 
     //Send Functions
 
-    function sendCreateGame(nick, visible, guests) {
+    function sendCreateGame(nick, spectatable, guests) {
         socket.emit("createGame", {
             nick: nick,
-            visible: visible,
+            spectatable: spectatable,
             guests: guests,
         });
     }
@@ -76,8 +76,8 @@ export function connect(port) {
 
     function sendMove(fX, fY, tX, tY) {
         socket.emit("move", {
-            move: { from: { x: fX, y: fY }, to: { x: tX, y: tY } },
-        });
+             from: { x: fX, y: fY }, to: { x: tX, y: tY } },
+        );
     }
 
     //Getters + Setters

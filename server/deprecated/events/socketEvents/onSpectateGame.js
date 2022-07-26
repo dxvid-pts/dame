@@ -4,7 +4,7 @@ module.exports = (io, socket, gameHandler) => {
 
     return (args) => {
         if (!isValidObject(args, ["gameid"])) {
-            return 1;
+            return;
         }
 
         game = gameHandler.getGameByID(args.gameid);
@@ -14,7 +14,7 @@ module.exports = (io, socket, gameHandler) => {
                 13,
                 "Cannot join Game. Game " + args.gameid + " does not exist."
             );
-            return 1;
+            return;
         }
         
         if (!game.visible) {
@@ -22,7 +22,7 @@ module.exports = (io, socket, gameHandler) => {
                 13,
                 "Cannot spectate Game. Game " + args.gameid + " is private."
             );
-            return 1;
+            return;
         }
 
         socket.join(game.id);
