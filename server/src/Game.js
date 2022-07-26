@@ -1,19 +1,12 @@
-class Game{
+const Board = require("./Board");
+
+class Game {
     constructor(id, spectatable, searching) {
         this.id = id;
         this.spectatable = spectatable;
         this.searching = searching;
-        
-        this.board = [
-            [1, 0, 1, 0, 1, 0, 1, 0],
-            [0, 1, 0, 1, 0, 1, 0, 1],
-            [1, 0, 1, 0, 1, 0, 1, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, -1, 0, -1, 0, -1, 0, -1],
-            [-1, 0, -1, 0, -1, 0, -1, 0],
-            [0, -1, 0, -1, 0, -1, 0, -1],
-        ];
+
+        this.board = new Board();
         this.moves = [];
 
         this.player = null;
@@ -21,136 +14,78 @@ class Game{
 
         this.nextTurnPlayer = null;
         this.nextPossibleTurns = null;
+        this.enemy = null;
+    }
+
+    start() {
+        this.nextTurnPlayer = Math.random() < 0.5 ? this.player : this.enemy;
+        this.nextPossibleTurns = board.possibleTurns(this.nextTurnPlayer.tile);
     }
 
     join(player) {
         if (this.player === null) {
             this.player = player;
+            this.player.tile = 1;
+        } else if (this.enemy === null) {
+            this.enemy = player;
+            this.enemy.tile = -1;
         }
     }
 
     leave(player) {
         if (this.player === player) {
             this.player = null;
-        }
-    }
-
-    isFinished(){
-
-    }
-
-    isFull(){
-        return this.player !== null;
-    }
-
-    isEmpty(){
-        return this.player === null;
-    }
-}
-
-class TwoPlayerGame extends Game{
-    constructor(id, spectatable, searching) {
-        super(id, spectatable, searching);
-        this.enemy = null;
-    }
-
-    start(){
-        this.nextTurnPlayer = Math.random() < 0.5 ? this.player : this.enemy;
-    }
-
-    // DEPRECATED
-    turn(move) {
-        const player_number = game.nextTurnPlayer == "playerone" ? 1 : -1;
-
-        if (
-            checkers.tileInBounds(move.from) &&
-            checkers.tileInBounds(move.to)
-        ) {
-            if (player_number * checkers.getField(game.board, move.from) > 0) {
-                if (
-                    !checkers.playerCanJump(game.board, player_number) &&
-                    checkers.tileCanMoveTo(game.board, move.from, move.to)
-                ) {
-                    game.board = checkers.tileMoveTo(
-                        game.board,
-                        move.from,
-                        move.to
-                    );
-                    game.moves.push({ player: game.nextTurnPlayer, move: move });
-                    game.nextTurnPlayer =
-                        game.nextTurnPlayer == "playerone"
-                            ? "playertwo"
-                            : "playerone";
-                    return true;
-                } else if (
-                    checkers.tileCanJumpTo(game.board, move.from, move.to)
-                ) {
-                    if (game.nextTurnPlayerFrom != null) {
-                        if (
-                            move.from.x != game.nextTurnPlayerFrom.x ||
-                            move.from.y != game.nextTurnPlayerFrom.y
-                        ) {
-                            return false;
-                        }
-                    }
-                    game.board = checkers.tileJumpTo(
-                        game.board,
-                        move.from,
-                        move.to
-                    );
-                    game.moves.push({ player: game.nextTurnPlayer, move: move });
-
-                    if (checkers.tileCanJump(game.board, move.to)) {
-                        game.nextTurnPlayerFrom = move.to;
-                    } else {
-                        game.nextTurnPlayerFrom = null;
-                        game.nextTurnPlayer =
-                            game.nextTurnPlayer == "playerone"
-                                ? "playertwo"
-                                : "playerone";
-                    }
-
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    join(player) {
-        if (this.enemy === null) {
-            this.enemy = player;
-        }else{
-            super.join(player);
-        }
-    }
-
-    leave(player) {
-        if (this.enemy === player) {
+        } else if (this.enemy === player) {
             this.enemy = null;
-        }else{
-            super.leave(player);
         }
     }
 
-    isFinished(){
+    isTurnAllowed(from, to) {
+        var tile = this.nextPossibleTurns.find(
+            (start) => start.x === from.x && start.y === from.y
+        );
+        tile = tile === undefined ? null : tile;
 
+        if (tile === null) {
+            return false;
+        }
+
+        var tile_to = tile.find(
+            (location) => location.x === to.x && location.y === to.y
+        );
+        tile_to = tile_to === undefined ? null : tile_to;
+
+        if (tile_to === null) {
+            return false;
+        }
+
+        return true;
     }
 
-    isFull(){
-        return (super.isFull() && this.enemy !== null);
+    takeTurn(from, to) {
+        this.board.turn(from, to);
+
+        //wenn gleicher spieler geschlagen hat und nochmal schlagen kann (nicht):
+        if (
+            Math.abs(from.x - to.x) !== 2 ||
+            this.board.possibleTileJumps(to).length === 0
+        ) {
+            this.nextTurnPlayer = this.nextTurnPlayer === this.player ? this.enemy : this.player;
+        }
+        this.nextPossibleTurns = this.board.possibleTurns(this.nextTurnPlayer.tile);
+
+        if(this.nextPossibleTurns.length === 0){
+            this.winner = this.nextTurnPlayer === this.player ? this.enemy : this.player;
+        }
     }
 
-    isEmpty(){
-        return (super.isEmpty() && this.enemy === null);
+    isFull() {
+        return this.player !== null && this.enemy !== null;
+    }
+
+    isEmpty() {
+        return this.player === null && this.enemy === null;
     }
 }
 
-class OnePlayerGame extends Game{
-    constructor(id, spectatable, difficulty) {
-        super(id, spectatable, false);
-        this.difficulty = difficulty;
-    }
-}
-
-module.exports = {TwoPlayerGame, OnePlayerGame};
+module.exports = Game;

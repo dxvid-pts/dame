@@ -3,7 +3,7 @@ module.exports = (io, socket, gameHandler) => {
     const Game = require("./Game.js");
 
     var game = null;
-    var player = { id: socket.id, nick: null };
+    var player = { id: socket.id, nick: null, tile: null};
 
     io.to(socket.id).emit("socketid", socket.id);
     console.log("Player " + socket.id + " connected");
@@ -42,7 +42,7 @@ module.exports = (io, socket, gameHandler) => {
             game = gameHandler.getGameBySearching();
 
             if (game === null) {
-                game = new Game.TwoPlayerGame(
+                game = new Game(
                     gameHandler.generateGameID(),
                     args.spectatable,
                     true
@@ -85,7 +85,7 @@ module.exports = (io, socket, gameHandler) => {
             return;
         }
 
-        game = new Game.TwoPlayerGame(
+        game = new Game(
             gameHandler.generateGameID(),
             args.spectatable,
             false
@@ -199,7 +199,8 @@ module.exports = (io, socket, gameHandler) => {
         var obj = {
             board: game.board,
             moves: game.moves,
-            nextTurn: game.nextTurn,
+            nextPlayerTurn: game.nextPlayerTurn,
+            nextPossibleTurns: game.nextPossibleTurns,
             winner: game.winner,
             time: Date.now(),
         };
