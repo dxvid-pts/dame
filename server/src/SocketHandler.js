@@ -196,7 +196,7 @@ module.exports = (io, socket, gameHandler) => {
 
     function sendGameState() {
         var obj = {
-            board: game.board,
+            board: game.board.field,
             turns: game.turns,
             nextTurnPlayer: game.nextTurnPlayer,
             nextPossibleTurns: game.nextPossibleTurns,

@@ -11,7 +11,7 @@ function App() {
         <div className="App">
             <div className="grid-container">
                 <div className="item1">Header</div>
-                <GameArea></GameArea>
+                <GameArea socket={socket}></GameArea>
                 <ChatArea socket={socket} />
             </div>
         </div>

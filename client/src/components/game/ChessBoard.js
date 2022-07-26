@@ -1,4 +1,4 @@
-import {createContext, useState} from "react";
+import { createContext, useState } from "react";
 
 const checkers = require("shared/checkers");
 
@@ -7,12 +7,18 @@ const Constants = require("shared/constants");
 const tileSize = 80;
 
 export function PlayerTile(props) {
-    return <img alt={"self-Logo"} src={props.img} style={{
-        width: tileSize,
-        height: tileSize,
-        "pointer-events": "none",
-        "user-select": "none"
-    }}></img>;
+    return (
+        <img
+            alt={"self-Logo"}
+            src={props.img}
+            style={{
+                width: tileSize,
+                height: tileSize,
+                "pointer-events": "none",
+                "user-select": "none",
+            }}
+        ></img>
+    );
 }
 
 const initialGlobalState = {
@@ -29,7 +35,7 @@ export function ChessBoardTile(props) {
     const [isHovered, setIsHovered] = useState(false);
 
     //set grid colors
-    let white = (props.row % 2 === 0);
+    let white = props.row % 2 === 0;
 
     if (props.column % 2 === 0) {
         white = !white;
@@ -51,7 +57,11 @@ export function ChessBoardTile(props) {
     }
 
     //check if selected
-    if (props.globalState.selectedTile != null && props.globalState.selectedTile.row === props.row && props.globalState.selectedTile.column === props.column) {
+    if (
+        props.globalState.selectedTile != null &&
+        props.globalState.selectedTile.row === props.row &&
+        props.globalState.selectedTile.column === props.column
+    ) {
         tileColor = tileColor = "rgba(245,173,66," + opacity + ")";
         // tileColor = mixColors(tileColor, '#f5ad42');
     }
@@ -66,24 +76,34 @@ export function ChessBoardTile(props) {
             break;
     }
 
-    const backgroundImgUrl = white ? Constants.BOARD_WHITE : Constants.BOARD_BLACK;
+    const backgroundImgUrl = white
+        ? Constants.BOARD_WHITE
+        : Constants.BOARD_BLACK;
 
-    return <div
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onClick={() => props.onClick({row: props.row, column: props.column})}
-        style={{
-            width: tileSize,
-            height: tileSize,
-            backgroundImage: "url(" + backgroundImgUrl + ")"
-        }}>
-        <div style={{
-            width: tileSize,
-            height: tileSize,
-            backgroundColor: tileColor,
-        }}
-        >{p}</div>
-    </div>;
+    return (
+        <div
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            onClick={() =>
+                props.onClick({ row: props.row, column: props.column })
+            }
+            style={{
+                width: tileSize,
+                height: tileSize,
+                backgroundImage: "url(" + backgroundImgUrl + ")",
+            }}
+        >
+            <div
+                style={{
+                    width: tileSize,
+                    height: tileSize,
+                    backgroundColor: tileColor,
+                }}
+            >
+                {p}
+            </div>
+        </div>
+    );
 }
 
 export function ChessRow(props) {
@@ -91,17 +111,35 @@ export function ChessRow(props) {
 
     const tiles = [];
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
-        tiles.push(<ChessBoardTile char={props.chars[i]} column={props.column} row={i} onClick={props.onClick}
-                                   globalState={props.globalState}
-                                   key={props.column + "" + i}></ChessBoardTile>);
+        tiles.push(
+            <ChessBoardTile
+                char={props.chars[i]}
+                column={props.column}
+                row={i}
+                onClick={props.onClick}
+                globalState={props.globalState}
+                key={props.column + "" + i}
+            ></ChessBoardTile>
+        );
     }
 
-    return <div style={{display: "flex"}}>{tiles}</div>;
+    return <div style={{ display: "flex" }}>{tiles}</div>;
 }
 
-export default function ChessBoard() {
+export default function ChessBoard(props) {
     //  const [user, setUser] = useState(false);
     const [globalState, setGlobalState] = useState(initialGlobalState);
+
+    //socket var
+    const socket = props.socket;
+
+    socket.listenOnGameState((state) => {
+        setGlobalState({
+            highlightedFields: [],
+            tilePositions: state.board,
+            selectedTile: null,
+        });
+    });
 
     const rows = [];
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
@@ -113,21 +151,28 @@ export default function ChessBoard() {
                 key={i}
                 globalState={globalState}
                 onClick={(selectedField) => {
-                    const fieldState = globalState.tilePositions[selectedField.column][selectedField.row]
+                    const fieldState =
+                        globalState.tilePositions[selectedField.column][
+                            selectedField.row
+                        ];
 
                     //player on field -> highlight fields
                     if (fieldState === 1 || fieldState === -1) {
-
                         //get highlightedFields (fields where a tile can possibly move to) from shared code
                         let highlightedFields = [];
-                        for (let element of checkers.possiblePlayerTurns(globalState.tilePositions, fieldState)) {
-                            if (element.from.y === selectedField.column && element.from.x === selectedField.row) {
-                                highlightedFields = element.to.map(e => {
-                                    return {"row": e.x, "column": e.y};
+                        for (let element of checkers.possiblePlayerTurns(
+                            globalState.tilePositions,
+                            fieldState
+                        )) {
+                            if (
+                                element.from.y === selectedField.column &&
+                                element.from.x === selectedField.row
+                            ) {
+                                highlightedFields = element.to.map((e) => {
+                                    return { row: e.x, column: e.y };
                                 });
                                 break;
                             }
-
                         }
 
                         //update renderer
@@ -136,15 +181,18 @@ export default function ChessBoard() {
                             tilePositions: globalState.tilePositions,
                             selectedTile: {
                                 row: selectedField.row,
-                                column: selectedField.column
-                            }
+                                column: selectedField.column,
+                            },
                         });
                     }
 
                     //check if clicked field is highlighted
                     let highlighted = false;
                     for (let position of globalState.highlightedFields) {
-                        if (position.row === selectedField.row && position.column === selectedField.column) {
+                        if (
+                            position.row === selectedField.row &&
+                            position.column === selectedField.column
+                        ) {
                             highlighted = true;
                             break;
                         }
@@ -153,24 +201,29 @@ export default function ChessBoard() {
                     //click on highlighted field -> move player to field
                     if (highlighted) {
                         const fieldTo = selectedField;
-                        const fieldFrom = {column: globalState.selectedTile.column, row: globalState.selectedTile.row}
+                        const fieldFrom = {
+                            column: globalState.selectedTile.column,
+                            row: globalState.selectedTile.row,
+                        };
                         const chessField = globalState.tilePositions;
 
-                        chessField[fieldTo.column][fieldTo.row] = chessField[fieldFrom.column][fieldFrom.row];
+                        chessField[fieldTo.column][fieldTo.row] =
+                            chessField[fieldFrom.column][fieldFrom.row];
                         chessField[fieldFrom.column][fieldFrom.row] = 0;
 
                         setGlobalState({
                             highlightedFields: [],
                             tilePositions: chessField,
-                            selectedTile: null
+                            selectedTile: null,
                         });
                     }
-
-
                 }}
-            ></ChessRow>);
+            ></ChessRow>
+        );
     }
-    return <globalStateContext.Provider value={globalState}>
-        <div>{rows}</div>
-    </globalStateContext.Provider>;
+    return (
+        <globalStateContext.Provider value={globalState}>
+            <div>{rows}</div>
+        </globalStateContext.Provider>
+    );
 }
