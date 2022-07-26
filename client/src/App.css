@@ -1,5 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
+
 .App {
     text-align: center;
+    width: 100vw;
+    height: 100vh;
+    background-color:wheat;
+    font-family: 'Roboto Slab', serif;
+}
+
+button{
+    font-family: 'Roboto Slab', serif;
 }
 
 #header {
