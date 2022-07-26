@@ -17,10 +17,10 @@ class Game{
         this.moves = [];
 
         this.player = null;
-        
-        this.nextTurn = null;
         this.winner = null;
-        this.nextTurnFrom = null;
+
+        this.nextTurnPlayer = null;
+        this.nextPossibleTurns = null;
     }
 
     join(player) {
@@ -55,12 +55,12 @@ class TwoPlayerGame extends Game{
     }
 
     start(){
-        this.nextTurn = Math.random() < 0.5 ? this.player : this.enemy;
+        this.nextTurnPlayer = Math.random() < 0.5 ? this.player : this.enemy;
     }
 
     // DEPRECATED
     turn(move) {
-        const player_number = game.nextTurn == "playerone" ? 1 : -1;
+        const player_number = game.nextTurnPlayer == "playerone" ? 1 : -1;
 
         if (
             checkers.tileInBounds(move.from) &&
@@ -76,19 +76,19 @@ class TwoPlayerGame extends Game{
                         move.from,
                         move.to
                     );
-                    game.moves.push({ player: game.nextTurn, move: move });
-                    game.nextTurn =
-                        game.nextTurn == "playerone"
+                    game.moves.push({ player: game.nextTurnPlayer, move: move });
+                    game.nextTurnPlayer =
+                        game.nextTurnPlayer == "playerone"
                             ? "playertwo"
                             : "playerone";
                     return true;
                 } else if (
                     checkers.tileCanJumpTo(game.board, move.from, move.to)
                 ) {
-                    if (game.nextTurnFrom != null) {
+                    if (game.nextTurnPlayerFrom != null) {
                         if (
-                            move.from.x != game.nextTurnFrom.x ||
-                            move.from.y != game.nextTurnFrom.y
+                            move.from.x != game.nextTurnPlayerFrom.x ||
+                            move.from.y != game.nextTurnPlayerFrom.y
                         ) {
                             return false;
                         }
@@ -98,14 +98,14 @@ class TwoPlayerGame extends Game{
                         move.from,
                         move.to
                     );
-                    game.moves.push({ player: game.nextTurn, move: move });
+                    game.moves.push({ player: game.nextTurnPlayer, move: move });
 
                     if (checkers.tileCanJump(game.board, move.to)) {
-                        game.nextTurnFrom = move.to;
+                        game.nextTurnPlayerFrom = move.to;
                     } else {
-                        game.nextTurnFrom = null;
-                        game.nextTurn =
-                            game.nextTurn == "playerone"
+                        game.nextTurnPlayerFrom = null;
+                        game.nextTurnPlayer =
+                            game.nextTurnPlayer == "playerone"
                                 ? "playertwo"
                                 : "playerone";
                     }

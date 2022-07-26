@@ -104,7 +104,7 @@ module.exports = (io, socket, gameHandler) => {
 
         game = gameHandler.getGameByID(args.gameid);
 
-        if (game == null) {
+        if (game === null) {
             sendError(
                 13,
                 "Cannot join Game. Game " + args.gameid + " does not exist."
