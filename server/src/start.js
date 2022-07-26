@@ -3,8 +3,8 @@ const io = require("socket.io")(httpServer, {
     cors: { origin: "*" },
 });
 
-const GameHandler = require("./handler/gameHandler");
-const socketHandler = require("./handler/socketHandler");
+const GameHandler = require("./GameHandler");
+const socketHandler = require("./SocketHandler");
 const constants = require("shared/constants");
 const gameHandler = new GameHandler();
 

@@ -54,6 +54,10 @@ class TwoPlayerGame extends Game{
         this.enemy = null;
     }
 
+    start(){
+        this.nextTurn = Math.random() < 0.5 ? this.player : this.enemy;
+    }
+
     // DEPRECATED
     turn(move) {
         const player_number = game.nextTurn == "playerone" ? 1 : -1;

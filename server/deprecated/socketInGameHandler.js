@@ -1,5 +1,5 @@
 module.exports = (io, socket, gameHandler) => {
-    const whichPlayer = require("../utils/whichPlayer");
+    const whichPlayer = require("./whichPlayer");
 
     return (game) => {
         const p = whichPlayer(game, socket.id);

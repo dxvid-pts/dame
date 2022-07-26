@@ -1,9 +1,9 @@
 module.exports = (io, socket, gameHandler) => {
-    const isValidObject = require("../utils/isValidObject.js");
+    const isValidObject = require("./utils/isValidObject.js");
     const Game = require("./Game.js");
 
     var game = null;
-    var player = { id: socket.id, key: null, nick: null };
+    var player = { id: socket.id, nick: null };
 
     io.to(socket.id).emit("socketid", socket.id);
     console.log("Player " + socket.id + " connected");
@@ -20,11 +20,11 @@ module.exports = (io, socket, gameHandler) => {
 
     function handleJoin() {
         socket.join(game.id);
-        sendPlayerJoin(player);
+        sendPlayerJoin();
 
         // ILLEGAL!!
         if (game.isFull()) {
-            game.nextTurn = Math.random() < 0.5 ? "playerone" : "playertwo";
+            game.start();
             sendGameState();
         }
 
@@ -41,11 +41,14 @@ module.exports = (io, socket, gameHandler) => {
         if (args.gameid === "RANDOM") {
             game = gameHandler.getGameBySearching();
 
-            if(game === null){
-                game = new Game.TwoPlayerGame(gameHandler.generateGameID(), args.spectatable, true);
+            if (game === null) {
+                game = new Game.TwoPlayerGame(
+                    gameHandler.generateGameID(),
+                    args.spectatable,
+                    true
+                );
                 gameHandler.addGame(game);
             }
-
         } else {
             game = gameHandler.getGameByGameID(args.gameid);
 
@@ -67,6 +70,7 @@ module.exports = (io, socket, gameHandler) => {
             }
         }
 
+        player.nick = args.nick;
         game.join(player);
         handleJoin();
     }
@@ -81,10 +85,14 @@ module.exports = (io, socket, gameHandler) => {
             return;
         }
 
-
-        game = new Game.TwoPlayerGame(gameHandler.generateGameID(), args.spectatable, false);
+        game = new Game.TwoPlayerGame(
+            gameHandler.generateGameID(),
+            args.spectatable,
+            false
+        );
         gameHandler.addGame(game);
-
+        
+        player.nick = args.nick;
         game.join(player);
         handleJoin();
     }
@@ -178,35 +186,53 @@ module.exports = (io, socket, gameHandler) => {
     //send
 
     function sendError(code, msg) {
-        io.to(socket.id).emit("error", {
+        var obj = {
             code: code,
             msg: msg,
             time: Date.now(),
-        });
+        };
+        console.log(obj);
+        io.to(socket.id).emit("error", obj);
     }
 
     function sendGameState() {
-        io.in(game.id).emit("gameState", {
+        var obj = {
             board: game.board,
             moves: game.moves,
-            nextTurn: game[game.nextTurn],
-            winner: game[game.winner],
+            nextTurn: game.nextTurn,
+            winner: game.winner,
             time: Date.now(),
-        });
+        };
+        console.log(obj);
+        io.in(game.id).emit("gameState", obj);
     }
 
     function sendPlayerJoin() {
-        io.in(game.id).emit("playerJoin", {
+        var obj = {
             game: game.id,
             player: player,
             time: Date.now(),
-        });
+        };
+        console.log(obj);
+        io.in(game.id).emit("playerJoin", obj);
     }
 
     function sendPlayerLeave() {
-        io.in(game.id).emit("playerLeave", {
+        var obj = {
             player: player,
             time: Date.now(),
-        });
+        };
+        console.log(obj);
+        io.in(game.id).emit("playerLeave", obj);
+    }
+
+    function sendMessage(msg) {
+        var obj = {
+            msg: msg,
+            player: player,
+            time: Date.now(),
+        };
+        console.log(obj);
+        io.in(game.id).emit("msg", obj);
     }
 };

@@ -4,16 +4,6 @@ class GameHandler {
         this.openGamesCount = 0;
     }
 
-    /* DEPRECATED
-    getGameBySocketID(socketid) {
-        checkPlayer = (gameplayer) => {
-            return gameplayer != null && gameplayer.socketid === socketid;
-        };
-        return games.find(
-            (game) => checkPlayer(game.playerone) || checkPlayer(game.playertwo)
-        );
-    }*/
-
     getGameByGameID(id) {
         var game = this.games.find((game) => game.id === id);
         return game === undefined ? null : game;
