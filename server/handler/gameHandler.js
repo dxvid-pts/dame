@@ -1,10 +1,7 @@
 class GameHandler {
-    
-
-    constructor(){
+    constructor() {
         this.games = [];
         this.openGamesCount = 0;
-        this.searchingGamesCount = 0;
     }
 
     /* DEPRECATED
@@ -17,29 +14,43 @@ class GameHandler {
         );
     }*/
 
-    getGameByGameID(gameid) {
-        return this.games.find((game) => game.id === gameid);
+    getGameByGameID(id) {
+        var game = this.games.find((game) => game.id === id);
+        return game === undefined ? null : game;
     }
 
-    getGameByFirstNotFull(){
-        return this.games.find((game) => !game.isFull());
+    getGameBySearching() {
+        var game = this.games.find((game) => !game.isFull() && game.searching);
+        return game === undefined ? null : game;
     }
 
-    addGame(game){
+    addGame(game) {
         this.games.push(game);
         this.openGamesCount++;
+        console.log("Game " + game.id + " was created");
     }
 
-    removeGame(game){
-        this.games = this.games.filter( obj => obj.id !== game.id);
+    removeGame(game) {
+        this.games = this.games.filter((obj) => obj.id !== game.id);
         this.openGamesCount--;
+
+        console.log("Game " + game.id + " was removed");
     }
-    
-    getOpenGamesCount(){
+
+    generateGameID() {
+        return (
+            this.openGamesCount.toString() +
+            Math.floor(Math.random() * 10000)
+        )
+            .substring(0, 5)
+            .toString();
+    }
+
+    getOpenGamesCount() {
         return this.openGamesCount;
     }
 
-    getSearchingGamesCount(){
+    getSearchingGamesCount() {
         return this.searchingGamesCount;
     }
 }

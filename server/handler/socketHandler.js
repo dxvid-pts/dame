@@ -15,17 +15,20 @@ module.exports = (io, socket, gameHandler) => {
 
     socket.on("move", onMove);
     socket.on("msg", onMessage);
-    socket.on("disconnect", onLeave);
-    socket.on("leaveGame", onLeave);
+    socket.on("disconnect", onLeaveGame);
+    socket.on("leaveGame", onLeaveGame);
 
     function handleJoin() {
         socket.join(game.id);
         sendPlayerJoin(player);
 
-        if (game.playerone != null && game.playertwo != null) {
+        // ILLEGAL!!
+        if (game.isFull()) {
             game.nextTurn = Math.random() < 0.5 ? "playerone" : "playertwo";
             sendGameState();
         }
+
+        console.log("Player " + socket.id + " joined Game " + game.id);
     }
 
     //listeners
@@ -35,25 +38,36 @@ module.exports = (io, socket, gameHandler) => {
             return;
         }
 
-        game = gameHandler.getGameByGameID(socket.id);
+        if (args.gameid === "RANDOM") {
+            game = gameHandler.getGameBySearching();
 
-        if (game === null) {
-            sendError(
-                13,
-                "Cannot join Game. Game " + args.gameid + " does not exist."
-            );
-        }
+            if(game === null){
+                game = new Game.TwoPlayerGame(gameHandler.generateGameID(), args.spectatable, true);
+                gameHandler.addGame(game);
+            }
 
-        if (game.isFull()) {
-            sendError(
-                14,
-                "Cannot join Game. Game " + args.gameid + "  is full."
-            );
-            return;
+        } else {
+            game = gameHandler.getGameByGameID(args.gameid);
+
+            if (game === null) {
+                sendError(
+                    13,
+                    "Cannot join Game. Game " + args.gameid + " does not exist."
+                );
+                return;
+            }
+
+            if (game.isFull()) {
+                game = null;
+                sendError(
+                    14,
+                    "Cannot join Game. Game " + args.gameid + "  is full."
+                );
+                return;
+            }
         }
 
         game.join(player);
-        console.log("Player " + socket.id + " joined Game " + args.gameid);
         handleJoin();
     }
 
@@ -67,18 +81,11 @@ module.exports = (io, socket, gameHandler) => {
             return;
         }
 
-        const gameid = (
-            gameHandler.getOpenGamesCount().toString() +
-            Math.floor(Math.random() * 10000)
-        )
-            .substring(0, 5)
-            .toString();
 
-        game = new Game.TwoPlayerGame(gameid, args.spectatable);
-        game.join(player);
+        game = new Game.TwoPlayerGame(gameHandler.generateGameID(), args.spectatable, false);
         gameHandler.addGame(game);
 
-        console.log("Player " + socket.id + " created Game " + game.id);
+        game.join(player);
         handleJoin();
     }
 
@@ -122,7 +129,7 @@ module.exports = (io, socket, gameHandler) => {
         ) {
             return;
         }
-        if (game.nextTurn != player.key) {
+        if (game.nextTurn !== player) {
             sendError(40, "Cannot move. It is not your turn.");
             return;
         }
@@ -143,22 +150,27 @@ module.exports = (io, socket, gameHandler) => {
     }
 
     function onMessage(args) {
-        if (isValidObject(args, ["msg"]) || game == null) {
+        if (!isValidObject(args, ["msg"]) || game === null) {
             return;
         }
-        sendMessage(args.msg, game[player.key]);
+        sendMessage(args.msg, player);
     }
 
-    function onLeave() {
+    function onLeaveGame() {
         if (game == null) {
             return;
         }
 
         socket.leave(game.id);
-        game.leave(player.key);
+        game.leave(player);
+
+        console.log("Player " + socket.id + " left Game " + game.id);
+
+        if (game.isEmpty()) {
+            gameHandler.removeGame(game);
+        }
 
         sendPlayerLeave(player);
-        console.log("Player " + socket.id + " left Game " + game.id);
 
         game = null;
     }

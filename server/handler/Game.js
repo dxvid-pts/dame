@@ -1,7 +1,8 @@
 class Game{
-    constructor(id, spectatable) {
+    constructor(id, spectatable, searching) {
         this.id = id;
         this.spectatable = spectatable;
+        this.searching = searching;
         
         this.board = [
             [1, 0, 1, 0, 1, 0, 1, 0],
@@ -39,17 +40,17 @@ class Game{
     }
 
     isFull(){
-        return game.player !== null;
+        return this.player !== null;
     }
 
     isEmpty(){
-        return game.player === null;
+        return this.player === null;
     }
 }
 
 class TwoPlayerGame extends Game{
-    constructor(id, spectatable) {
-        super(id, spectatable);
+    constructor(id, spectatable, searching) {
+        super(id, spectatable, searching);
         this.enemy = null;
     }
 
@@ -113,18 +114,18 @@ class TwoPlayerGame extends Game{
     }
 
     join(player) {
-        super.join(player);
-
         if (this.enemy === null) {
             this.enemy = player;
+        }else{
+            super.join(player);
         }
     }
 
     leave(player) {
-        super.leave(player);
-
         if (this.enemy === player) {
             this.enemy = null;
+        }else{
+            super.leave(player);
         }
     }
 
@@ -133,17 +134,17 @@ class TwoPlayerGame extends Game{
     }
 
     isFull(){
-        return (super.isFull() && game.enemy !== null);
+        return (super.isFull() && this.enemy !== null);
     }
 
     isEmpty(){
-        return (super.isEmpty() && game.enemy === null);
+        return (super.isEmpty() && this.enemy === null);
     }
 }
 
 class OnePlayerGame extends Game{
     constructor(id, spectatable, difficulty) {
-        super(id, spectatable);
+        super(id, spectatable, false);
         this.difficulty = difficulty;
     }
 }
