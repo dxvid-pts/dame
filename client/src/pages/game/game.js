@@ -7,8 +7,8 @@ export default function Index(props) {
         <div className="grid-container">
         <Header></Header>
         <div style={{gridArea: "blackbox2", backgroundColor: "black"}}></div>
-        <GameArea socket={socket}></GameArea>
-        <ChatArea socket={socket}/>
+        <GameArea socket={props.socket}></GameArea>
+        <ChatArea socket={props.socket}/>
         <div style={{gridArea: "blackbox", backgroundColor: "black"}}></div></div>
     );
 }
