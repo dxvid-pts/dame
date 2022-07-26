@@ -1,34 +1,47 @@
-module.exports = () => {
-    games = [];
-    openGames = 0;
-    searchingGames = 0; // not used!!!
+class GameHandler {
+    
 
-    function getGameBySocketID(socketid) {
+    constructor(){
+        this.games = [];
+        this.openGamesCount = 0;
+        this.searchingGamesCount = 0;
+    }
+
+    /* DEPRECATED
+    getGameBySocketID(socketid) {
         checkPlayer = (gameplayer) => {
             return gameplayer != null && gameplayer.socketid === socketid;
         };
         return games.find(
             (game) => checkPlayer(game.playerone) || checkPlayer(game.playertwo)
         );
+    }*/
+
+    getGameByGameID(gameid) {
+        return this.games.find((game) => game.id === gameid);
     }
 
-    function getGameByID(gameid) {
-        return games.find((game) => game.id === gameid);
+    getGameByFirstNotFull(){
+        return this.games.find((game) => !game.isFull());
     }
 
-    function addNewGame(game){
-        games.push(game);
-        openGames++;
+    addGame(game){
+        this.games.push(game);
+        this.openGamesCount++;
     }
 
-    function getOpenGames(){
-        return openGames;
+    removeGame(game){
+        this.games = this.games.filter( obj => obj.id !== game.id);
+        this.openGamesCount--;
+    }
+    
+    getOpenGamesCount(){
+        return this.openGamesCount;
     }
 
-    function removeGame(game){
-        games = games.filter( obj => obj.id !== game.id);
-        openGames--;
+    getSearchingGamesCount(){
+        return this.searchingGamesCount;
     }
+}
 
-    return {addNewGame, getOpenGames, getGameBySocketID, getGameByID, removeGame};
-};
+module.exports = GameHandler;

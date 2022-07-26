@@ -1,8 +1,9 @@
 module.exports = (io, socket, gameHandler) => {
     const isValidObject = require("../utils/isValidObject.js");
+    const Game = require("./Game.js");
 
     var game = null;
-    var me = null;
+    var player = { id: socket.id, key: null, nick: null };
 
     io.to(socket.id).emit("socketid", socket.id);
     console.log("Player " + socket.id + " connected");
@@ -19,7 +20,7 @@ module.exports = (io, socket, gameHandler) => {
 
     function handleJoin() {
         socket.join(game.id);
-        sendPlayerJoin(game[p.me]);
+        sendPlayerJoin(player);
 
         if (game.playerone != null && game.playertwo != null) {
             game.nextTurn = Math.random() < 0.5 ? "playerone" : "playertwo";
@@ -30,23 +31,20 @@ module.exports = (io, socket, gameHandler) => {
     //listeners
 
     function onJoinGame(args) {
-        if (!isValidObject(args, ["nick", "gameid"]) || game != null) {
+        if (!isValidObject(args, ["nick", "gameid"]) || game !== null) {
             return;
         }
 
-        if (gameHandler.getGameBySocketID(socket.id) == null) {
+        game = gameHandler.getGameByGameID(socket.id);
+
+        if (game === null) {
             sendError(
                 13,
                 "Cannot join Game. Game " + args.gameid + " does not exist."
             );
         }
 
-        if (
-            joinGame(game, {
-                socketid: socket.id,
-                nick: args.nick,
-            })
-        ) {
+        if (game.isFull()) {
             sendError(
                 14,
                 "Cannot join Game. Game " + args.gameid + "  is full."
@@ -54,25 +52,31 @@ module.exports = (io, socket, gameHandler) => {
             return;
         }
 
+        game.join(player);
         console.log("Player " + socket.id + " joined Game " + args.gameid);
         handleJoin();
     }
 
     function onCreateGame(args) {
-        if (!isValidObject(args, ["nick", "visible", "guests"])) {
+        if (!isValidObject(args, ["nick", "spectatable", "guests"])) {
             return;
         }
 
-        if (gameHandler.getGameBySocketID(socket.id) != null) {
+        if (game !== null) {
             sendError(21, "Cannot create Game. Your are already in a Game.");
             return;
         }
-        game = createGame(
-            { socketid: socket.id, nick: args.nick },
-            args.visible,
-            args.guests
-        );
-        gameHandler.addNewGame(game);
+
+        const gameid = (
+            gameHandler.getOpenGamesCount().toString() +
+            Math.floor(Math.random() * 10000)
+        )
+            .substring(0, 5)
+            .toString();
+
+        game = new Game.TwoPlayerGame(gameid, args.spectatable);
+        game.join(player);
+        gameHandler.addGame(game);
 
         console.log("Player " + socket.id + " created Game " + game.id);
         handleJoin();
@@ -93,7 +97,7 @@ module.exports = (io, socket, gameHandler) => {
             return;
         }
 
-        if (!game.visible) {
+        if (!game.spectatable) {
             sendError(
                 13,
                 "Cannot spectate Game. Game " + args.gameid + " is private."
@@ -118,7 +122,7 @@ module.exports = (io, socket, gameHandler) => {
         ) {
             return;
         }
-        if (game.nextTurn != iam) {
+        if (game.nextTurn != player.key) {
             sendError(40, "Cannot move. It is not your turn.");
             return;
         }
@@ -142,14 +146,20 @@ module.exports = (io, socket, gameHandler) => {
         if (isValidObject(args, ["msg"]) || game == null) {
             return;
         }
-        sendMessage(args.msg, game[iam]);
+        sendMessage(args.msg, game[player.key]);
     }
 
     function onLeave() {
-        sendPlayerLeave(game[iam]);
+        if (game == null) {
+            return;
+        }
+
         socket.leave(game.id);
+        game.leave(player.key);
+
+        sendPlayerLeave(player);
         console.log("Player " + socket.id + " left Game " + game.id);
-        leaveGame(game, iam, gameHandler);
+
         game = null;
     }
 

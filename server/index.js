@@ -3,14 +3,13 @@ const io = require("socket.io")(httpServer, {
     cors: { origin: "*" },
 });
 
-
-const gameHandler = require("./handler/gameHandler")();
-const registerSocketHandler = require("./handler/socketHandler");
+const GameHandler = require("./handler/gameHandler");
+const socketHandler = require("./handler/socketHandler");
 const constants = require("shared/constants");
-
+const gameHandler = new GameHandler();
 
 function onConnection(socket){
-    registerSocketHandler(io, socket, gameHandler);
+    socketHandler(io, socket, gameHandler);
 };
 
 io.on("connection", onConnection);

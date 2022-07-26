@@ -43,10 +43,10 @@ export function connect(port) {
 
     //Send Functions
 
-    function sendCreateGame(nick, visible, guests) {
+    function sendCreateGame(nick, spectatable, guests) {
         socket.emit("createGame", {
             nick: nick,
-            visible: visible,
+            spectatable: spectatable,
             guests: guests,
         });
     }
