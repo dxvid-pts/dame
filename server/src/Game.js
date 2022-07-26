@@ -47,7 +47,6 @@ class Game {
         tile = (tile === undefined ? null : tile);
 
         if (tile === null) {
-            console.log("tile null");
             return false;
         }
 
@@ -57,7 +56,6 @@ class Game {
         tile_to = (tile_to === undefined ? null : tile_to);
 
         if (tile_to === null) {
-            console.log("tile_to null")
             return false;
         }
 

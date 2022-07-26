@@ -128,7 +128,9 @@ module.exports = (io, socket, gameHandler) => {
     }
 
     // fixc when player leavers and new player joines update nextturn !!
+    // Dame erstellen fix
 
+    
     function onMove(args) {
         if (
             !isValidObject(args, ["from", "to"]) ||

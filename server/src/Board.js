@@ -1,20 +1,10 @@
 class Board {
     constructor() {
-        this.field2 = [
+        this.field = [
             [1, 0, 1, 0, 1, 0, 1, 0],
             [0, 1, 0, 1, 0, 1, 0, 1],
             [1, 0, 1, 0, 1, 0, 1, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, -1, 0, -1, 0, -1, 0, -1],
-            [-1, 0, -1, 0, -1, 0, -1, 0],
-            [0, -1, 0, -1, 0, -1, 0, -1],
-        ];
-        this.field = [
-            [1, 0, 1, 0, 1, 0, 1, 0],
-            [0, 0, 0, 1, 0, 1, 0, 1],
-            [1, 0, 1, 0, 1, 0, 1, 0],
-            [0, 0, 0, -1, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
             [0, -1, 0, -1, 0, -1, 0, -1],
             [-1, 0, -1, 0, -1, 0, -1, 0],
@@ -116,8 +106,7 @@ class Board {
     }
 
     turn(from, to) {
-        this.setField(to, this.getField(from));
-        this.setField(from, 0);
+        
         if (Math.abs(from.x - to.x) === 2) {
             this.setField(
                 {
@@ -127,6 +116,12 @@ class Board {
                 0
             );
         }
+        if((to.y === 0 || to.y === 7) && Math.abs(this.getField(from)) === 1){
+            this.setField(to, this.getField(from)*2);
+        }else{
+            this.setField(to, this.getField(from));
+        }
+        this.setField(from, 0);
     }
 
     isTileMovePossible(from, to) {
