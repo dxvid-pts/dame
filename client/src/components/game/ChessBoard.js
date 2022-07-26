@@ -148,10 +148,21 @@ export function BoardDescriptionBottomTop(props) {
     </div>;
 }
 
-export function ChessBoardGrid() {
+export function ChessBoardGrid(props) {
     const [globalState, setGlobalState] = useState(initialGlobalState);
 
     const rows = [];
+    
+    const socket = props.socket;
+
+    socket.listenOnGameState((state) =>{
+        setGlobalState({
+            highlightedFields: [],
+            selectedTile: null,
+            tilePositions: state.board,
+        });
+    });
+
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
         //use index as id key
         rows.push(<ChessRow
@@ -225,22 +236,12 @@ export function ChessBoardGrid() {
 export default function ChessBoard(props) {
     const [globalState, setGlobalState] = useState(initialGlobalState);
 
-    const socket = props.socket;
-
-    socket.listenOnGameState((state) =>{
-        setGlobalState({
-            highlightedFields: [],
-            tilePositions: state.board,
-            selectedTile: null,
-        })
-    });
-
     return <globalStateContext.Provider value={globalState}>
         <div id={"board-grid-container"}>
             <BoardDescriptionBottomTop rotate={true}
                                        style={{gridArea: "board-description-top"}}></BoardDescriptionBottomTop>
             <BoardDescriptionSide rotate={false} style={{gridArea: "board-description-left"}}></BoardDescriptionSide>
-            <div style={{gridArea: "board-grid"}}><ChessBoardGrid></ChessBoardGrid></div>
+            <div style={{gridArea: "board-grid"}}><ChessBoardGrid socket={props.socket}></ChessBoardGrid></div>
             <BoardDescriptionSide rotate={true}></BoardDescriptionSide>
             <BoardDescriptionBottomTop rotate={false}
                                        style={{gridArea: "board-description-bottom"}}></BoardDescriptionBottomTop>
