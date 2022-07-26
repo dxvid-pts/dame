@@ -7,7 +7,7 @@ class Game {
         this.searching = searching;
 
         this.board = new Board();
-        this.moves = [];
+        this.turnes = [];
 
         this.player = null;
         this.winner = null;
@@ -19,7 +19,7 @@ class Game {
 
     start() {
         this.nextTurnPlayer = Math.random() < 0.5 ? this.player : this.enemy;
-        this.nextPossibleTurns = board.possibleTurns(this.nextTurnPlayer.tile);
+        this.nextPossibleTurns = this.board.possibleTurns(this.nextTurnPlayer.tile);
     }
 
     join(player) {
@@ -42,20 +42,22 @@ class Game {
 
     isTurnAllowed(from, to) {
         var tile = this.nextPossibleTurns.find(
-            (start) => start.x === from.x && start.y === from.y
+            (location) => location.from.x === from.x && location.from.y === from.y
         );
-        tile = tile === undefined ? null : tile;
+        tile = (tile === undefined ? null : tile);
 
         if (tile === null) {
+            console.log("tile null");
             return false;
         }
 
-        var tile_to = tile.find(
+        var tile_to = tile.to.find(
             (location) => location.x === to.x && location.y === to.y
         );
-        tile_to = tile_to === undefined ? null : tile_to;
+        tile_to = (tile_to === undefined ? null : tile_to);
 
         if (tile_to === null) {
+            console.log("tile_to null")
             return false;
         }
 
@@ -76,7 +78,10 @@ class Game {
 
         if(this.nextPossibleTurns.length === 0){
             this.winner = this.nextTurnPlayer === this.player ? this.enemy : this.player;
+            this.nextTurnPlayer = null;
         }
+
+        this.turnes.push({from: from, to: to, time: Date.now()});
     }
 
     isFull() {

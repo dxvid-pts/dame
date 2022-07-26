@@ -127,33 +127,30 @@ module.exports = (io, socket, gameHandler) => {
         console.log("Player " + socket.id + " disconnected");
     }
 
+    // fixc when player leavers and new player joines update nextturn !!
+
     function onMove(args) {
         if (
-            !isValidObject(args, ["move"]) ||
-            !isValidObject(args.move, ["from", "to"]) ||
+            !isValidObject(args, ["from", "to"]) ||
             game == null ||
-            !isValidObject(args.move.from, ["x", "y"]) ||
-            !isValidObject(args.move.to, ["x", "y"])
+            !isValidObject(args.from, ["x", "y"]) ||
+            !isValidObject(args.to, ["x", "y"])
         ) {
             return;
         }
-        if (game.nextTurn !== player) {
+
+        if (game.nextTurnPlayer !== player) {
             sendError(40, "Cannot move. It is not your turn.");
             return;
         }
 
-        if (!executeMove(game, args.move)) {
+        if (!game.isTurnAllowed(args.from, args.to)) {
             sendError(41, "Cannot move. This is not allowed.");
             return;
         }
 
-        winner = checkers.gameIsFinished(game.board);
-        if (winner != 0) {
-            game.nextTurn = null;
-            if (winner != 2) {
-                game.winner = 1 == winner ? "playerone" : "playertwo";
-            }
-        }
+        game.takeTurn(args.from, args.to);
+        
         sendGameState();
     }
 
@@ -198,8 +195,8 @@ module.exports = (io, socket, gameHandler) => {
     function sendGameState() {
         var obj = {
             board: game.board,
-            moves: game.moves,
-            nextPlayerTurn: game.nextPlayerTurn,
+            turns: game.turns,
+            nextTurnPlayer: game.nextTurnPlayer,
             nextPossibleTurns: game.nextPossibleTurns,
             winner: game.winner,
             time: Date.now(),

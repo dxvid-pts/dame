@@ -76,8 +76,8 @@ export function connect(port) {
 
     function sendMove(fX, fY, tX, tY) {
         socket.emit("move", {
-            move: { from: { x: fX, y: fY }, to: { x: tX, y: tY } },
-        });
+             from: { x: fX, y: fY }, to: { x: tX, y: tY } },
+        );
     }
 
     //Getters + Setters

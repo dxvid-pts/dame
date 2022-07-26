@@ -1,10 +1,20 @@
 class Board {
     constructor() {
-        this.field = [
+        this.field2 = [
             [1, 0, 1, 0, 1, 0, 1, 0],
             [0, 1, 0, 1, 0, 1, 0, 1],
             [1, 0, 1, 0, 1, 0, 1, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, -1, 0, -1, 0, -1, 0, -1],
+            [-1, 0, -1, 0, -1, 0, -1, 0],
+            [0, -1, 0, -1, 0, -1, 0, -1],
+        ];
+        this.field = [
+            [1, 0, 1, 0, 1, 0, 1, 0],
+            [0, 0, 0, 1, 0, 1, 0, 1],
+            [1, 0, 1, 0, 1, 0, 1, 0],
+            [0, 0, 0, -1, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0],
             [0, -1, 0, -1, 0, -1, 0, -1],
             [-1, 0, -1, 0, -1, 0, -1, 0],
@@ -16,10 +26,10 @@ class Board {
         var jump = false;
         var turns = [];
 
-        this.field.forEach((row) => {
-            row.forEach((location) => {
-                if (location * player > 0) {
-                    var tileJumps = this.possibleTileJumps(location);
+        for(var x = 0; x < 8; x++){
+            for(var y = 0; y < 8; y++){
+                if (this.getField({x: x, y: y}) * player > 0) {
+                    var tileJumps = this.possibleTileJumps({x: x, y: y});
 
                     if (!jump && tileJumps.length !== 0) {
                         jump = true;
@@ -28,17 +38,18 @@ class Board {
 
                     if (jump) {
                         if (tileJumps.length !== 0) {
-                            turns.push({ from: location, to: tileJumps });
+                            turns.push({ from: {x: x, y: y}, to: tileJumps });
                         }
                     } else {
-                        var tileMoves = this.possibleTileMoves(location);
+                        
+                        var tileMoves = this.possibleTileMoves({x: x, y: y});
                         if (tileMoves.length !== 0) {
-                            turns.push({ from: location, to: tileMoves });
+                            turns.push({ from: {x: x, y: y}, to: tileMoves });
                         }
                     }
                 }
-            });
-        });
+            }
+        }
 
         return turns;
     }
@@ -56,7 +67,7 @@ class Board {
         targets.forEach((target) => {
             if (
                 this.isFieldInBounds(target) &&
-                this.isTileMovePossible(location, target)
+                this.isTileMovePossible(tile, target)
             ) {
                 moves.push(target);
             }
@@ -78,7 +89,7 @@ class Board {
         targets.forEach((target) => {
             if (
                 this.isFieldInBounds(target) &&
-                this.isTileJumpPossible(location, target)
+                this.isTileJumpPossible(tile, target)
             ) {
                 jumps.push(target);
             }
