@@ -19,7 +19,9 @@ class Game {
 
     start() {
         this.nextTurnPlayer = Math.random() < 0.5 ? this.player : this.enemy;
-        this.nextPossibleTurns = this.board.possibleTurns(this.nextTurnPlayer.tile);
+        this.nextPossibleTurns = this.board.possibleTurns(
+            this.nextTurnPlayer.tile
+        );
     }
 
     join(player) {
@@ -42,9 +44,10 @@ class Game {
 
     isTurnAllowed(from, to) {
         var tile = this.nextPossibleTurns.find(
-            (location) => location.from.x === from.x && location.from.y === from.y
+            (location) =>
+                location.from.x === from.x && location.from.y === from.y
         );
-        tile = (tile === undefined ? null : tile);
+        tile = tile === undefined ? null : tile;
 
         if (tile === null) {
             return false;
@@ -53,7 +56,7 @@ class Game {
         var tile_to = tile.to.find(
             (location) => location.x === to.x && location.y === to.y
         );
-        tile_to = (tile_to === undefined ? null : tile_to);
+        tile_to = tile_to === undefined ? null : tile_to;
 
         if (tile_to === null) {
             return false;
@@ -65,21 +68,29 @@ class Game {
     takeTurn(from, to) {
         this.board.turn(from, to);
 
-        //wenn gleicher spieler geschlagen hat und nochmal schlagen kann (nicht):
+        //wenn gleicher spieler geschlagen hat und nochmal schlagen kann
         if (
-            Math.abs(from.x - to.x) !== 2 ||
-            this.board.possibleTileJumps(to).length === 0
+            Math.abs(from.x - to.x) === 2 &&
+            this.board.possibleTileJumps(to).length !== 0
         ) {
-            this.nextTurnPlayer = this.nextTurnPlayer === this.player ? this.enemy : this.player;
+            this.nextPossibleTurns = [
+                { from: to, to: this.board.possibleTileJumps(to) },
+            ];
+        } else {
+            this.nextTurnPlayer =
+                this.nextTurnPlayer === this.player ? this.enemy : this.player;
+            this.nextPossibleTurns = this.board.possibleTurns(
+                this.nextTurnPlayer.tile
+            );
         }
-        this.nextPossibleTurns = this.board.possibleTurns(this.nextTurnPlayer.tile);
 
-        if(this.nextPossibleTurns.length === 0){
-            this.winner = this.nextTurnPlayer === this.player ? this.enemy : this.player;
+        if (this.nextPossibleTurns.length === 0) {
+            this.winner =
+                this.nextTurnPlayer === this.player ? this.enemy : this.player;
             this.nextTurnPlayer = null;
         }
 
-        this.turnes.push({from: from, to: to, time: Date.now()});
+        this.turnes.push({ from: from, to: to, time: Date.now() });
     }
 
     isFull() {
