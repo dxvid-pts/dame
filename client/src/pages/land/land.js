@@ -1,4 +1,4 @@
-import "./index.css";
+import "./land.css";
 
 export default function Index(props) {
     return (
