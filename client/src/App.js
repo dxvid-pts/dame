@@ -7,15 +7,13 @@ const socketConnection = require("./socket.js");
 const socket = socketConnection.connect(constants.CONNECTION_PORT);
 
 function App() {
-    return (
-        <div className="App">
-            <div className="grid-container">
-                <div className="item1">Header</div>
-                <GameArea></GameArea>
-                <ChatArea socket={socket} />
-            </div>
+    return <div className="App">
+        <div className="grid-container">
+            <div id="header">Header</div>
+            <GameArea></GameArea>
+            <ChatArea socket={socket}/>
         </div>
-    );
+    </div>;
 }
 
 export default App;
