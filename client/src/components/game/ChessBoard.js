@@ -1,8 +1,6 @@
 import {createContext, useState} from "react";
 import './ChessBoard.css';
 
-const checkers = require("shared/checkers");
-
 const Constants = require("shared/constants");
 
 //change values in chessboard as well if values below are tweaked
@@ -158,14 +156,13 @@ export function ChessBoardGrid(props) {
     const socket = props.socket;
 
     socket.listenOnGameState((state) => {
-        props.setGlobalState({
-            highlightedFields: [],
-            selectedTile: null,
-            tilePositions: state.board,
-            nextPossibleTurns: state.nextPossibleTurns,
-            nextTurnPlayer: state.nextTurnPlayer.id,
-            currentPlayerId: socket.getSocketID(),
-        });
+        //update renderer with results from server
+        let newGlobalState = {...props.globalState};
+        newGlobalState["tilePositions"] = state.board;
+        newGlobalState["nextPossibleTurns"] = state.nextPossibleTurns;
+        newGlobalState["nextTurnPlayer"] = state.nextTurnPlayer.id;
+        newGlobalState["currentPlayerId"] = socket.getSocketID();
+        props.setGlobalState(newGlobalState);
     });
 
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
@@ -176,6 +173,11 @@ export function ChessBoardGrid(props) {
             key={i}
             globalState={props.globalState}
             onClick={(selectedField) => {
+                //ignore click if player is not allowed to move
+                if(props.globalState.currentPlayerId !== props.globalState.nextTurnPlayer){
+                    return;
+                }
+
                 const fieldState = props.globalState.tilePositions[selectedField.column][selectedField.row]
 
                 //player on field -> highlight fields
@@ -184,6 +186,7 @@ export function ChessBoardGrid(props) {
                     //get highlightedFields (fields where a tile can possibly move to) from shared code
                     let highlightedFields = [];
                     let nextPossibleTurns = props.globalState.nextPossibleTurns == null ? [] : props.globalState.nextPossibleTurns;
+
                     for (let element of nextPossibleTurns) {
                         if (element.from.y === selectedField.column && element.from.x === selectedField.row) {
                             highlightedFields = element.to.map(e => {
@@ -195,7 +198,7 @@ export function ChessBoardGrid(props) {
                     }
 
                     //update renderer
-                    let newGlobalState = props.globalState;
+                    let newGlobalState = {...props.globalState};
                     newGlobalState["highlightedFields"] = highlightedFields;
                     newGlobalState["selectedTile"] = {
                         row: selectedField.row, column: selectedField.column
@@ -225,12 +228,14 @@ export function ChessBoardGrid(props) {
                     chessField[fieldFrom.column][fieldFrom.row] = 0;
 
                     //update renderer before getting results from server
-                    let newGlobalState = props.globalState;
+                    let newGlobalState = {...props.globalState};
                     newGlobalState["highlightedFields"] = [];
                     newGlobalState["selectedTile"] = null;
                     newGlobalState["tilePositions"] = chessField;
                     props.setGlobalState(newGlobalState);
 
+                    //send info to server (also updates every data again to prevent cheating)
+                    socket.sendMove(fieldFrom.row, fieldFrom.column, fieldTo.row, fieldTo.column);
                 }
 
 
