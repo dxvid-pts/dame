@@ -1,8 +1,6 @@
 import {createContext, useState} from "react";
 import './ChessBoard.css';
 
-const checkers = require("shared/checkers");
-
 const Constants = require("shared/constants");
 
 //change values in chessboard as well if values below are tweaked
@@ -19,10 +17,14 @@ export function PlayerTile(props) {
 }
 
 const initialGlobalState = {
-    selectedTile: null, highlightedFields: [],
+    selectedTile: null,
+    highlightedFields: [],
 
     //TODO: replace with server code
     tilePositions: Constants.INITIAL_BOARD,
+    nextPossibleTurns: [],
+    nextTurnPlayer: null,
+    currentPlayerId: null,
 };
 
 const globalStateContext = createContext(initialGlobalState);
@@ -105,7 +107,7 @@ export function ChessRow(props) {
         );
     }
 
-    return <div style={{ display: "flex" }}>{tiles}</div>;
+    return <div style={{display: "flex"}}>{tiles}</div>;
 }
 
 export function BoardDescriptionSide(props) {
@@ -149,36 +151,43 @@ export function BoardDescriptionBottomTop(props) {
 }
 
 export function ChessBoardGrid(props) {
-    const [globalState, setGlobalState] = useState(initialGlobalState);
-
     const rows = [];
-    
+
     const socket = props.socket;
 
-    socket.listenOnGameState((state) =>{
-        setGlobalState({
-            highlightedFields: [],
-            selectedTile: null,
-            tilePositions: state.board,
-        });
+    socket.listenOnGameState((state) => {
+        //update renderer with results from server
+        let newGlobalState = {...props.globalState};
+        newGlobalState["tilePositions"] = state.board;
+        newGlobalState["nextPossibleTurns"] = state.nextPossibleTurns;
+        newGlobalState["nextTurnPlayer"] = state.nextTurnPlayer.id;
+        newGlobalState["currentPlayerId"] = socket.getSocketID();
+        props.setGlobalState(newGlobalState);
     });
 
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
         //use index as id key
         rows.push(<ChessRow
-            chars={globalState.tilePositions[i]}
+            chars={props.globalState.tilePositions[i]}
             column={i}
             key={i}
-            globalState={globalState}
+            globalState={props.globalState}
             onClick={(selectedField) => {
-                const fieldState = globalState.tilePositions[selectedField.column][selectedField.row]
+                //ignore click if player is not allowed to move
+                if(props.globalState.currentPlayerId !== props.globalState.nextTurnPlayer){
+                    return;
+                }
+
+                const fieldState = props.globalState.tilePositions[selectedField.column][selectedField.row]
 
                 //player on field -> highlight fields
                 if (fieldState === 1 || fieldState === -1) {
 
                     //get highlightedFields (fields where a tile can possibly move to) from shared code
                     let highlightedFields = [];
-                    for (let element of checkers.possiblePlayerTurns(globalState.tilePositions, fieldState)) {
+                    let nextPossibleTurns = props.globalState.nextPossibleTurns == null ? [] : props.globalState.nextPossibleTurns;
+
+                    for (let element of nextPossibleTurns) {
                         if (element.from.y === selectedField.column && element.from.x === selectedField.row) {
                             highlightedFields = element.to.map(e => {
                                 return {"row": e.x, "column": e.y};
@@ -189,16 +198,17 @@ export function ChessBoardGrid(props) {
                     }
 
                     //update renderer
-                    setGlobalState({
-                        highlightedFields: highlightedFields, tilePositions: globalState.tilePositions, selectedTile: {
-                            row: selectedField.row, column: selectedField.column
-                        }
-                    });
+                    let newGlobalState = {...props.globalState};
+                    newGlobalState["highlightedFields"] = highlightedFields;
+                    newGlobalState["selectedTile"] = {
+                        row: selectedField.row, column: selectedField.column
+                    };
+                    props.setGlobalState(newGlobalState);
                 }
 
                 //check if clicked field is highlighted
                 let highlighted = false;
-                for (let position of globalState.highlightedFields) {
+                for (let position of props.globalState.highlightedFields) {
                     if (position.row === selectedField.row && position.column === selectedField.column) {
                         highlighted = true;
                         break;
@@ -208,15 +218,24 @@ export function ChessBoardGrid(props) {
                 //click on highlighted field -> move player to field
                 if (highlighted) {
                     const fieldTo = selectedField;
-                    const fieldFrom = {column: globalState.selectedTile.column, row: globalState.selectedTile.row}
-                    const chessField = globalState.tilePositions;
+                    const fieldFrom = {
+                        column: props.globalState.selectedTile.column,
+                        row: props.globalState.selectedTile.row
+                    }
+                    const chessField = props.globalState.tilePositions;
 
                     chessField[fieldTo.column][fieldTo.row] = chessField[fieldFrom.column][fieldFrom.row];
                     chessField[fieldFrom.column][fieldFrom.row] = 0;
 
-                    setGlobalState({
-                        highlightedFields: [], tilePositions: chessField, selectedTile: null
-                    });
+                    //update renderer before getting results from server
+                    let newGlobalState = {...props.globalState};
+                    newGlobalState["highlightedFields"] = [];
+                    newGlobalState["selectedTile"] = null;
+                    newGlobalState["tilePositions"] = chessField;
+                    props.setGlobalState(newGlobalState);
+
+                    //send info to server (also updates every data again to prevent cheating)
+                    socket.sendMove(fieldFrom.row, fieldFrom.column, fieldTo.row, fieldTo.column);
                 }
 
 
@@ -233,19 +252,37 @@ export function ChessBoardGrid(props) {
         }}>{rows}</div>;
 }
 
+export function PlayerTurnInfo(props) {
+    if (props.globalState.currentPlayerId == null || props.globalState.nextTurnPlayer == null) {
+        return <div></div>;
+    }
+    let text = props.globalState.currentPlayerId === props.globalState.nextTurnPlayer ? "Your turn!" : "Not your turn!";
+    return <div id="player-turn-info"><p>{text}</p>
+    </div>;
+}
+
 export default function ChessBoard(props) {
     const [globalState, setGlobalState] = useState(initialGlobalState);
 
     return <globalStateContext.Provider value={globalState}>
+
         <div id={"board-grid-container"}>
-            <BoardDescriptionBottomTop rotate={true}
-                                       style={{gridArea: "board-description-top"}}></BoardDescriptionBottomTop>
+            <div className="container_row">
+                <div className="layer2"><BoardDescriptionBottomTop rotate={true}></BoardDescriptionBottomTop></div>
+                <PlayerTurnInfo setGlobalState={setGlobalState}
+                                globalState={globalState}></PlayerTurnInfo>
+            </div>
+
             <BoardDescriptionSide rotate={false} style={{gridArea: "board-description-left"}}></BoardDescriptionSide>
-            <div style={{gridArea: "board-grid"}}><ChessBoardGrid socket={props.socket}></ChessBoardGrid></div>
+            <div style={{gridArea: "board-grid"}}><ChessBoardGrid socket={props.socket} setGlobalState={setGlobalState}
+                                                                  globalState={globalState}></ChessBoardGrid></div>
             <BoardDescriptionSide rotate={true}></BoardDescriptionSide>
             <BoardDescriptionBottomTop rotate={false}
                                        style={{gridArea: "board-description-bottom"}}></BoardDescriptionBottomTop>
 
+
         </div>
+
+
     </globalStateContext.Provider>;
 }
