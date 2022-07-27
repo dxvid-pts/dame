@@ -6,50 +6,66 @@ import {
     Navigate,
 } from "react-router-dom";
 
-import React, { useState } from 'react';
+import React from "react";
 
 import Game from "./pages/game/game";
 import Index from "./pages/land/land";
+
+import Error from "./components/error/Error";
 
 const constants = require("shared/constants");
 const socketConnection = require("./socket.js");
 const socket = socketConnection.connect(constants.CONNECTION_PORT);
 
-function App() {
+export default class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { ingame: false, error: null };
+    }
 
-    const [ingame, setIngame] = useState(false);
+    componentDidMount() {
+        socket.listenOnPlayerJoin((args) => {
+            if (args.player.id === socket.getSocketID()) {
+                this.setState({ ingame: true });
+            }
+        });
 
+        socket.listenOnError((args) => {
+            this.setState({ error: (<Error msg={args.msg} render={true} />) });
+        });
+    }
 
-    return (
-        <div className="App">
-            <Router>
-                <Routes>
-                    <Route
-                        exact
-                        path="/"
-                        element={
-                            ingame ? (
-                                <Navigate replace to="/game" />
-                            ) : (
-                                <Index socket={socket} setIngame={setIngame}/>
-                            )
-                        }
-                    />
+    render() {
+        return (
+            <div className="App">
+               {this.state.error}
+                <Router>
+                    <Routes>
+                        <Route
+                            exact
+                            path="/"
+                            element={
+                                this.state.ingame ? (
+                                    <Navigate replace to="/game" />
+                                ) : (
+                                    <Index socket={socket} />
+                                )
+                            }
+                        />
 
-                    <Route
-                        path="/game"
-                        element={
-                            !ingame ? (
-                                <Navigate replace to="/" />
-                            ) : (
-                                <Game socket={socket} setIngame={setIngame}/>
-                            )
-                        }
-                    />
-                </Routes>
-            </Router>
-        </div>
-    );
+                        <Route
+                            path="/game"
+                            element={
+                                !this.state.ingame ? (
+                                    <Navigate replace to="/" />
+                                ) : (
+                                    <Game socket={socket} />
+                                )
+                            }
+                        />
+                    </Routes>
+                </Router>
+            </div>
+        );
+    }
 }
-
-export default App;
