@@ -2,7 +2,9 @@ import GameArea from "../../components/game/GameArea";
 import ChatArea from "../../components/chat/ChatArea";
 import Header from "../../components/header";
 
-export default function Index(props) {
+import "./GamePage.css";
+
+export default function GamePage(props) {
     return (
         <div className="grid-container">
         <Header></Header>
