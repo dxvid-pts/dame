@@ -22,6 +22,7 @@ export default function ChatArea(props) {
     socket.listenOnMessage((payload) => recMsg(payload));
     socket.listenOnPlayerLeave((payload) => playerLeft(payload));
 
+    /*
     function createGame(nickname) {
         if (nickname === "" || nickname === null) alert("Nickname can not be empty"); else if (checkNickname(nickname)) {
             socket.sendCreateGame(nickname, true, true);
@@ -34,7 +35,7 @@ export default function ChatArea(props) {
             setNickname(nickname);
             socket.sendJoinGame(nickname, gameId);
         } else alert("Username is not valid");
-    }
+    }*/
 
     function playerJoined(payload) {
         setGameId(payload.game);
@@ -86,43 +87,7 @@ export default function ChatArea(props) {
     return <div className="ChatNavSide" id={"chat"}>
         <div className="Chatside">
             <p id={"chatBox"}>GameId: {gameId}</p>
-            <div className={gameId === null ? "test" : "hidden"}>
-                <Input
-                    variant="outlined"
-                    label="Nickname"
-                    id="nick"
-                    value={nickname}
-                ></Input>
-                <Button
-                    onClick={() => createGame(document.getElementById("nick").value)}
-                >
-                    create Game
-                </Button>
-            </div>
-            <div className={gameId === null ? "test" : "hidden"}>
-                {gameId === null ? (<Input
-                    variant="outlined"
-                    id="gameId"
-                    label="gameId"
-                    value={gameId}
-                ></Input>) : null}
-                {gameId === null ? (<Button
-                    onClick={() => joinGame(document.getElementById("nick").value, document.getElementById("gameId").value)}
-                >
-                    join Game
-                </Button>) : null}
-            </div>
-            
-            <div className={gameId === null ? "hidden" : "ControlCenter"}>
-                <Button onClick={() => leaveGame()}>leaveGame</Button>
-                <Button onClick={() => socket.sendMove(0, 2, 1, 3)}>
-                    sendMoveP1
-                </Button>
-                <Button onClick={() => socket.sendMove(1, 5, 2, 4)}>
-                    sendMovePw
-                </Button>
-            </div>
-            <div className={gameId === null ? "hidden" : "ChatBox"}>
+            <div className="ChatBox">
             <p>Chatroom:</p>
                 <div className="Chat">
                     <ul>
