@@ -10,10 +10,15 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    width: fit-content;
 }
 
 #heading{
     margin: 128px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    justify-content: center;
 }
 
 #text_black, #text_white{

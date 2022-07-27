@@ -190,7 +190,7 @@ module.exports = (io, socket, gameHandler) => {
             msg: msg,
             time: Date.now(),
         };
-        console.log(obj);
+        //#console.log(obj);
         io.to(socket.id).emit("error", obj);
     }
 
@@ -203,7 +203,7 @@ module.exports = (io, socket, gameHandler) => {
             winner: game.winner,
             time: Date.now(),
         };
-        console.log(obj);
+        //#console.log(obj);
         io.in(game.id).emit("gameState", obj);
     }
 
@@ -213,7 +213,7 @@ module.exports = (io, socket, gameHandler) => {
             player: player,
             time: Date.now(),
         };
-        console.log(obj);
+        //#console.log(obj);
         io.in(game.id).emit("playerJoin", obj);
     }
 
@@ -222,7 +222,7 @@ module.exports = (io, socket, gameHandler) => {
             player: player,
             time: Date.now(),
         };
-        console.log(obj);
+        //#console.log(obj);
         io.in(game.id).emit("playerLeave", obj);
     }
 
@@ -232,7 +232,7 @@ module.exports = (io, socket, gameHandler) => {
             player: player,
             time: Date.now(),
         };
-        console.log(obj);
+        //#console.log(obj);
         io.in(game.id).emit("msg", obj);
     }
 };
