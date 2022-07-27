@@ -76,7 +76,7 @@ module.exports = (io, socket, gameHandler) => {
     }
 
     function onCreateGame(args) {
-        if (!isValidObject(args, ["nick", "spectatable", "guests"])) {
+        if (!isValidObject(args, ["nick", "spectatable"])) {
             return;
         }
 

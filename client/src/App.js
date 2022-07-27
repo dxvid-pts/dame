@@ -5,11 +5,10 @@ import {
     Routes,
     Navigate,
 } from "react-router-dom";
-
 import React from "react";
 
 import Game from "./pages/game/game";
-import Index from "./pages/land/land";
+import StartPage from "./pages/startPage/StartPage";
 
 import Error from "./components/error/Error";
 
@@ -48,7 +47,7 @@ export default class App extends React.Component {
                                 this.state.ingame ? (
                                     <Navigate replace to="/game" />
                                 ) : (
-                                    <Index socket={socket} />
+                                    <StartPage socket={socket} />
                                 )
                             }
                         />

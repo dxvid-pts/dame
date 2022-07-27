@@ -93,7 +93,7 @@ function FriendGame(props) {
     }
 }
 
-export default function Index(props) {
+export function Index(props) {
     const socket = props.socket;
 
     const [nickname, setNickname] = useState("");

@@ -1,0 +1,102 @@
+.StartPage {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    overflow-y: scroll;
+    height: 100vh;
+}
+
+.Title {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    user-select: none;
+    margin-top: 32px;
+    flex-grow: 1;
+    align-items: center;
+}
+
+.Title .White {
+    color: white;
+    text-shadow: 1px 2px black;
+}
+
+.Title .Black {
+    color: black;
+    text-shadow: 1px 2px white;
+}
+
+.Black,
+.White {
+    font-size: 64px;
+    height: fit-content;
+    margin: 0px 16px 0px 16px;
+}
+
+.Menu{
+    flex-grow: 2;
+}
+
+.Menu,
+.SubMenu,
+.InputMenu {
+    display: flex;
+    flex-direction: column;
+}
+
+.SubMenu,
+.InputMenu {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding: 8px;
+}
+
+.SubMenu {
+    background-color: rgb(110, 0, 0);
+    box-shadow: 0 4px rgb(70, 0, 0);
+    border-radius: 4px;
+}
+
+.Input,
+.PlayButton {
+    margin-bottom: 6px;
+    margin-top: 6px;
+    border-radius: 4px;
+    border: none;
+    height: 36px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.NickInput {
+    margin-bottom: 32px;
+    padding: 0px 0px 0px 4px;
+    font-family: "Roboto Slab", serif;
+    box-shadow: 0 4px rgb(207, 207, 207);
+}
+
+.Input {
+    padding: 0px 0px 0px 4px;
+    font-family: "Roboto Slab", serif;
+    box-shadow: 0 4px rgb(207, 207, 207);
+}
+
+.PlayButton {
+    background-color: rgb(0, 77, 0);
+    color: white;
+    box-shadow: 0 4px black;
+}
+
+.PlayButton:hover {
+    background-color: rgb(75, 134, 75);
+    transition: 0.2s;
+}
+
+.PlayButton:active {
+    transition: 0.2s;
+    box-shadow: 0 2px black;
+    transform: translateY(2px);
+}
