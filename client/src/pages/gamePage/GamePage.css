@@ -14,15 +14,10 @@
     width: 100vw;
     height: 100vh;
     display: grid;
-    grid-template-columns: auto 718px minmax(7%, 20%) auto;
-    grid-template-rows: 5% auto;
+    grid-template-columns: auto auto minmax(7%, 20%) auto;
+    grid-template-rows: 60px auto;
     grid-template-areas:
     'header header header header'
     'blackbox2 game chat blackbox';
     gap: 0;
-    background-color: white;
-}
-
-.grid-container > div {
-    background-color: rgba(255, 255, 255, 0.8);
 }

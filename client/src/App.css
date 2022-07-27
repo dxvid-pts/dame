@@ -12,4 +12,32 @@
 button{
     font-family: 'Roboto Slab', serif;
     cursor: pointer;
+    user-select: none;
+}
+
+.Button {
+    background-color: rgb(0, 77, 0);
+    color: white;
+    box-shadow: 0 4px black;
+}
+
+.Button:hover {
+    background-color: rgb(75, 134, 75);
+    transition: 0.2s;
+}
+
+.Button:active {
+    transition: 0.2s;
+    box-shadow: 0 2px black;
+    transform: translateY(2px);
+}
+
+.White {
+    color: white;
+    text-shadow: 1px 2px black;
+}
+
+.Black {
+    color: black;
+    text-shadow: 1px 2px white;
 }

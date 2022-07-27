@@ -22,11 +22,11 @@ export default class StartPage extends React.Component {
         this.socket.sendCreateGame(this.state.nickname, false);
     }
 
-    onJoinGame(gameid){
+    onJoinGame(){
         if (this.state.nickname === null || this.state.gameid === "") {
             return;
         }
-        this.socket.sendJoinGame(this.state.nickname, gameid);
+        this.socket.sendJoinGame(this.state.nickname, this.state.gameid);
     }
 
     onPlayAI() {
@@ -39,7 +39,7 @@ export default class StartPage extends React.Component {
         if (this.state.nickname === null) {
             return;
         }
-        this.onJoinGame("RANDOM");
+        this.socket.sendJoinGame(this.state.nickname, "RANDOM");
     }
 
     render() {
@@ -69,7 +69,7 @@ export default class StartPage extends React.Component {
                     </div>
                     <div className="SubMenu">
                         <button
-                            className="PlayButton"
+                            className="Button PlayButton"
                             onClick={this.onCreateGame}
                         >
                             Create Game
@@ -85,20 +85,20 @@ export default class StartPage extends React.Component {
                             }
                         ></input>
                         <button
-                            className="PlayButton"
-                            onClick={() => this.onJoinGame(this.state.gameid)}
+                            className="Button PlayButton"
+                            onClick={this.onJoinGame}
                         >
                             Join Game
                         </button>
                     </div>
                     <div className="SubMenu">
-                        <button className="PlayButton" onClick={this.onPlayAI}>
+                        <button className="Button PlayButton" onClick={this.onPlayAI}>
                             Play vs AI
                         </button>
                     </div>
                     <div className="SubMenu">
                         <button
-                            className="PlayButton"
+                            className="Button PlayButton"
                             onClick={this.onPlayRandom}
                         >
                             Play vs a Random Enemy

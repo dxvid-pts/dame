@@ -17,21 +17,12 @@
     margin-top: 32px;
     flex-grow: 1;
     align-items: center;
-}
-
-.Title .White {
-    color: white;
-    text-shadow: 1px 2px black;
-}
-
-.Title .Black {
-    color: black;
-    text-shadow: 1px 2px white;
+    font-size: 64px;
 }
 
 .Black,
 .White {
-    font-size: 64px;
+    
     height: fit-content;
     margin: 0px 16px 0px 16px;
 }
@@ -82,21 +73,4 @@
     padding: 0px 0px 0px 4px;
     font-family: "Roboto Slab", serif;
     box-shadow: 0 4px rgb(207, 207, 207);
-}
-
-.PlayButton {
-    background-color: rgb(0, 77, 0);
-    color: white;
-    box-shadow: 0 4px black;
-}
-
-.PlayButton:hover {
-    background-color: rgb(75, 134, 75);
-    transition: 0.2s;
-}
-
-.PlayButton:active {
-    transition: 0.2s;
-    box-shadow: 0 2px black;
-    transform: translateY(2px);
 }
