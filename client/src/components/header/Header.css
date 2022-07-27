@@ -1,0 +1,40 @@
+.Header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    background-color: rgb(110, 0, 0);
+    border-bottom: solid 4px rgb(70, 0, 0);
+}
+
+.HeaderElement{
+    margin-left: 8px;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+}
+
+#lastHeaderElement{
+    margin-left: auto;
+}
+
+.HeaderText{
+    color: white;
+    margin-left: 8px;
+    margin-right: 8px;
+    font-size: 22px;
+}
+
+.HeaderButton{
+    color: white;
+    border: none;
+    box-shadow: 0 4px black;
+    border-radius: 4px;
+    height:30px;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: 18px;
+    margin-left: 8px;
+    margin-right: 8px;
+}
