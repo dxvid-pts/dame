@@ -36,52 +36,6 @@ button {
     text-shadow: 1px 2px black;
 }
 
-.grid-container {
-    width: 100vw;
-    height: 100vh;
-    display: grid;
-    grid-template-columns: auto 95vh minmax(7%, 20%) auto;
-    grid-template-rows: 5% auto;
-    grid-template-areas:
-    'header header header header'
-    'blackbox2 game chat blackbox';
-    gap: 0;
-    background-color: black;
-}
-
-@media screen and (max-width: 120vh) {
-    .grid-container {
-        width: 100vw;
-        height: 100vh;
-        display: grid;
-        grid-template-columns: 75vw auto;
-        grid-template-rows: 5% auto;
-        grid-template-areas:
-    'header header'
-    'game chat';
-        gap: 0;
-        background-color: black;
-    }
-}
-
-@media screen and (max-width: 80vh) {
-    .grid-container {
-        width: 100vw;
-        height: 100vh;
-        display: grid;
-        grid-template-columns: auto;
-        grid-template-rows: 5% auto auto 0 0;
-        grid-template-areas:
-    'header'
-    'game'
-    'chat'
-    'blackbox2'
-    'blackbox';
-        gap: 0;
-        background-color: black;
-    }
-}
-
 .Black {
     color: black;
     text-shadow: 1px 2px white;
