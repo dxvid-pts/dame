@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import React from "react";
 
-import Game from "./pages/game/game";
+import GamePage from "./pages/gamePage/GamePage";
 import StartPage from "./pages/startPage/StartPage";
 
 import Error from "./components/error/Error";
@@ -58,7 +58,7 @@ export default class App extends React.Component {
                                 !this.state.ingame ? (
                                     <Navigate replace to="/" />
                                 ) : (
-                                    <Game socket={socket} />
+                                    <GamePage socket={socket} />
                                 )
                             }
                         />
