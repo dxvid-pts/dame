@@ -3,28 +3,23 @@ import './ChessBoard.css';
 
 const Constants = require("shared/constants");
 
-//change values in chessboard as well if values below are tweaked
-const tileSize = 80;
-const borderSize = 4;
-const chessGridSizeComplete = tileSize * 8;
-const chessGridBorderSizeComplete = tileSize * 8 + borderSize * 2;
 const descriptionSize = 35;
 
 export function PlayerTile(props) {
     return <img alt={"self-Logo"} src={props.img} style={{
-        width: tileSize, height: tileSize, "pointer-events": "none", "user-select": "none"
+        width: "100%",
+        height: "100%",
+        "pointer-events": "none",
+        "user-select": "none",
+        visibility: props.visible ? "visible" : "hidden",
     }}></img>;
 }
 
 const initialGlobalState = {
-    selectedTile: null,
-    highlightedFields: [],
+    selectedTile: null, highlightedFields: [],
 
     //TODO: replace with server code
-    tilePositions: Constants.INITIAL_BOARD,
-    nextPossibleTurns: [],
-    nextTurnPlayer: null,
-    currentPlayerId: null,
+    tilePositions: Constants.INITIAL_BOARD, nextPossibleTurns: [], nextTurnPlayer: null, currentPlayerId: null,
 };
 
 const globalStateContext = createContext(initialGlobalState);
@@ -55,38 +50,37 @@ export function ChessBoardTile(props) {
     }
 
     //check if selected
-    if (
-        props.globalState.selectedTile != null &&
-        props.globalState.selectedTile.row === props.row &&
-        props.globalState.selectedTile.column === props.column
-    ) {
+    if (props.globalState.selectedTile != null && props.globalState.selectedTile.row === props.row && props.globalState.selectedTile.column === props.column) {
         tileColor = tileColor = "rgba(245,173,66," + opacity + ")";
         // tileColor = mixColors(tileColor, '#f5ad42');
     }
 
-    let p = null;
+    let p;
     switch (props.char) {
         case -1:
-            p = <PlayerTile img={Constants.PLAYER_SVG_WHITE}></PlayerTile>;
+            p = <PlayerTile img={Constants.PLAYER_SVG_WHITE} visible={true}></PlayerTile>;
             break;
         case 1:
-            p = <PlayerTile img={Constants.PLAYER_SVG_BLACK}></PlayerTile>;
+            p = <PlayerTile img={Constants.PLAYER_SVG_BLACK} visible={true}></PlayerTile>;
             break;
+        default:
+            p = <PlayerTile img={Constants.PLAYER_SVG_BLACK} visible={false}></PlayerTile>;
     }
 
-    const backgroundImgUrl = white
-        ? Constants.BOARD_WHITE
-        : Constants.BOARD_BLACK;
+    const backgroundImgUrl = white ? Constants.BOARD_WHITE : Constants.BOARD_BLACK;
+
+    const x = ["a", "b", "c", "d", "e", "f", "g", "h"];
+    let gridArea = x[props.column] + "" + x[props.row];
 
     return <div
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         onClick={() => props.onClick({row: props.row, column: props.column})}
         style={{
-            width: tileSize, height: tileSize, backgroundImage: "url(" + backgroundImgUrl + ")"
+            gridArea: gridArea, backgroundImage: "url(" + backgroundImgUrl + ")",
         }}>
         <div style={{
-            width: tileSize, height: tileSize, backgroundColor: tileColor,
+            backgroundColor: tileColor,
         }}
         >{p}</div>
     </div>;
@@ -95,59 +89,50 @@ export function ChessBoardTile(props) {
 export function ChessRow(props) {
     const tiles = [];
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
-        tiles.push(
-            <ChessBoardTile
-                char={props.chars[i]}
-                column={props.column}
-                row={i}
-                onClick={props.onClick}
-                globalState={props.globalState}
-                key={props.column + "" + i}
-            ></ChessBoardTile>
-        );
+        tiles.push(<ChessBoardTile
+            char={props.chars[i]}
+            column={props.column}
+            row={i}
+            onClick={props.onClick}
+            globalState={props.globalState}
+            key={props.column + "" + i}
+        ></ChessBoardTile>);
     }
 
-    return <div style={{display: "flex"}}>{tiles}</div>;
+    return tiles;
+}
+
+export function Corner(props) {
+    return <div style={{gridArea: props.area, backgroundImage: "url(" + Constants.BOARD_WHITE + ")",}}></div>
 }
 
 export function BoardDescriptionSide(props) {
     const descriptions = ["A", "B", "C", "D", "E", "F", "G", "H"];
 
-    return <div
+    return descriptions.map((e, index) => <div
         style={{
-            gridArea: props.rotate ? "board-description-right" : "board-description-left", //backgroundColor: "red",
+            gridArea: (props.rotate ? "dr" : "dl") + (index + 1).toString(),
+            textAlign: "center",
+            transform: "rotate(" + (props.rotate ? 180 : 0) + "deg)",
             backgroundImage: "url(" + Constants.BOARD_WHITE + ")",
-            width: descriptionSize,
-            height: chessGridBorderSizeComplete,
-            float: "left",
-            transform: "rotate(" + (props.rotate ? 180 : 0) + "deg)"
-        }}>
-        {descriptions.map(e => <div
-            style={{
-                height: tileSize, justifyContent: "center", alignItems: "center", display: "flex"
-            }}>
-            <p>{e}</p></div>)}
-    </div>;
+            justifyContent: "center",
+            alignItems: "center",
+            display: "flex",
+        }}><p>{e}</p>
+    </div>);
 }
 
 export function BoardDescriptionBottomTop(props) {
     const descriptions = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
-    return <div
+    return descriptions.map((e, index) => <div
         style={{
-            gridArea: props.rotate ? "board-description-top" : "board-description-bottom",
-            backgroundImage: "url(" + Constants.BOARD_WHITE + ")", // backgroundColor: "yellow",
-            height: descriptionSize,
-            width: chessGridBorderSizeComplete,
-            paddingLeft: descriptionSize,
-            paddingRight: descriptionSize,
-            transform: "rotate(" + (props.rotate ? 180 : 0) + "deg)"
-        }}>
-        {descriptions.map(e => <div
-            style={{width: tileSize, height: descriptionSize, float: "left", textAlign: "center"}}><p
-            style={{margin: descriptionSize / 4.5}}>{e}</p>
-        </div>)}
-    </div>;
+            gridArea: (props.rotate ? "dt" : "db") + (index + 1).toString(),
+            transform: "rotate(" + (props.rotate ? 180 : 0) + "deg)",
+            backgroundImage: "url(" + Constants.BOARD_WHITE + ")",
+            textAlign: "center",
+        }}><p style={{margin: descriptionSize / 4.5}}>{e}</p>
+    </div>);
 }
 
 export function ChessBoardGrid(props) {
@@ -174,7 +159,7 @@ export function ChessBoardGrid(props) {
             globalState={props.globalState}
             onClick={(selectedField) => {
                 //ignore click if player is not allowed to move
-                if(props.globalState.currentPlayerId !== props.globalState.nextTurnPlayer){
+                if (props.globalState.currentPlayerId !== props.globalState.nextTurnPlayer) {
                     return;
                 }
 
@@ -219,8 +204,7 @@ export function ChessBoardGrid(props) {
                 if (highlighted) {
                     const fieldTo = selectedField;
                     const fieldFrom = {
-                        column: props.globalState.selectedTile.column,
-                        row: props.globalState.selectedTile.row
+                        column: props.globalState.selectedTile.column, row: props.globalState.selectedTile.row
                     }
                     const chessField = props.globalState.tilePositions;
 
@@ -243,13 +227,7 @@ export function ChessBoardGrid(props) {
         ></ChessRow>);
     }
 
-    return <div
-        style={{
-            border: borderSize + 'px solid rgba(0, 0, 0, 255)',
-            width: chessGridSizeComplete,
-            height: chessGridSizeComplete,
-            float: "left"
-        }}>{rows}</div>;
+    return rows;
 }
 
 export function PlayerTurnInfo(props) {
@@ -267,22 +245,23 @@ export default function ChessBoard(props) {
     return <globalStateContext.Provider value={globalState}>
 
         <div id={"board-grid-container"}>
-            <div className="container_row">
-                <div className="layer2"><BoardDescriptionBottomTop rotate={true}></BoardDescriptionBottomTop></div>
-                <PlayerTurnInfo setGlobalState={setGlobalState}
-                                globalState={globalState}></PlayerTurnInfo>
-            </div>
-
-            <BoardDescriptionSide rotate={false} style={{gridArea: "board-description-left"}}></BoardDescriptionSide>
-            <div style={{gridArea: "board-grid"}}><ChessBoardGrid socket={props.socket} setGlobalState={setGlobalState}
-                                                                  globalState={globalState}></ChessBoardGrid></div>
+            <BoardDescriptionBottomTop rotate={true}></BoardDescriptionBottomTop>
+            <BoardDescriptionSide rotate={false}></BoardDescriptionSide>
+            <ChessBoardGrid socket={props.socket} setGlobalState={setGlobalState}
+                            globalState={globalState}></ChessBoardGrid>
             <BoardDescriptionSide rotate={true}></BoardDescriptionSide>
-            <BoardDescriptionBottomTop rotate={false}
-                                       style={{gridArea: "board-description-bottom"}}></BoardDescriptionBottomTop>
-
-
+            <div style={{gridArea: "border1", color: "black"}}></div>
+            <div style={{gridArea: "border2", color: "black"}}></div>
+            <div style={{gridArea: "border3", color: "black"}}></div>
+            <div style={{gridArea: "border4", color: "black"}}></div>
+            <Corner area={"c1"}></Corner>
+            <Corner area={"c2"}></Corner>
+            <Corner area={"c3"}></Corner>
+            <Corner area={"c4"}></Corner>
+            <BoardDescriptionBottomTop rotate={false}></BoardDescriptionBottomTop>
         </div>
-
+        <PlayerTurnInfo setGlobalState={setGlobalState}
+                        globalState={globalState}></PlayerTurnInfo>
 
     </globalStateContext.Provider>;
 }

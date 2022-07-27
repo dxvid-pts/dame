@@ -1,15 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
 
-
 .App {
     text-align: center;
     width: 100vw;
     height: 100vh;
-    background-color:wheat;
+    background-color: wheat;
     font-family: 'Roboto Slab', serif;
 }
 
-button{
+button {
     font-family: 'Roboto Slab', serif;
     cursor: pointer;
     user-select: none;

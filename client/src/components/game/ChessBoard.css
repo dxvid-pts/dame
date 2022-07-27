@@ -16,14 +16,69 @@
 
 #board-grid-container {
     display: grid;
-    grid-template-columns: 35px 648px 35px;
-    grid-template-rows: 35px 648px 35px;
+    grid-template-columns: 35px 4px repeat(8, 10.55vh) 4px auto;
+    grid-template-rows: 35px 4px repeat(8, 10.55vh) 4px auto;
     grid-template-areas:
-    'board-description-top board-description-top board-description-top'
-    'board-description-left board-grid board-description-right'
-    'board-description-bottom board-description-bottom board-description-bottom';
+    'c1 dt1 dt1 dt2 dt3 dt4 dt5 dt6 dt7 dt8 dt8 c2'
+    'c1 border3 border1 border1 border1 border1 border1 border1 border1 border1 border4 c2'
+    'dl1 border3 aa ab ac ad ae af ag ah border4 dr1'
+    'dl2 border3 ba bb bc bd be bf bg bh border4 dr2'
+    'dl3 border3 ca cb cc cd ce cf cg ch border4 dr3'
+    'dl4 border3 da db dc dd de df dg dh border4 dr4'
+    'dl5 border3 ea eb ec ed ee ef eg eh border4 dr5'
+    'dl6 border3 fa fb fc fd fe ff fg fh border4 dr6'
+    'dl7 border3 ga gb gc gd ge gf gg gh border4 dr7'
+    'dl8 border3 ha hb hc hd he hf hg hh border4 dr8'
+    'c3 border3 border2 border2 border2 border2 border2 border2 border2 border2 border4 c4'
+    'c3 db1 db1 db2 db3 db4 db5 db6 db7 db8 db8 c4';
     gap: 0;
     background-color: black;
+}
+
+@media screen and (max-width: 120vh) {
+    #board-grid-container {
+        display: grid;
+        grid-template-columns: auto 4px repeat(8, 8.2vw) 4px auto;
+        grid-template-rows: 35px 4px repeat(8, 8.2vw) 4px 35px;
+        grid-template-areas:
+    'c1 dt1 dt1 dt2 dt3 dt4 dt5 dt6 dt7 dt8 dt8 c2'
+    'c1 border3 border1 border1 border1 border1 border1 border1 border1 border1 border4 c2'
+    'dl1 border3 aa ab ac ad ae af ag ah border4 dr1'
+    'dl2 border3 ba bb bc bd be bf bg bh border4 dr2'
+    'dl3 border3 ca cb cc cd ce cf cg ch border4 dr3'
+    'dl4 border3 da db dc dd de df dg dh border4 dr4'
+    'dl5 border3 ea eb ec ed ee ef eg eh border4 dr5'
+    'dl6 border3 fa fb fc fd fe ff fg fh border4 dr6'
+    'dl7 border3 ga gb gc gd ge gf gg gh border4 dr7'
+    'dl8 border3 ha hb hc hd he hf hg hh border4 dr8'
+    'c3 border3 border2 border2 border2 border2 border2 border2 border2 border2 border4 c4'
+    'c3 db1 db1 db2 db3 db4 db5 db6 db7 db8 db8 c4';
+        gap: 0;
+        background-color: black;
+    }
+}
+
+@media screen and (max-width: 80vh) {
+    #board-grid-container {
+        display: grid;
+        grid-template-columns: auto 4px repeat(8, 10.4vw) 4px auto;
+        grid-template-rows: 35px 4px repeat(8, 10.4vw) 4px 35px;
+        grid-template-areas:
+    'c1 dt1 dt1 dt2 dt3 dt4 dt5 dt6 dt7 dt8 dt8 c2'
+    'c1 border3 border1 border1 border1 border1 border1 border1 border1 border1 border4 c2'
+    'dl1 border3 aa ab ac ad ae af ag ah border4 dr1'
+    'dl2 border3 ba bb bc bd be bf bg bh border4 dr2'
+    'dl3 border3 ca cb cc cd ce cf cg ch border4 dr3'
+    'dl4 border3 da db dc dd de df dg dh border4 dr4'
+    'dl5 border3 ea eb ec ed ee ef eg eh border4 dr5'
+    'dl6 border3 fa fb fc fd fe ff fg fh border4 dr6'
+    'dl7 border3 ga gb gc gd ge gf gg gh border4 dr7'
+    'dl8 border3 ha hb hc hd he hf hg hh border4 dr8'
+    'c3 border3 border2 border2 border2 border2 border2 border2 border2 border2 border4 c4'
+    'c3 db1 db1 db2 db3 db4 db5 db6 db7 db8 db8 c4';
+        gap: 0;
+        background-color: black;
+    }
 }
 
 .container_row {
@@ -34,14 +89,15 @@
 #player-turn-info {
     position: absolute;
     z-index: 2;
-    left: 314px;
-    top: 0;
-    padding: 7px;
+    left: 40vw;
+    top: 5%;
+    padding: 6px;
     margin: 0;
     background-color: rgba(0, 0, 0, 0.4);
     border-radius: 20px;
 }
-#player-turn-info p{
+
+#player-turn-info p {
     color: yellow;
     font-weight: bold;
     padding: 0;
