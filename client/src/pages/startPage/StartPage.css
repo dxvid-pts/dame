@@ -1,0 +1,76 @@
+.StartPage {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+    overflow-y: scroll;
+    height: 100vh;
+}
+
+.Title {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    user-select: none;
+    margin-top: 32px;
+    flex-grow: 1;
+    align-items: center;
+    font-size: 64px;
+}
+
+.Black,
+.White {
+    
+    height: fit-content;
+    margin: 0px 16px 0px 16px;
+}
+
+.Menu{
+    flex-grow: 2;
+}
+
+.Menu,
+.SubMenu,
+.InputMenu {
+    display: flex;
+    flex-direction: column;
+}
+
+.SubMenu,
+.InputMenu {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding: 8px;
+}
+
+.SubMenu {
+    background-color: rgb(110, 0, 0);
+    box-shadow: 0 4px rgb(70, 0, 0);
+    border-radius: 4px;
+}
+
+.Input,
+.PlayButton {
+    margin-bottom: 6px;
+    margin-top: 6px;
+    border-radius: 4px;
+    border: none;
+    height: 36px;
+    font-size: 18px;
+    text-align: center;
+}
+
+.NickInput {
+    margin-bottom: 32px;
+    padding: 0px 0px 0px 4px;
+    font-family: "Roboto Slab", serif;
+    box-shadow: 0 4px rgb(207, 207, 207);
+}
+
+.Input {
+    padding: 0px 0px 0px 4px;
+    font-family: "Roboto Slab", serif;
+    box-shadow: 0 4px rgb(207, 207, 207);
+}

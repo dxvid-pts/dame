@@ -10,18 +10,30 @@
 
 button {
     font-family: 'Roboto Slab', serif;
+    cursor: pointer;
+    user-select: none;
 }
 
-#header {
-    grid-area: header;
+.Button {
+    background-color: rgb(0, 77, 0);
+    color: white;
+    box-shadow: 0 4px black;
 }
 
-#game {
-    grid-area: game;
+.Button:hover {
+    background-color: rgb(75, 134, 75);
+    transition: 0.2s;
 }
 
-#chat {
-    grid-area: chat;
+.Button:active {
+    transition: 0.1s;
+    box-shadow: 0 2px black;
+    transform: translateY(2px);
+}
+
+.White {
+    color: white;
+    text-shadow: 1px 2px black;
 }
 
 .grid-container {
@@ -70,6 +82,7 @@ button {
     }
 }
 
-.grid-container > div {
-    background-color: rgba(255, 255, 255, 0.8);
+.Black {
+    color: black;
+    text-shadow: 1px 2px white;
 }

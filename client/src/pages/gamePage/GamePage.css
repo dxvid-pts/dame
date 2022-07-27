@@ -1,0 +1,23 @@
+#header {
+    grid-area: header;
+}
+
+#game {
+    grid-area: game;
+}
+
+#chat {
+    grid-area: chat;
+}
+
+.grid-container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: auto auto minmax(7%, 20%) auto;
+    grid-template-rows: 60px auto;
+    grid-template-areas:
+    'header header header header'
+    'blackbox2 game chat blackbox';
+    gap: 0;
+}

@@ -1,11 +1,13 @@
 import GameArea from "../../components/game/GameArea";
 import ChatArea from "../../components/chat/ChatArea";
-import Header from "../../components/header";
+import Header from "../../components/header/Header";
 
-export default function Index(props) {
+import "./GamePage.css";
+
+export default function GamePage(props) {
     return (
         <div className="grid-container">
-        <Header></Header>
+        <Header game={props.game}/>
         <div style={{gridArea: "blackbox2", backgroundColor: "black"}}></div>
         <GameArea socket={props.socket}></GameArea>
         <ChatArea socket={props.socket}/>
