@@ -6,6 +6,8 @@
     height: 100vh;
     background-color: wheat;
     font-family: 'Roboto Slab', serif;
+    position: absolute;
+    top: 0;
 }
 
 button {
