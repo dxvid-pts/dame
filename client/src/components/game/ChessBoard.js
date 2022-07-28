@@ -6,7 +6,7 @@ const Constants = require("shared/constants");
 const descriptionSize = 35;
 
 export function PlayerTile(props) {
-    return <img alt={"self-Logo"} src={props.img} style={{
+    return <img alt={"self-Logo"} src={props.img.default} style={{
         width: "100%",
         height: "100%",
         "pointer-events": "none",
@@ -103,7 +103,14 @@ export function ChessRow(props) {
 }
 
 export function Corner(props) {
-    return <div style={{gridArea: props.area, backgroundImage: "url(" + Constants.BOARD_WHITE + ")",}}></div>
+    return <div style={{
+        gridArea: props.area,
+        backgroundImage: "url(" + Constants.BOARD_WHITE + ")",
+        borderTopLeftRadius: props.area === "c1" ? "8px" : "0",
+        borderTopRightRadius: props.area === "c2" ? "8px" : "0",
+        borderBottomLeftRadius: props.area === "c3" ? "8px" : "0",
+        borderBottomRightRadius: props.area === "c4" ? "8px" : "0",
+    }}></div>
 }
 
 export function BoardDescriptionSide(props) {
@@ -250,14 +257,16 @@ export default function ChessBoard(props) {
             <ChessBoardGrid socket={props.socket} setGlobalState={setGlobalState}
                             globalState={globalState}></ChessBoardGrid>
             <BoardDescriptionSide rotate={true}></BoardDescriptionSide>
-            <div style={{gridArea: "border1", color: "black"}}></div>
-            <div style={{gridArea: "border2", color: "black"}}></div>
-            <div style={{gridArea: "border3", color: "black"}}></div>
-            <div style={{gridArea: "border4", color: "black"}}></div>
+            <div style={{gridArea: "border1", backgroundColor: "black"}}></div>
+            <div style={{gridArea: "border2", backgroundColor: "black"}}></div>
+            <div style={{gridArea: "border3", backgroundColor: "black"}}></div>
+            <div style={{gridArea: "border4", backgroundColor: "black"}}></div>
             <Corner area={"c1"}></Corner>
             <Corner area={"c2"}></Corner>
             <Corner area={"c3"}></Corner>
             <Corner area={"c4"}></Corner>
+            <div style={{gridArea: "a", borderRadius: "8px", background: "wheat"}}></div>
+            <div style={{gridArea: "b", borderRadius: "8px", background: "wheat"}}></div>
             <BoardDescriptionBottomTop rotate={false}></BoardDescriptionBottomTop>
         </div>
         <PlayerTurnInfo setGlobalState={setGlobalState}
