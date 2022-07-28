@@ -15,7 +15,7 @@
     height: 100vh;
     display: grid;
     grid-template-columns: auto 95vh minmax(7%, 20%) auto;
-    grid-template-rows: 5% auto;
+    grid-template-rows: 48px auto;
     grid-template-areas:
     'header header header header'
     'blackbox2 game chat blackbox';
@@ -29,7 +29,7 @@
         height: 100vh;
         display: grid;
         grid-template-columns: 75vw auto;
-        grid-template-rows: 5% auto;
+        grid-template-rows: 48px auto;
         grid-template-areas:
     'header header'
     'game chat';
@@ -44,7 +44,7 @@
         height: 100vh;
         display: grid;
         grid-template-columns: auto;
-        grid-template-rows: 5% auto auto 0 0;
+        grid-template-rows: 48px auto auto 0 0;
         grid-template-areas:
     'header'
     'game'
