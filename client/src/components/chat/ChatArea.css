@@ -1,36 +1,46 @@
 ul {
     list-style-type: none;
     padding-inline-start: 5px;
-  }
-.test {
-  display: grid;
-  padding-right: 5%;
-  padding-left: 5%;
 }
-.ChatBox {
-  height: 75vh;
-  background-color: rgb(255, 255, 255);
-}
+
 .Chat {
-  height: 60vh;
-  overflow: scroll;
+    height: 0px;
+    width: 100%;
+    overflow-y: auto;
+    flex-grow: 1;
 }
-.Chatside {
-  padding-right: 5%;
-  padding-left: 5%;
-  background-color: rgb(255, 255, 255);
+
+.ChatMenu {    
+    background-color: rgb(245, 222, 179);
+    box-shadow: 0 4px rgb(161, 146, 117);
+    border-radius: 8px;;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
-.ControlCenter {
-  padding-right: 5%;
-  padding-left: 5%;
-  height: auto;
-  min-height: 8vh;
-  max-height: 25vh;
+
+.MessageMenu {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
 }
-.hidden {
-  visibility: hidden;
-  max-height: 0vh;
+
+.InputMessage {
+    min-width: 32px;
+    flex-grow: 1;
+    margin: 8px;
+    margin-left: 16px;
+    margin-right: 0;
+    height: 30px;
 }
-.ChatNavSide {
-  height: 95vh;
+
+.ButtonMessage {
+    flex-grow: 0;
+    height: 36px;
+    font-size: 18px;
+    height: 30px;
+    margin: 16px;
 }
