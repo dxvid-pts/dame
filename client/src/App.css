@@ -14,10 +14,16 @@ button {
     user-select: none;
 }
 
+input{
+    box-sizing: border-box; 
+}
+
 .Button {
     background-color: rgb(0, 77, 0);
     color: white;
     box-shadow: 0 4px black;
+    border: none;
+    border-radius: 4px;
 }
 
 .Button:hover {
@@ -29,6 +35,14 @@ button {
     transition: 0.1s;
     box-shadow: 0 2px black;
     transform: translateY(2px);
+}
+
+.Input {
+    padding: 0px 0px 0px 4px;
+    font-family: "Roboto Slab", serif;
+    box-shadow: 0 4px rgb(207, 207, 207);
+    border-radius: 4px;
+    border: none;
 }
 
 .White {

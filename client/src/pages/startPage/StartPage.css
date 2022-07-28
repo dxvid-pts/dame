@@ -51,26 +51,18 @@
     border-radius: 4px;
 }
 
-.Input,
-.PlayButton {
-    margin-bottom: 6px;
-    margin-top: 6px;
-    border-radius: 4px;
-    border: none;
-    height: 36px;
-    font-size: 18px;
+.Menu .Input{
     text-align: center;
 }
 
-.NickInput {
-    margin-bottom: 32px;
-    padding: 0px 0px 0px 4px;
-    font-family: "Roboto Slab", serif;
-    box-shadow: 0 4px rgb(207, 207, 207);
+.Menu .Input,
+.PlayButton {
+    margin-bottom: 6px;
+    margin-top: 6px;
+    height: 36px;
+    font-size: 18px;
 }
 
-.Input {
-    padding: 0px 0px 0px 4px;
-    font-family: "Roboto Slab", serif;
-    box-shadow: 0 4px rgb(207, 207, 207);
+.PlayButton{
+    text-align: center;
 }

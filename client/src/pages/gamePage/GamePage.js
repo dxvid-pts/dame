@@ -4,13 +4,16 @@ import Header from "../../components/header/Header";
 
 import "./GamePage.css";
 
+//<GameArea socket={props.socket} />
+
 export default function GamePage(props) {
     return (
-        <div className="grid-container">
+        <div className="GamePage">
             <Header game={props.game} />
-
-            <GameArea socket={props.socket}></GameArea>
-            <ChatArea socket={props.socket} />
+            <div className="GameContent">
+                <div className="GameArea">GAME AREA</div>
+                <ChatArea socket={props.socket} />
+            </div>
         </div>
     );
 }
