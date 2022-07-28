@@ -5,6 +5,9 @@ export default function ChatArea(props) {
     const socket = props.socket;
 
     function sendMsg(body) {
+        if(body === ""){
+            return;
+        }
         socket.sendMessage(body);
         document.getElementById("msgBody").value = "";
     }

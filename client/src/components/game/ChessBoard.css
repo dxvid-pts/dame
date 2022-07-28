@@ -16,8 +16,8 @@
 
 #board-grid-container {
     display: grid;
-    grid-template-columns: auto 4px repeat(8, 8.2vw) 4px auto;
-    grid-template-rows: 35px 4px repeat(8, 8.2vw) 4px 35px;
+    grid-template-columns: 5% 5% repeat(8, 10%) 5% 5%;
+    grid-template-rows: 5% 5% repeat(8, 10%) 5% 5%;
     grid-template-areas:
 'c1 dt1 dt1 dt2 dt3 dt4 dt5 dt6 dt7 dt8 dt8 c2'
 'c1 border3 border1 border1 border1 border1 border1 border1 border1 border1 border4 c2'
