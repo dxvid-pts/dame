@@ -21,13 +21,11 @@ export default function Header(props) {
                     className="Button HeaderButton"
                     onClick={() => copyToClipboard(props.game.id)}
                 >
-                    copy
+                    COPY
                 </button>
-            </div><div className="HeaderElement">
-                <div className="HeaderText">|</div>
             </div>
             <div className="HeaderElement">
-                <button className="Button HeaderButton" onClick={props.game.leaveGame}>leave</button>
+                <button className="Button HeaderButton" onClick={props.game.leaveGame}>LEAVE</button>
             </div>
         </div>
     );
