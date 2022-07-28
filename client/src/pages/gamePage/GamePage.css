@@ -44,13 +44,11 @@
         height: 100vh;
         display: grid;
         grid-template-columns: auto;
-        grid-template-rows: 48px auto auto 0 0;
+        grid-template-rows: 48px auto auto;
         grid-template-areas:
     'header'
     'game'
-    'chat'
-    'blackbox2'
-    'blackbox';
+    'chat';
         gap: 0;
         background-color: black;
     }
