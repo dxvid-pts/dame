@@ -1,14 +1,7 @@
-import { useState } from "react";
 import ChatMessage from "./ChatMessage.js";
 import "./ChatArea.css";
 
-function checkNickname(nickname) {
-    if (nickname.toLowerCase() === "system") return false;
-    else return true;
-}
-
 export default function ChatArea(props) {
-
     const socket = props.socket;
 
     function sendMsg(body) {
@@ -18,15 +11,15 @@ export default function ChatArea(props) {
 
     return (
         <div className="ChatMenu" id={"chat"}>
-            <div className="Chat">
-                <ul>
+            <div className="ChatWrapper">
+                <ul className="Chat">
                     {props.msg.map((m) => (
-                        <li key={""+m.time} >
-                            <ChatMessage playerid={props.socket.getSocketID()} msg={m}></ChatMessage>
-                        </li>
+                        <ChatMessage key={"" + m.time}
+                            playerid={props.socket.getSocketID()}
+                            msg={m}
+                        ></ChatMessage>
                     ))}
-                </ul>
-            </div>
+                </ul></div>
             <div className="MessageMenu">
                 <input
                     id="msgBody"

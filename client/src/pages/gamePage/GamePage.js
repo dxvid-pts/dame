@@ -12,8 +12,8 @@ export default function GamePage(props) {
         <div className="GamePage">
             <Header game={props.game} />
             <div className="GameContent">
-                <div className="GameArea">GAME AREA</div>
-                <ChatArea msg={props.msg} socket={props.socket} />
+                <div id="gameArea">GAME AREA</div>
+                <div id="chatArea"><ChatArea msg={props.msg} socket={props.socket} /></div>
             </div>
         </div>
     );
