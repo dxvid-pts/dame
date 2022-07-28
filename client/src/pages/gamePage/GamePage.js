@@ -8,12 +8,11 @@ import "./GamePage.css";
 
 export default function GamePage(props) {
     return (
-        
         <div className="GamePage">
-            <Header game={props.game} />
+            <Header game={props.game}/>
             <div className="GameContent">
-                <div id="gameArea"><GameArea socket={props.socket} /></div>
-                <div id="chatArea"><ChatArea msg={props.msg} socket={props.socket} /></div>
+                <div id="gameArea"><GameArea socket={props.socket}/></div>
+                <div id="chatArea"><ChatArea msg={props.msg} socket={props.socket}/></div>
             </div>
         </div>
     );
