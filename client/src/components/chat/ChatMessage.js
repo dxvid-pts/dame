@@ -1,9 +1,10 @@
 import React from "react";
 import "./ChatMessage.css";
 
+//component to render a chat message
 export default function ChatMessage(props) {
-    var date = new Date(props.msg.time);
-    var time = date.getHours() + ":" + date.getMinutes();
+    const date = new Date(props.msg.time);
+    const time = date.getHours() + ":" + date.getMinutes();
 
     function getMessageClass() {
         if (props.msg.sender === "sys") {

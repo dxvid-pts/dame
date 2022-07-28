@@ -2,6 +2,7 @@ import "./Error.css";
 
 import React from "react";
 
+//Usability indicator for error messages
 export default class Error extends React.Component {
     constructor(props) {
         super(props);

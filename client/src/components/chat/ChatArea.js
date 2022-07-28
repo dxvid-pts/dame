@@ -4,8 +4,9 @@ import "./ChatArea.css";
 export default function ChatArea(props) {
     const socket = props.socket;
 
+    //function to send a message to the server
     function sendMsg(body) {
-        if(body === ""){
+        if (body === "") {
             return;
         }
         socket.sendMessage(body);
@@ -18,15 +19,15 @@ export default function ChatArea(props) {
                 <ul className="Chat">
                     {props.msg.map((m) => (
                         <ChatMessage key={"" + m.time}
-                            playerid={props.socket.getSocketID()}
-                            msg={m}
+                                     playerid={props.socket.getSocketID()}
+                                     msg={m}
                         ></ChatMessage>
                     ))}
-                </ul></div>
+                </ul>
+            </div>
             <div className="MessageMenu">
                 <input
                     id="msgBody"
-                    label="Your message"
                     className="Input InputMessage"
                     onKeyDown={(e) =>
                         e.key === "Enter"

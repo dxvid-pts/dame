@@ -4,8 +4,6 @@ import Header from "../../components/header/Header";
 
 import "./GamePage.css";
 
-//
-
 export default function GamePage(props) {
     return (
         <div className="GamePage">
