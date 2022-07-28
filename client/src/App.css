@@ -21,7 +21,7 @@ input{
 }
 
 .Button {
-    background-color: rgb(0, 77, 0);
+    background-color: slateblue;
     color: white;
     box-shadow: 0 4px black;
     border: none;
@@ -29,7 +29,7 @@ input{
 }
 
 .Button:hover {
-    background-color: rgb(75, 134, 75);
+    background-color: mediumslateblue;
     transition: 0.2s;
 }
 
@@ -48,8 +48,8 @@ input{
 }
 
 .White {
-    color: white;
-    text-shadow: 1px 2px black;
+    color: gray;
+    text-shadow: 1px 2px white;
 }
 
 .Black {

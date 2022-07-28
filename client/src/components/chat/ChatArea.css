@@ -1,15 +1,14 @@
 .ChatWrapper {
-    height: 0px;
+    height: 0;
     overflow-y: auto;
     flex-grow: 1;
     width: 100%;
 }
 .Chat {
-    margin: 16px;
-    margin-bottom: 0px;
+    margin: 16px 16px 0;
     list-style-type: none;
-    padding: 0px;
-    padding-inline: 0px;
+    padding: 0;
+    padding-inline: 0;
 }
 
 .ChatMenu {
@@ -33,15 +32,12 @@
 .InputMessage {
     min-width: 32px;
     flex-grow: 1;
-    margin: 8px;
-    margin-left: 16px;
-    margin-right: 0;
+    margin: 8px 0 8px 16px;
     height: 30px;
 }
 
 .ButtonMessage {
     flex-grow: 0;
-    height: 36px;
     font-size: 18px;
     height: 30px;
     margin: 16px;
