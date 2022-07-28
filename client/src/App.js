@@ -19,7 +19,7 @@ const socket = socketConnection.connect(constants.CONNECTION_PORT);
 export default class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { game: null, error: null};
+        this.state = { game: null, error: null, msg: [] };
 
         this.getGamePath = this.getGamePath.bind(this);
         this.leaveGame = this.leaveGame.bind(this);
@@ -27,20 +27,40 @@ export default class App extends React.Component {
 
     componentDidMount() {
         socket.listenOnPlayerJoin((args) => {
-            console.log(args);
             if (args.player.id === socket.getSocketID()) {
-                this.setState({ game: { id: args.game, player: args.player, leaveGame:this.leaveGame } });
+                this.setState({
+                    game: {
+                        id: args.game,
+                        player: args.player,
+                        leaveGame: this.leaveGame,
+                    },
+                });
             }
+            const newMSG = [...this.state.msg];
+            newMSG.push({ sender: "sys", content: "Player "+args.player.nick + " joined.", time: args.time});
+            this.setState({msg: newMSG});
         });
 
         socket.listenOnError((args) => {
             this.setState({ error: <Error msg={args.msg} render={true} /> });
         });
+
+        socket.listenOnMessage((args) => {
+            const newMSG = [...this.state.msg];
+            newMSG.push({ sender: args.player, content: args.msg, time: args.time});
+            this.setState({msg: newMSG});
+        });
+
+        socket.listenOnPlayerLeave((args) => {
+            const newMSG = [...this.state.msg];
+            newMSG.push({ sender: "sys", content: "Player "+args.player.nick + " left.", time: args.time});
+            this.setState({msg: newMSG});
+        });
     }
 
-    leaveGame(){
+    leaveGame() {
         socket.sendLeaveGame();
-        this.setState({game: null});
+        this.setState({ game: null, msg: [] });
     }
 
     getGamePath() {
@@ -73,11 +93,11 @@ export default class App extends React.Component {
                                     <GamePage
                                         socket={socket}
                                         game={this.state.game}
+                                        msg={this.state.msg}
                                     />
                                 )
                             }
                         />
-
                         <Route
                             exact
                             path="*"

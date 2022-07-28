@@ -10,8 +10,9 @@ ul {
     flex-grow: 1;
 }
 
-.ChatMenu {
-    background-color: greenyellow;
+.ChatMenu {    
+    background-color: rgb(245, 222, 179);
+    box-shadow: 0 4px rgb(161, 146, 117);
     border-radius: 8px;;
     display: flex;
     flex-direction: column;
