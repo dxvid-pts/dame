@@ -5,28 +5,31 @@ export default function ChatMessage(props) {
     var date = new Date(props.msg.time);
     var time = date.getHours() + ":" + date.getMinutes();
 
-    if (props.msg.sender === "sys") {
-        return (
-            <div
-                className={`message-item sys-message
-            `}
-            >
-                <div className="sys-body-container">
-                    <div className="sys-body">{props.msg.content}</div>
-                    <div>{time}</div>
-                </div>
+    function getMessageClass() {
+        if (props.msg.sender === "sys") {
+            return "sys";
+        }
+        if (props.msg.sender.id === props.playerid) {
+            return "player";
+        } else {
+            return "enemy";
+        }
+    }
+
+    function getName() {
+        return getMessageClass() !== "sys" ? (
+            <div className="MessageInfo">{props.msg.sender.nick + ", " + time}</div>
+        ) : <div className="MessageInfo">{time}</div>;
+    }
+
+    return (
+        <li className="Message">
+            <div className={"Message-" + getMessageClass()}>
+                <div className={"Body-" + getMessageClass()}>
+                    <div className="">{props.msg.content}</div>
+                </div>{getName()}
             </div>
-        );
-    } else return (
-        <div
-            className={`message-item sys-message
-        `}
-        >
-            <div className="sys-body-container">
-                <div className="sys-body">{props.msg.content}</div>
-                <div>{time}</div>
-                <div>{props.msg.sender.nick}</div>
-            </div>
-        </div>
-    );;
+            
+        </li>
+    );
 }

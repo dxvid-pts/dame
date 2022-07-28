@@ -1,19 +1,21 @@
-ul {
-    list-style-type: none;
-    padding-inline-start: 5px;
-}
-
-.Chat {
+.ChatWrapper {
     height: 0px;
-    width: 100%;
     overflow-y: auto;
     flex-grow: 1;
+    width: 100%;
+}
+.Chat {
+    margin: 16px;
+    margin-bottom: 0px;
+    list-style-type: none;
+    padding: 0px;
+    padding-inline: 0px;
 }
 
-.ChatMenu {    
+.ChatMenu {
     background-color: rgb(245, 222, 179);
     box-shadow: 0 4px rgb(161, 146, 117);
-    border-radius: 8px;;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     height: 100%;

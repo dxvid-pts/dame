@@ -1,52 +1,109 @@
 .message-item {
     display: flex;
     margin: 4px auto;
-  }
-  .my-message {
+}
+.my-message {
     justify-content: flex-end;
-  }
-  .received-message {
+}
+.received-message {
     justify-content: flex-start;
-  }
-  .sys-message {
+}
+.sys-message {
     justify-content: flex-start;
-  }
-  .message-body-container {
+}
+.message-body-container {
     max-width: 40%;
-  }
-  .message-body {
+}
+.message-body {
     flex: 1;
     border-radius: 4px;
     padding: 8px 12px;
     word-break: break-word;
-  }
-  .sys-body-container {
-
+}
+.sys-body-container {
     width: 95%;
     padding-left: 1%;
     padding-right: 1%;
-  }
-  .sys-body {
+}
+.sys-body {
     border-radius: 5px;
     padding: 2% 2%;
     word-break: break-word;
-  }
-  .message-user-name {
+}
+.message-user-name {
     font-size: 0.8rem;
     padding-left: 0;
     color: rgb(138, 141, 145);
-  }
-  .my-message .message-body {
+}
+.my-message .message-body {
     background-color: green;
     color: white;
-  }
-  .received-message .message-body {
+}
+.received-message .message-body {
     background-color: black;
     color: white;
-  }
-  .sys-message .sys-body{
+}
+.sys-message .sys-body {
     font-size: small;
     text-align: center;
     background-color: #88888853;
     color: #000000dd;
-  }
+}
+
+.Message {
+    margin: 8px;
+}
+
+.Body-sys,
+.Body-player,
+.Body-enemy {
+    border-radius: 4px;
+    color: white;
+    width: fit-content;
+    overflow-wrap: break-word;
+    padding: 8px;
+}
+
+.Body-sys {
+    color: black;
+    max-width: 90%;
+}
+
+.Body-player {
+    background-color: black;
+    border-bottom: solid 4px rgb(71, 71, 71);
+    max-width: 70%;
+}
+
+.Body-enemy {
+    margin-right: auto;
+    background-color: rgb(110, 0, 0);
+    border-bottom: solid 4px rgb(70, 0, 0);
+    max-width: 70%;
+}
+
+.Message-sys,
+.Message-enemy,
+.Message-player {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.Message-sys {
+    align-items: center;
+}
+
+.Message-enemy {
+    align-items:flex-start;
+}
+
+.Message-player {
+    align-items: flex-end;
+}
+
+.MessageInfo {
+    font-size: 12px;
+    color: rgb(85, 85, 85);
+    width: fit-content;
+}
