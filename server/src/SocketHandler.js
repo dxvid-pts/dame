@@ -2,8 +2,8 @@ module.exports = (io, socket, gameHandler) => {
     const isValidObject = require("./utils/isValidObject.js");
     const Game = require("./Game.js");
 
-    var game = null;
-    var player = { id: socket.id, nick: null, tile: null};
+    let game = null;
+    const player = {id: socket.id, nick: null, tile: null};
 
     io.to(socket.id).emit("socketid", socket.id);
     console.log("Player " + socket.id + " connected");
@@ -185,7 +185,7 @@ module.exports = (io, socket, gameHandler) => {
     //send
 
     function sendError(code, msg) {
-        var obj = {
+        const obj = {
             code: code,
             msg: msg,
             time: Date.now(),
@@ -195,7 +195,7 @@ module.exports = (io, socket, gameHandler) => {
     }
 
     function sendGameState() {
-        var obj = {
+        const obj = {
             board: game.board.field,
             turns: game.turns,
             nextTurnPlayer: game.nextTurnPlayer,
@@ -208,7 +208,7 @@ module.exports = (io, socket, gameHandler) => {
     }
 
     function sendPlayerJoin() {
-        var obj = {
+        const obj = {
             game: game.id,
             player: player,
             time: Date.now(),
@@ -218,7 +218,7 @@ module.exports = (io, socket, gameHandler) => {
     }
 
     function sendPlayerLeave() {
-        var obj = {
+        const obj = {
             player: player,
             time: Date.now(),
         };
@@ -227,7 +227,7 @@ module.exports = (io, socket, gameHandler) => {
     }
 
     function sendMessage(msg) {
-        var obj = {
+        const obj = {
             msg: msg,
             player: player,
             time: Date.now(),

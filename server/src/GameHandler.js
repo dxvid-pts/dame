@@ -5,12 +5,12 @@ class GameHandler {
     }
 
     getGameByGameID(id) {
-        var game = this.games.find((game) => game.id === id);
+        const game = this.games.find((game) => game.id === id);
         return game === undefined ? null : game;
     }
 
     getGameBySearching() {
-        var game = this.games.find((game) => !game.isFull() && game.searching);
+        const game = this.games.find((game) => !game.isFull() && game.searching);
         return game === undefined ? null : game;
     }
 
