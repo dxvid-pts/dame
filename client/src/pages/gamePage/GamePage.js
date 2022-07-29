@@ -12,7 +12,6 @@ export default function GamePage(props) {
                 <div id="gameArea"><GameArea socket={props.socket} gameState={props.gameState}/></div>
                 <div id="chatArea"><ChatArea msg={props.msg} socket={props.socket}/></div>
             </div>
-            {console.log(props.gameState)}
         </div>
     );
 }

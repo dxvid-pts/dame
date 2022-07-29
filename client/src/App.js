@@ -28,6 +28,7 @@ export default class App extends React.Component {
                 nextPossibleTurns: [],
                 nextTurnPlayer: null,
                 currentPlayerId: null,
+                setGameState: (args) => this.setState({gameState: args}),
             },
             error: null,
             msg: [],
@@ -89,6 +90,7 @@ export default class App extends React.Component {
             newGame["nextTurnPlayer"] = state.nextTurnPlayer.id;
             newGame["currentPlayerId"] = socket.getSocketID();
             this.setState({ gameState: newGame });
+            console.log(newGame);
         });
     }
 
@@ -133,7 +135,6 @@ export default class App extends React.Component {
                                 )
                             }
                         />
-                        {console.log(this.state.gameState)}
                         <Route
                             exact
                             path="*"
