@@ -44,6 +44,12 @@ export function ChessBoardTile(props) {
         case 1:
             p = <PlayerTile img={Images.PLAYER_SVG_BLACK} visible={true}></PlayerTile>;
             break;
+        case -2:
+            p = <PlayerTile img={Images.DAME_SVG_WHITE} visible={true}></PlayerTile>;
+            break;
+        case 2:
+            p = <PlayerTile img={Images.DAME_SVG_BLACK} visible={true}></PlayerTile>;
+            break;
         default:
             p = <PlayerTile img={Images.PLAYER_SVG_BLACK} visible={false}></PlayerTile>;
     }

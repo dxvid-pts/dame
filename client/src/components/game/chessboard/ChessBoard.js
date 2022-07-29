@@ -1,8 +1,7 @@
-import {createContext, useState} from "react";
+import {createContext} from "react";
 import './ChessBoard.css';
 import {BoardDescriptionBottomTop, BoardDescriptionSide} from "./BoardDescription";
 import {Corner} from "./Corner";
-import {PlayerTurnInfo} from "./PlayerTurnInfo";
 import {ChessRow} from "./ChessBoardTile";
 
 const Constants = require("shared/constants");
@@ -26,7 +25,6 @@ export function ChessBoardGrid(props) {
     const rows = [];
 
     const socket = props.socket;
-
 
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
         //use index as id key
