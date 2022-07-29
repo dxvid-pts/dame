@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 500 500">
+    <g class="layer">
+        <circle cx="250" cy="250" r="210" fill="#000" stroke="#7f7f7f" stroke-width="8"/>
+        <use xlink:href="#a" x="99.86" y="96.81" fill="#000" stroke="#7f7f7f" transform="translate(146.751 138.964) scale(.47425)"/>
+    </g>
+    <defs>
+        <symbol xmlns="http://www.w3.org/2000/svg" id="a" width="255" height="240" viewBox="0 0 51 48">
+            <path fill="none" stroke="#7f7f7f" d="m25 1 6 17h18L35 29l5 17-15-10-15 10 5-17L1 18h18l6-17z"/>
+        </symbol>
+    </defs>
+</svg>

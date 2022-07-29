@@ -43,7 +43,7 @@ class Game {
     }
 
     isTurnAllowed(from, to) {
-        var tile = this.nextPossibleTurns.find(
+        let tile = this.nextPossibleTurns.find(
             (location) =>
                 location.from.x === from.x && location.from.y === from.y
         );
@@ -53,16 +53,14 @@ class Game {
             return false;
         }
 
-        var tile_to = tile.to.find(
+        let tile_to = tile.to.find(
             (location) => location.x === to.x && location.y === to.y
         );
         tile_to = tile_to === undefined ? null : tile_to;
 
-        if (tile_to === null) {
-            return false;
-        }
+        return tile_to !== null;
 
-        return true;
+
     }
 
     takeTurn(from, to) {

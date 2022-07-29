@@ -1,25 +1,18 @@
+const Constants = require("shared/constants");
+
 class Board {
     constructor() {
-        this.field = [
-            [1, 0, 1, 0, 1, 0, 1, 0],
-            [0, 1, 0, 1, 0, 1, 0, 1],
-            [1, 0, 1, 0, 1, 0, 1, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-            [0, -1, 0, -1, 0, -1, 0, -1],
-            [-1, 0, -1, 0, -1, 0, -1, 0],
-            [0, -1, 0, -1, 0, -1, 0, -1],
-        ];
+        this.field = Constants.INITIAL_BOARD;
     }
 
     possibleTurns(player) {
-        var jump = false;
-        var turns = [];
+        let jump = false;
+        let turns = [];
 
-        for(var x = 0; x < 8; x++){
-            for(var y = 0; y < 8; y++){
+        for(let x = 0; x < 8; x++){
+            for(let y = 0; y < 8; y++){
                 if (this.getField({x: x, y: y}) * player > 0) {
-                    var tileJumps = this.possibleTileJumps({x: x, y: y});
+                    const tileJumps = this.possibleTileJumps({x: x, y: y});
 
                     if (!jump && tileJumps.length !== 0) {
                         jump = true;
@@ -31,8 +24,8 @@ class Board {
                             turns.push({ from: {x: x, y: y}, to: tileJumps });
                         }
                     } else {
-                        
-                        var tileMoves = this.possibleTileMoves({x: x, y: y});
+
+                        const tileMoves = this.possibleTileMoves({x: x, y: y});
                         if (tileMoves.length !== 0) {
                             turns.push({ from: {x: x, y: y}, to: tileMoves });
                         }
@@ -45,7 +38,7 @@ class Board {
     }
 
     possibleTileMoves(tile) {
-        var moves = [];
+        const moves = [];
 
         const targets = [
             { x: tile.x - 1, y: tile.y + 1 },
@@ -67,7 +60,7 @@ class Board {
     }
 
     possibleTileJumps(tile) {
-        var jumps = [];
+        const jumps = [];
 
         const targets = [
             { x: tile.x - 2, y: tile.y + 2 },

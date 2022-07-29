@@ -9,7 +9,7 @@ const gameHandler = new GameHandler();
 
 function onConnection(socket){
     socketHandler(io, socket, gameHandler);
-};
+}
 
 io.on("connection", onConnection);
 
