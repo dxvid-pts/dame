@@ -1,4 +1,5 @@
 import {useState} from "react";
+import Images from "shared/images";
 import Constants from "shared/constants";
 import {PlayerTile} from "./PlayerTile";
 
@@ -38,16 +39,16 @@ export function ChessBoardTile(props) {
     let p;
     switch (props.char) {
         case -1:
-            p = <PlayerTile img={Constants.PLAYER_SVG_WHITE} visible={true}></PlayerTile>;
+            p = <PlayerTile img={Images.PLAYER_SVG_WHITE} visible={true}></PlayerTile>;
             break;
         case 1:
-            p = <PlayerTile img={Constants.PLAYER_SVG_BLACK} visible={true}></PlayerTile>;
+            p = <PlayerTile img={Images.PLAYER_SVG_BLACK} visible={true}></PlayerTile>;
             break;
         default:
-            p = <PlayerTile img={Constants.PLAYER_SVG_BLACK} visible={false}></PlayerTile>;
+            p = <PlayerTile img={Images.PLAYER_SVG_BLACK} visible={false}></PlayerTile>;
     }
 
-    const backgroundImgUrl = white ? Constants.BOARD_WHITE : Constants.BOARD_BLACK;
+    const backgroundImgUrl = white ? Images.BOARD_WHITE : Images.BOARD_BLACK;
 
     //prepare the grid area which is used for the layout
     const x = ["a", "b", "c", "d", "e", "f", "g", "h"];
