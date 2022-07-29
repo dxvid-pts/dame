@@ -1,23 +1,10 @@
-import {createContext} from "react";
 import './ChessBoard.css';
 import {BoardDescriptionBottomTop, BoardDescriptionSide} from "./BoardDescription";
 import {Corner} from "./Corner";
 import {ChessRow} from "./ChessBoardTile";
+import {turnValue} from "shared/rotate";
 
 const Constants = require("shared/constants");
-
-//global state for the board
-const initialGlobalState = {
-    selectedTile: null,
-    highlightedFields: [],
-    tilePositions: Constants.INITIAL_BOARD,
-    nextPossibleTurns: [],
-    nextTurnPlayer: null,
-    currentPlayerId: null,
-};
-
-//create context for the global state
-const globalStateContext = createContext(initialGlobalState);
 
 //the main component for the chess board
 //handles callback and a lot of the logic
@@ -95,7 +82,12 @@ export function ChessBoardGrid(props) {
                     props.setGlobalState(newGlobalState);
 
                     //send info to server (also updates every data again to prevent cheating)
-                    socket.sendMove(fieldFrom.row, fieldFrom.column, fieldTo.row, fieldTo.column);
+                    socket.sendMove(
+                        props.globalState.playerBottom ? fieldFrom.row : turnValue(fieldFrom.row),
+                        props.globalState.playerBottom ? fieldFrom.column : turnValue(fieldFrom.column),
+                        props.globalState.playerBottom ? fieldTo.row : turnValue(fieldTo.row),
+                        props.globalState.playerBottom ? fieldTo.column : turnValue(fieldTo.column)
+                    );
                 }
 
 
@@ -109,24 +101,22 @@ export function ChessBoardGrid(props) {
 //composes everything to a chess board
 export default function ChessBoard(props) {
 
-    return <globalStateContext.Provider value={props.gameState}>
-        <div id={"board-grid-container"}>
-            <BoardDescriptionBottomTop rotate={true}></BoardDescriptionBottomTop>
-            <BoardDescriptionSide rotate={false}></BoardDescriptionSide>
-            <ChessBoardGrid socket={props.socket} setGlobalState={props.gameState.setGameState}
-                            globalState={props.gameState}></ChessBoardGrid>
-            <BoardDescriptionSide rotate={true}></BoardDescriptionSide>
-            <div style={{gridArea: "border1", backgroundColor: "black"}}></div>
-            <div style={{gridArea: "border2", backgroundColor: "black"}}></div>
-            <div style={{gridArea: "border3", backgroundColor: "black"}}></div>
-            <div style={{gridArea: "border4", backgroundColor: "black"}}></div>
-            <Corner area={"c1"}></Corner>
-            <Corner area={"c2"}></Corner>
-            <Corner area={"c3"}></Corner>
-            <Corner area={"c4"}></Corner>
-            <div style={{gridArea: "a", borderRadius: "8px", background: "wheat"}}></div>
-            <div style={{gridArea: "b", borderRadius: "8px", background: "wheat"}}></div>
-            <BoardDescriptionBottomTop rotate={false}></BoardDescriptionBottomTop>
-        </div>
-    </globalStateContext.Provider>;
+    return <div id={"board-grid-container"}>
+        <BoardDescriptionBottomTop rotate={true}></BoardDescriptionBottomTop>
+        <BoardDescriptionSide rotate={false}></BoardDescriptionSide>
+        <ChessBoardGrid socket={props.socket} setGlobalState={props.gameState.setGameState}
+                        globalState={props.gameState}></ChessBoardGrid>
+        <BoardDescriptionSide rotate={true}></BoardDescriptionSide>
+        <div style={{gridArea: "border1", backgroundColor: "black"}}></div>
+        <div style={{gridArea: "border2", backgroundColor: "black"}}></div>
+        <div style={{gridArea: "border3", backgroundColor: "black"}}></div>
+        <div style={{gridArea: "border4", backgroundColor: "black"}}></div>
+        <Corner area={"c1"}></Corner>
+        <Corner area={"c2"}></Corner>
+        <Corner area={"c3"}></Corner>
+        <Corner area={"c4"}></Corner>
+        <div style={{gridArea: "a", borderRadius: "8px", background: "wheat"}}></div>
+        <div style={{gridArea: "b", borderRadius: "8px", background: "wheat"}}></div>
+        <BoardDescriptionBottomTop rotate={false}></BoardDescriptionBottomTop>
+    </div>;
 }
