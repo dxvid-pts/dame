@@ -90,7 +90,6 @@ export default class App extends React.Component {
             newGame["nextTurnPlayer"] = state.nextTurnPlayer.id;
             newGame["currentPlayerId"] = socket.getSocketID();
             this.setState({ gameState: newGame });
-            console.log(newGame);
         });
     }
 
