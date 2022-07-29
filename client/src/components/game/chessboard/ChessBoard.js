@@ -27,16 +27,6 @@ export function ChessBoardGrid(props) {
 
     const socket = props.socket;
 
-    //listen on server state
-    socket.listenOnGameState((state) => {
-        //update renderer with results from server
-        let newGlobalState = {...props.globalState};
-        newGlobalState["tilePositions"] = state.board;
-        newGlobalState["nextPossibleTurns"] = state.nextPossibleTurns;
-        newGlobalState["nextTurnPlayer"] = state.nextTurnPlayer.id;
-        newGlobalState["currentPlayerId"] = socket.getSocketID();
-        props.setGlobalState(newGlobalState);
-    });
 
     for (let i = 0; i < Constants.BOARD_SIZE; i++) {
         //use index as id key
@@ -120,14 +110,13 @@ export function ChessBoardGrid(props) {
 
 //composes everything to a chess board
 export default function ChessBoard(props) {
-    const [globalState, setGlobalState] = useState(initialGlobalState);
 
-    return <globalStateContext.Provider value={globalState}>
+    return <globalStateContext.Provider value={props.gameState}>
         <div id={"board-grid-container"}>
             <BoardDescriptionBottomTop rotate={true}></BoardDescriptionBottomTop>
             <BoardDescriptionSide rotate={false}></BoardDescriptionSide>
-            <ChessBoardGrid socket={props.socket} setGlobalState={setGlobalState}
-                            globalState={globalState}></ChessBoardGrid>
+            <ChessBoardGrid socket={props.socket} setGlobalState={props.gameState.setGameState}
+                            globalState={props.gameState}></ChessBoardGrid>
             <BoardDescriptionSide rotate={true}></BoardDescriptionSide>
             <div style={{gridArea: "border1", backgroundColor: "black"}}></div>
             <div style={{gridArea: "border2", backgroundColor: "black"}}></div>
@@ -141,8 +130,8 @@ export default function ChessBoard(props) {
             <div style={{gridArea: "b", borderRadius: "8px", background: "wheat"}}></div>
             <BoardDescriptionBottomTop rotate={false}></BoardDescriptionBottomTop>
         </div>
-        <PlayerTurnInfo setGlobalState={setGlobalState}
-                        globalState={globalState}></PlayerTurnInfo>
+        <PlayerTurnInfo setGlobalState={props.gameState.setGameState}
+                        globalState={props.gameState}></PlayerTurnInfo>
 
     </globalStateContext.Provider>;
 }
