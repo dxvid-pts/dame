@@ -56,6 +56,16 @@ export default class App extends React.Component {
             newMSG.push({ sender: "sys", content: "Player "+args.player.nick + " left.", time: args.time});
             this.setState({msg: newMSG});
         });
+
+        socket.listenOnGameState((state) => {
+            //update renderer with results from server
+            let newGame = {...this.state.game.state};
+            newGame["tilePositions"] = state.board;
+            newGame["nextPossibleTurns"] = state.nextPossibleTurns;
+            newGame["nextTurnPlayer"] = state.nextTurnPlayer.id;
+            newGame["currentPlayerId"] = socket.getSocketID();
+            this.setState(newGame);
+        });
     }
 
     leaveGame() {
