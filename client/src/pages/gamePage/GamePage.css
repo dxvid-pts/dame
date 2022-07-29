@@ -33,6 +33,12 @@
     box-shadow: 0 4px rgb(161, 146, 117);
 }
 
+#gameArea {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /*
 .grid-container {
     width: 100vw;
