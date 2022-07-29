@@ -19,7 +19,19 @@ const socket = socketConnection.connect(constants.CONNECTION_PORT);
 export default class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { game: null, error: null, msg: [] };
+        this.state = {
+            game: null,
+            gameState: {
+                selectedTile: null,
+                highlightedFields: [],
+                tilePositions: constants.INITIAL_BOARD,
+                nextPossibleTurns: [],
+                nextTurnPlayer: null,
+                currentPlayerId: null,
+            },
+            error: null,
+            msg: [],
+        };
 
         this.getGamePath = this.getGamePath.bind(this);
         this.leaveGame = this.leaveGame.bind(this);
@@ -37,8 +49,12 @@ export default class App extends React.Component {
                 });
             }
             const newMSG = [...this.state.msg];
-            newMSG.push({ sender: "sys", content: "Player "+args.player.nick + " joined.", time: args.time});
-            this.setState({msg: newMSG});
+            newMSG.push({
+                sender: "sys",
+                content: "Player " + args.player.nick + " joined.",
+                time: args.time,
+            });
+            this.setState({ msg: newMSG });
         });
 
         socket.listenOnError((args) => {
@@ -47,24 +63,32 @@ export default class App extends React.Component {
 
         socket.listenOnMessage((args) => {
             const newMSG = [...this.state.msg];
-            newMSG.push({ sender: args.player, content: args.msg, time: args.time});
-            this.setState({msg: newMSG});
+            newMSG.push({
+                sender: args.player,
+                content: args.msg,
+                time: args.time,
+            });
+            this.setState({ msg: newMSG });
         });
 
         socket.listenOnPlayerLeave((args) => {
             const newMSG = [...this.state.msg];
-            newMSG.push({ sender: "sys", content: "Player "+args.player.nick + " left.", time: args.time});
-            this.setState({msg: newMSG});
+            newMSG.push({
+                sender: "sys",
+                content: "Player " + args.player.nick + " left.",
+                time: args.time,
+            });
+            this.setState({ msg: newMSG });
         });
 
         socket.listenOnGameState((state) => {
             //update renderer with results from server
-            let newGame = {...this.state.game.state};
+            let newGame = { ...this.state.gameState };
             newGame["tilePositions"] = state.board;
             newGame["nextPossibleTurns"] = state.nextPossibleTurns;
             newGame["nextTurnPlayer"] = state.nextTurnPlayer.id;
             newGame["currentPlayerId"] = socket.getSocketID();
-            this.setState(newGame);
+            this.setState({ gameState: newGame });
         });
     }
 
@@ -103,11 +127,13 @@ export default class App extends React.Component {
                                     <GamePage
                                         socket={socket}
                                         game={this.state.game}
+                                        gameState={this.state.gameState}
                                         msg={this.state.msg}
                                     />
                                 )
                             }
                         />
+                        {console.log(this.state.gameState)}
                         <Route
                             exact
                             path="*"

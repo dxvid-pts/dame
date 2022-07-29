@@ -26,6 +26,7 @@ const globalStateContext = createContext(initialGlobalState);
 //the main component for the chess board
 //handles callback and a lot of the logic
 export function ChessBoardGrid(props) {
+    console.log(props.GameState);
     const rows = [];
 
     const socket = props.socket;
@@ -33,7 +34,7 @@ export function ChessBoardGrid(props) {
     //listen on server state
     /*socket.listenOnGameState((state) => {
         //update renderer with results from server
-        let newGlobalState = {...props.globalState};
+        let newGlobalState = {...props.gameState};
         newGlobalState["tilePositions"] = state.board;
         newGlobalState["nextPossibleTurns"] = state.nextPossibleTurns;
         newGlobalState["nextTurnPlayer"] = state.nextTurnPlayer.id;
@@ -45,21 +46,21 @@ export function ChessBoardGrid(props) {
         //use index as id key
         rows.push(
             <ChessRow
-                chars={props.globalState.tilePositions[i]}
+                chars={props.gameState.tilePositions[i]}
                 column={i}
                 key={i}
-                globalState={props.globalState}
+                globalState={props.gameState}
                 onClick={(selectedField) => {
                     //ignore click if player is not allowed to move
                     if (
-                        props.globalState.currentPlayerId !==
-                        props.globalState.nextTurnPlayer
+                        props.gameState.currentPlayerId !==
+                        props.gameState.nextTurnPlayer
                     ) {
                         return;
                     }
 
                     const fieldState =
-                        props.globalState.tilePositions[selectedField.column][
+                        props.gameState.tilePositions[selectedField.column][
                             selectedField.row
                         ];
 
@@ -68,9 +69,9 @@ export function ChessBoardGrid(props) {
                         //get highlightedFields (fields where a tile can possibly move to) from shared code
                         let highlightedFields = [];
                         let nextPossibleTurns =
-                            props.globalState.nextPossibleTurns == null
+                            props.gameState.nextPossibleTurns == null
                                 ? []
-                                : props.globalState.nextPossibleTurns;
+                                : props.gameState.nextPossibleTurns;
 
                         for (let element of nextPossibleTurns) {
                             if (
@@ -85,7 +86,7 @@ export function ChessBoardGrid(props) {
                         }
 
                         //update renderer with new state
-                        let newGlobalState = { ...props.globalState };
+                        let newGlobalState = { ...props.gameState };
                         newGlobalState["highlightedFields"] = highlightedFields;
                         newGlobalState["selectedTile"] = {
                             row: selectedField.row,
@@ -96,7 +97,7 @@ export function ChessBoardGrid(props) {
 
                     //check if clicked field is highlighted
                     let highlighted = false;
-                    for (let position of props.globalState.highlightedFields) {
+                    for (let position of props.gameState.highlightedFields) {
                         if (
                             position.row === selectedField.row &&
                             position.column === selectedField.column
@@ -110,17 +111,17 @@ export function ChessBoardGrid(props) {
                     if (highlighted) {
                         const fieldTo = selectedField;
                         const fieldFrom = {
-                            column: props.globalState.selectedTile.column,
-                            row: props.globalState.selectedTile.row,
+                            column: props.gameState.selectedTile.column,
+                            row: props.gameState.selectedTile.row,
                         };
-                        const chessField = props.globalState.tilePositions;
+                        const chessField = props.gameState.tilePositions;
 
                         chessField[fieldTo.column][fieldTo.row] =
                             chessField[fieldFrom.column][fieldFrom.row];
                         chessField[fieldFrom.column][fieldFrom.row] = 0;
 
                         //update renderer before getting results from server
-                        let newGlobalState = { ...props.globalState };
+                        let newGlobalState = { ...props.gameState };
                         newGlobalState["highlightedFields"] = [];
                         newGlobalState["selectedTile"] = null;
                         newGlobalState["tilePositions"] = chessField;
@@ -155,6 +156,7 @@ export default function ChessBoard(props) {
                 <BoardDescriptionSide rotate={false}></BoardDescriptionSide>
                 <ChessBoardGrid
                     socket={props.socket}
+                    gameState={props.gameState}
                     setGlobalState={setGlobalState}
                     globalState={globalState}
                 ></ChessBoardGrid>
