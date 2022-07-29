@@ -29,6 +29,7 @@ export default function ChatArea(props) {
                 <input
                     id="msgBody"
                     className="Input InputMessage"
+                    autoComplete="off"
                     onKeyDown={(e) =>
                         e.key === "Enter"
                             ? sendMsg(document.getElementById("msgBody").value)

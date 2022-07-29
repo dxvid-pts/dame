@@ -45,6 +45,7 @@ export default class App extends React.Component {
                     game: {
                         id: args.game,
                         player: args.player,
+                        nextTurn: null,
                         leaveGame: this.leaveGame,
                     },
                 });
@@ -84,12 +85,16 @@ export default class App extends React.Component {
 
         socket.listenOnGameState((state) => {
             //update renderer with results from server
+            var g = {...this.state.game};
+            g.nextTurn = state.nextTurnPlayer.id;
+
+            //game logic
             let newGame = { ...this.state.gameState };
             newGame["tilePositions"] = state.board;
             newGame["nextPossibleTurns"] = state.nextPossibleTurns;
             newGame["nextTurnPlayer"] = state.nextTurnPlayer.id;
             newGame["currentPlayerId"] = socket.getSocketID();
-            this.setState({ gameState: newGame });
+            this.setState({ gameState: newGame, game: g});
         });
     }
 

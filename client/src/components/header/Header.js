@@ -11,10 +11,22 @@ const copyToClipboard = (str) => {
 
 //Header component
 export default function Header(props) {
+    function getNextTurnString() {
+        if(props.game.nextTurn === null){
+            return "Waiting for Enemy to join...";
+        }else if(props.game.nextTurn === props.game.player.id){
+            return "Your Turn";
+        }else{
+            return "Enemy's Turn";
+        }
+    }
     return (
         <div id="header" className="Header">
             <div className="HeaderElement">
-                <div className="HeaderText">Checkers.Online: {props.game.player.nick}</div>
+                <div className="HeaderText">{props.game.player.nick}</div>
+            </div>
+            <div className="HeaderElement">
+                <div className="HeaderText">{getNextTurnString()}</div>
             </div>
             <div className="HeaderElement" id="lastHeaderElement">
                 <div className="HeaderText">{props.game.id}</div>
@@ -26,7 +38,12 @@ export default function Header(props) {
                 </button>
             </div>
             <div className="HeaderElement">
-                <button className="Button HeaderButton" onClick={props.game.leaveGame}>LEAVE</button>
+                <button
+                    className="Button HeaderButton"
+                    onClick={props.game.leaveGame}
+                >
+                    LEAVE
+                </button>
             </div>
         </div>
     );

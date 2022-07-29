@@ -61,6 +61,7 @@ export default class StartPage extends React.Component {
                             id="username"
                             className="Input"
                             placeholder="Nickname"
+                            autoComplete="off"
                             required
                             onChange={(event) =>
                                 this.setState({ nickname: event.target.value })
@@ -80,6 +81,7 @@ export default class StartPage extends React.Component {
                             type="text"
                             className="Input"
                             placeholder="Game ID"
+                            autoComplete="off"
                             onChange={(event) =>
                                 this.setState({ gameid: event.target.value })
                             }

@@ -130,8 +130,5 @@ export default function ChessBoard(props) {
             <div style={{gridArea: "b", borderRadius: "8px", background: "wheat"}}></div>
             <BoardDescriptionBottomTop rotate={false}></BoardDescriptionBottomTop>
         </div>
-        <PlayerTurnInfo setGlobalState={props.gameState.setGameState}
-                        globalState={props.gameState}></PlayerTurnInfo>
-
     </globalStateContext.Provider>;
 }
