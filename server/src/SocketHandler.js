@@ -22,7 +22,6 @@ module.exports = (io, socket, gameHandler) => {
         socket.join(game.id);
         sendPlayerJoin();
 
-        // ILLEGAL!!
         if (game.isFull()) {
             game.start();
         }
