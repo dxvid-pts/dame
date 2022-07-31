@@ -15,18 +15,18 @@ export default function Header(props) {
         if(props.game.nextTurn === null){
             return "Waiting for Enemy...";
         } else {
-            if(props.game.winner !== null) {
-                console.log(props.game.winner);
-                alert("Game end!");
-                return props.game.winner.nick + " has won the game! You can leave now!";
-            }
             if(props.game.nextTurn === props.game.player.id){
-                return "Your Turn";
-            }else{
+                if(props.game.winner !== null){
+                    return "You won!";
+                }
+                else return "Your Turn";
+            } else {
+                if(props.game.winner !== null) return "You lost!";
                 return "Enemy's Turn";
             }
         }
     }
+    
     return (
         <div id="header" className="Header">
             <div className="HeaderElement">

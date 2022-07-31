@@ -89,7 +89,7 @@ export default class App extends React.Component {
             if (state.nextTurnPlayer === null && state.winner === null) {
                 return;
             }
-            if(state.nextTurnPlayer === null) state.nextTurnPlayer = {id: 456}
+            if(state.nextTurnPlayer === null && state.winner !== null) state.nextTurnPlayer = state.winner;
             //update renderer with results from server
             const g = { ...this.state.game };
             g.nextTurn = state.nextTurnPlayer.id;
