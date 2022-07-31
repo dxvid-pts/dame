@@ -29,6 +29,23 @@ Using gitpod to run this program is currently not possible. This is a result of 
 
 ### Client
 
+#### General
+If you access the startpage you can create or join a game. You are also able to play vs an ai. 
+After you selected your choice (see next points). You get redirected to the main game page. On the righthandside you see the Chat. 
+Above the chat can see and copy the LobbyID. There is also a "leave" button. This brings you back to the startpage. 
+On the lefthandside you can access the game. Above the game you can see the current state, like winner and the current turn.
+
+#### Play the Game
+You play the game by simply clicking the checker you want to move. The game shows you how the figure can move. 
+Please be aware you are not allowed to move any checker if one can kill an enemy. 
+
+#### Game start
+##### Creating a new Game
+Give yourself a nickname. If you want to create a new lobby, click "create game" after filling in your nickname.
+After you created the game you get redirected to the game page. 
+
+##### Join a game
+If you want to join a game, please fill in your nickname and the lobbyID you want to join and click "join".
 
 ### Server
 
