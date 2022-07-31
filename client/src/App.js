@@ -90,6 +90,7 @@ export default class App extends React.Component {
             if (state.nextTurnPlayer === null && state.winner === null) {
                 return;
             }
+            //if game is won = nextTurnPlayer is set to the winner
             if(state.nextTurnPlayer === null && state.winner !== null) state.nextTurnPlayer = state.winner;
             //update renderer with results from server
             const g = { ...this.state.game };
