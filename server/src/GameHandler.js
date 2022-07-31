@@ -2,6 +2,7 @@ class GameHandler {
     constructor() {
         this.games = [];
         this.openGamesCount = 0;
+        this.ai = null;
     }
 
     getGameByGameID(id) {

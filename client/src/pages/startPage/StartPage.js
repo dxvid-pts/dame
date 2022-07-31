@@ -29,17 +29,18 @@ export default class StartPage extends React.Component {
         this.socket.sendJoinGame(this.state.nickname, this.state.gameid);
     }
 
-    onPlayAI() {
-        if (this.state.nickname === null) {
-            return;
-        }
-    }
-
     onPlayRandom() {
         if (this.state.nickname === null) {
             return;
         }
         this.socket.sendJoinGame(this.state.nickname, "RANDOM");
+    }
+
+    onPlayAI() {
+        if (this.state.nickname === null) {
+            return;
+        }
+        this.socket.sendJoinGame(this.state.nickname, "AI");
     }
 
     render() {
