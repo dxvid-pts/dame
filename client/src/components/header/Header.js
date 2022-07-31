@@ -14,10 +14,17 @@ export default function Header(props) {
     function getNextTurnString() {
         if(props.game.nextTurn === null){
             return "Waiting for Enemy...";
-        }else if(props.game.nextTurn === props.game.player.id){
-            return "Your Turn";
-        }else{
-            return "Enemy's Turn";
+        } else {
+            if(props.game.winner !== null) {
+                console.log(props.game.winner);
+                alert("Game end!");
+                return props.game.winner.nick + " has won the game! You can leave now!";
+            }
+            if(props.game.nextTurn === props.game.player.id){
+                return "Your Turn";
+            }else{
+                return "Enemy's Turn";
+            }
         }
     }
     return (
