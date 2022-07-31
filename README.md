@@ -62,23 +62,23 @@ If you are ingame it disconnects you from the game and informs the other people 
 
 Each response the server sends depending on your previous action.
 
-#### "error" sends JSON {code, msg, time}
+##### "error" sends JSON {code, msg, time}
 
 If you send a illegal request you will be informed.
 
-#### "gameState" sends JSON {board, turns, nextTurnPlayer, nextPossibleTurns, winner, time}
+##### "gameState" sends JSON {board, turns, nextTurnPlayer, nextPossibleTurns, winner, time}
 
 Each time the gameState changes it sends it to all connected players. `nextTurnPlayer` specifies whos turn it is, all possible turns are listed in `nextPossibleTurns`. If no turns are possible the winner is selected. You know if its your turn by looking at `nextTurnPlayer.id` it will match your Socket ID.
 
-#### "playerJoin" sends JSON {game, player, time}
+##### "playerJoin" sends JSON {game, player, time}
 
 If you are another player joins your game you will be informed. `game` specifies the Game ID which can be used to connect to the game. `player` specifies who joined.
 
-#### "playerLeave" sends JSON {player, time}
+##### "playerLeave" sends JSON {player, time}
 
 Informs you that a player left your game.
 
-#### "msg" sends JSON {msg, player, time}
+##### "msg" sends JSON {msg, player, time}
 
 Each time somebody in your game sends a message you will be informed.
 
