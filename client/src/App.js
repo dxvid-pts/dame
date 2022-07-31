@@ -11,7 +11,7 @@ import GamePage from "./pages/gamePage/GamePage";
 import StartPage from "./pages/startPage/StartPage";
 
 import Error from "./components/error/Error";
-import {turnBoard, turnNextPossibleTurns} from "shared/rotate";
+import { turnBoard, turnNextPossibleTurns } from "shared/rotate";
 
 const constants = require("shared/constants");
 const socketConnection = require("./socket.js");
@@ -30,7 +30,7 @@ export default class App extends React.Component {
                 nextTurnPlayer: null,
                 currentPlayerId: null,
                 playerBottom: true,
-                setGameState: (args) => this.setState({gameState: args}),
+                setGameState: (args) => this.setState({ gameState: args }),
             },
             error: null,
             msg: [],
@@ -58,11 +58,11 @@ export default class App extends React.Component {
                 content: "Player " + args.player.nick + " joined.",
                 time: args.time,
             });
-            this.setState({msg: newMSG});
+            this.setState({ msg: newMSG });
         });
 
         socket.listenOnError((args) => {
-            this.setState({error: <Error msg={args.msg} render={true}/>});
+            this.setState({ error: <Error msg={args.msg} render={true} /> });
         });
 
         socket.listenOnMessage((args) => {
@@ -72,7 +72,7 @@ export default class App extends React.Component {
                 content: args.msg,
                 time: args.time,
             });
-            this.setState({msg: newMSG});
+            this.setState({ msg: newMSG });
         });
 
         socket.listenOnPlayerLeave((args) => {
@@ -82,33 +82,40 @@ export default class App extends React.Component {
                 content: "Player " + args.player.nick + " left.",
                 time: args.time,
             });
-            this.setState({msg: newMSG});
+            this.setState({ msg: newMSG });
         });
 
         socket.listenOnGameState((state) => {
-            if(state.nextTurnPlayer === null){
+            if (state.nextTurnPlayer === null) {
                 return;
             }
             //update renderer with results from server
-            const g = {...this.state.game};
+            const g = { ...this.state.game };
             g.nextTurn = state.nextTurnPlayer.id;
 
-            const playerBottom = state.nextTurnPlayer.id === socket.getSocketID() ? state.nextTurnPlayer.tile === -1 : state.nextTurnPlayer.tile === 1;
+            const playerBottom =
+                state.nextTurnPlayer.id === socket.getSocketID()
+                    ? state.nextTurnPlayer.tile === -1
+                    : state.nextTurnPlayer.tile === 1;
 
             //game logic
-            let newGame = {...this.state.gameState};
-            newGame["tilePositions"] = playerBottom ? state.board : turnBoard(state.board);
-            newGame["nextPossibleTurns"] = playerBottom ? state.nextPossibleTurns : turnNextPossibleTurns(state.nextPossibleTurns);
+            let newGame = { ...this.state.gameState };
+            newGame["tilePositions"] = playerBottom
+                ? state.board
+                : turnBoard(state.board);
+            newGame["nextPossibleTurns"] = playerBottom
+                ? state.nextPossibleTurns
+                : turnNextPossibleTurns(state.nextPossibleTurns);
             newGame["nextTurnPlayer"] = state.nextTurnPlayer.id;
             newGame["currentPlayerId"] = socket.getSocketID();
             newGame["playerBottom"] = playerBottom;
-            this.setState({gameState: newGame, game: g});
+            this.setState({ gameState: newGame, game: g });
         });
     }
 
     leaveGame() {
         socket.sendLeaveGame();
-        this.setState({game: null, msg: []});
+        this.setState({ game: null, msg: [] });
     }
 
     getGamePath() {
@@ -126,9 +133,9 @@ export default class App extends React.Component {
                             path="/"
                             element={
                                 this.state.game !== null ? (
-                                    <Navigate replace to={this.getGamePath()}/>
+                                    <Navigate replace to={this.getGamePath()} />
                                 ) : (
-                                    <StartPage socket={socket}/>
+                                    <StartPage socket={socket} />
                                 )
                             }
                         />
@@ -136,7 +143,7 @@ export default class App extends React.Component {
                             path={this.getGamePath()}
                             element={
                                 this.state.game === null ? (
-                                    <Navigate replace to="/"/>
+                                    <Navigate replace to="/" />
                                 ) : (
                                     <GamePage
                                         socket={socket}
@@ -150,8 +157,24 @@ export default class App extends React.Component {
                         <Route
                             exact
                             path="*"
-                            element={<Navigate replace to="/"/>}
+                            element={<Navigate replace to="/" />}
                         ></Route>
+                        <Route
+                            path="test"
+                            element={
+                                <GamePage
+                                    socket={socket}
+                                    game={{
+                                        id: "TEST",
+                                        player: {id: null, tile: -1, nick: "TEST_PLAYER"},
+                                        nextTurn: null,
+                                        leaveGame: this.leaveGame,
+                                    }}
+                                    gameState={this.state.gameState}
+                                    msg={this.state.msg}
+                                />
+                            }
+                        />
                     </Routes>
                 </Router>
             </div>
