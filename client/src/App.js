@@ -123,7 +123,32 @@ export default class App extends React.Component {
     }
 
     render() {
-        return (
+        let test =  (
+            <div className="App">
+                {this.state.error}
+                <Router>
+                    <Routes>
+                        
+                        <Route
+                            exact path="/"
+                            element={
+                                <GamePage
+                                    socket={socket}
+                                    game={{
+                                        id: "TEST",
+                                        player: {id: null, tile: -1, nick: "TEST_PLAYER"},
+                                        nextTurn: null,
+                                        leaveGame: this.leaveGame,
+                                    }}
+                                    gameState={this.state.gameState}
+                                    msg={this.state.msg}
+                                />
+                            }
+                        />
+                    </Routes>
+                </Router>
+            </div>);
+        let real =  (
             <div className="App">
                 {this.state.error}
                 <Router>
@@ -179,5 +204,6 @@ export default class App extends React.Component {
                 </Router>
             </div>
         );
+        return test;
     }
 }
