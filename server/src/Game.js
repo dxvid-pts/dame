@@ -18,27 +18,42 @@ class Game {
     }
 
     start() {
-        this.nextTurnPlayer = Math.random() < 0.5 ? this.player : this.enemy;
+        this.nextTurnPlayer = this.enemy;
         this.nextPossibleTurns = this.board.possibleTurns(
             this.nextTurnPlayer.tile
         );
     }
 
     join(player) {
-        if (this.player === null) {
+        player.active = true;
+
+        if (this.player === null && this.enemy === null) {
+            let r = Math.random();
+            if (r > 0.5) {
+                this.player = player;
+                this.player.tile = 1;
+            } else {
+                this.enemy = player;
+                this.enemy.tile = -1;
+            }
+        } else if (this.player === null) {
             this.player = player;
             this.player.tile = 1;
         } else if (this.enemy === null) {
             this.enemy = player;
             this.enemy.tile = -1;
+        } else if (this.player.id === player.id) {
+            this.player.active = true;
+        } else if (this.enemy.id === player.id) {
+            this.enemy.active = true;
         }
     }
 
     leave(player) {
-        if (this.player === player) {
-            this.player = null;
-        } else if (this.enemy === player) {
-            this.enemy = null;
+        if (this.player !== null && this.player.id === player.id) {
+            this.player.active = false;
+        } else if (this.enemy !== null && this.enemy.id === player.id) {
+            this.enemy.active = false;
         }
     }
 
@@ -59,8 +74,6 @@ class Game {
         tile_to = tile_to === undefined ? null : tile_to;
 
         return tile_to !== null;
-
-
     }
 
     takeTurn(from, to) {
@@ -97,6 +110,26 @@ class Game {
 
     isEmpty() {
         return this.player === null && this.enemy === null;
+    }
+
+    isPassive() {
+        if (!this.isEmpty() && !((this.player !== null && this.player.active) || (this.enemy !== null && this.enemy.active))) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    canJoin(player) {
+        if (!this.isFull()) {
+            return true;
+        } else if (this.player.id === player.id) {
+            return true;
+        } else if (this.enemy.id === player.id) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 

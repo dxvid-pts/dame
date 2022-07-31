@@ -86,6 +86,9 @@ export default class App extends React.Component {
         });
 
         socket.listenOnGameState((state) => {
+            if(state.nextTurnPlayer === null){
+                return;
+            }
             //update renderer with results from server
             const g = {...this.state.game};
             g.nextTurn = state.nextTurnPlayer.id;
