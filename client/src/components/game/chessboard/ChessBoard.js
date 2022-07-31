@@ -2,9 +2,9 @@ import './ChessBoard.css';
 import {BoardDescriptionBottomTop, BoardDescriptionSide} from "./BoardDescription";
 import {Corner} from "./Corner";
 import {ChessRow} from "./ChessBoardTile";
-import {turnValue} from "shared/rotate";
+import {turnValue} from "../../../shared/rotate";
 
-const Constants = require("shared/constants");
+const Constants = require("../../../shared/constants");
 
 //the main component for the chess board
 //handles callback and a lot of the logic

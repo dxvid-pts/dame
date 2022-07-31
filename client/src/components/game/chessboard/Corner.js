@@ -1,4 +1,4 @@
-import Images from "shared/images";
+import Images from "../../../shared/images";
 
 //The corner of the chessboard
 export function Corner(props) {

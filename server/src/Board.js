@@ -1,4 +1,4 @@
-const Constants = require("shared/constants");
+const Constants = require("./shared/constants");
 
 class Board {
     constructor() {

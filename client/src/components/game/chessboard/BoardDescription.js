@@ -1,6 +1,6 @@
 import './ChessBoard.css';
 
-const Images = require("shared/images");
+const Images = require("../../../shared/images");
 const descriptionSize = 35;
 
 export function BoardDescriptionSide(props) {
