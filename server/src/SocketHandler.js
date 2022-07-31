@@ -3,7 +3,7 @@ module.exports = (io, socket, gameHandler) => {
     const Game = require("./Game.js");
 
     let game = null;
-    const player = {id: socket.id, nick: null, tile: null};
+    const player = { id: socket.id, nick: null, tile: null };
 
     io.to(socket.id).emit("socketid", socket.id);
     console.log("Player " + socket.id + " connected");
@@ -25,9 +25,8 @@ module.exports = (io, socket, gameHandler) => {
         // ILLEGAL!!
         if (game.isFull()) {
             game.start();
-            sendGameState();
         }
-
+        sendGameState();
         console.log("Player " + socket.id + " joined Game " + game.id);
     }
 
@@ -60,7 +59,7 @@ module.exports = (io, socket, gameHandler) => {
                 return;
             }
 
-            if (game.isFull()) {
+            if (!game.canJoin(player)) {
                 game = null;
                 sendError(
                     14,
@@ -85,19 +84,18 @@ module.exports = (io, socket, gameHandler) => {
             return;
         }
 
-        game = new Game(
-            gameHandler.generateGameID(),
-            args.spectatable,
-            false
-        );
+        game = new Game(gameHandler.generateGameID(), args.spectatable, false);
         gameHandler.addGame(game);
-        
+
         player.nick = args.nick;
         game.join(player);
         handleJoin();
     }
 
+    //currently disabled, can be activated in the future but requires more code to work
     function onSpectateGame(args) {
+        return;
+
         if (!isValidObject(args, ["gameid"])) {
             return;
         }
@@ -127,10 +125,6 @@ module.exports = (io, socket, gameHandler) => {
         console.log("Player " + socket.id + " disconnected");
     }
 
-    // fixc when player leavers and new player joines update nextturn !!
-    //fix player spectate
-
-    
     function onMove(args) {
         if (
             !isValidObject(args, ["from", "to"]) ||
@@ -152,7 +146,7 @@ module.exports = (io, socket, gameHandler) => {
         }
 
         game.takeTurn(args.from, args.to);
-        
+
         sendGameState();
     }
 
@@ -164,7 +158,7 @@ module.exports = (io, socket, gameHandler) => {
     }
 
     function onLeaveGame() {
-        if (game == null) {
+        if (game === null) {
             return;
         }
 
@@ -173,7 +167,7 @@ module.exports = (io, socket, gameHandler) => {
 
         console.log("Player " + socket.id + " left Game " + game.id);
 
-        if (game.isEmpty()) {
+        if (game.isEmpty() || game.isPassive()) {
             gameHandler.removeGame(game);
         }
 
