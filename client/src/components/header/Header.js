@@ -14,12 +14,19 @@ export default function Header(props) {
     function getNextTurnString() {
         if(props.game.nextTurn === null){
             return "Waiting for Enemy...";
-        }else if(props.game.nextTurn === props.game.player.id){
-            return "Your Turn";
-        }else{
-            return "Enemy's Turn";
+        } else {
+            if(props.game.nextTurn === props.game.player.id){
+                if(props.game.winner !== null){
+                    return "You won!";
+                }
+                else return "Your Turn";
+            } else {
+                if(props.game.winner !== null) return "You lost!";
+                return "Enemy's Turn";
+            }
         }
     }
+    
     return (
         <div id="header" className="Header">
             <div className="HeaderElement">

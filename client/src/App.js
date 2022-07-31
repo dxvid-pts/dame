@@ -86,13 +86,14 @@ export default class App extends React.Component {
         });
 
         socket.listenOnGameState((state) => {
-            console.log(state);
-            if (state.nextTurnPlayer === null) {
+            if (state.nextTurnPlayer === null && state.winner === null) {
                 return;
             }
+            if(state.nextTurnPlayer === null && state.winner !== null) state.nextTurnPlayer = state.winner;
             //update renderer with results from server
             const g = { ...this.state.game };
             g.nextTurn = state.nextTurnPlayer.id;
+            g.winner = state.winner;
 
             const playerBottom =
                 state.nextTurnPlayer.id === socket.getSocketID()
