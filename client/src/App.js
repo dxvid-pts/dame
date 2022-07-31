@@ -25,7 +25,7 @@ export default class App extends React.Component {
             gameState: {
                 selectedTile: null,
                 highlightedFields: [],
-                tilePositions: constants.INITIAL_BOARD,
+                tilePositions: constants.EMPTY_BOARD,
                 nextPossibleTurns: [],
                 nextTurnPlayer: null,
                 currentPlayerId: null,
@@ -48,6 +48,7 @@ export default class App extends React.Component {
                         id: args.game,
                         player: args.player,
                         nextTurn: null,
+                        winner: null,
                         leaveGame: this.leaveGame,
                     },
                 });
