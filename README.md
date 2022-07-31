@@ -1,6 +1,7 @@
 # CHECKERS ONLINE
 
-An online game to play checkers with your friends and other players. If you want to go the extra mile, try to beat the AI!
+An online game to play dame with your friends and other players. If you want to go the extra mile, try to beat the AI!  
+The AI was developed on [Google Colab](https://colab.research.google.com/drive/17xtttdlepZ1xYUaP-f_Zw8k797lAug3T?usp=sharing).
 
 ## Overview
 
@@ -12,6 +13,7 @@ The project is organized in three components.
 The client is a webserver using node.js and React serving the website for the players.
 The server is a webserver using node.js and socket.io enabling real time communication and cheating protected playing.
 The ai is a python program using a socket connection to connect to the server enabling players to play against a neural-network trained artificial intelligence.
+
 
 ## Installation
 
