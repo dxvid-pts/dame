@@ -13,7 +13,7 @@ const copyToClipboard = (str) => {
 export default function Header(props) {
     function getNextTurnString() {
         if(props.game.nextTurn === null){
-            return "Waiting for Enemy to join...";
+            return "Waiting for Enemy...";
         }else if(props.game.nextTurn === props.game.player.id){
             return "Your Turn";
         }else{
@@ -26,9 +26,9 @@ export default function Header(props) {
                 <div className="HeaderText">{props.game.player.nick}</div>
             </div>
             <div className="HeaderElement">
-                <div className="HeaderText">{getNextTurnString()}</div>
+                <div className="HeaderText" id="headerCenterText">{getNextTurnString()}</div>
             </div>
-            <div className="HeaderElement" id="lastHeaderElement">
+            <div className="HeaderElement">
                 <div className="HeaderText">{props.game.id}</div>
                 <button
                     className="Button HeaderButton"
@@ -36,8 +36,7 @@ export default function Header(props) {
                 >
                     COPY
                 </button>
-            </div>
-            <div className="HeaderElement">
+           
                 <button
                     className="Button HeaderButton"
                     onClick={props.game.leaveGame}
