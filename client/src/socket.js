@@ -2,7 +2,7 @@
 export function connect(port) {
     const { io } = require("socket.io-client");
     var socketid = null;
-    const socket = io("ws://localhost:" + port);
+    const socket = io(":" + port);
     socket.on("socketid", (id) => (socketid = id));
 
     //Listening Functions
