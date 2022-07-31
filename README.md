@@ -1,6 +1,6 @@
 # CHECKERS.ONLINE
 
-An online game to play dame with your friends and other players. If you want to go the extra mile, try to beat the AI!
+An online game to play dame with your friends and other players. If you want to go the extra mile, try to beat the AI!  
 The AI was developed on [Google Colab](https://colab.research.google.com/drive/17xtttdlepZ1xYUaP-f_Zw8k797lAug3T?usp=sharing)
 
 ## Installation
