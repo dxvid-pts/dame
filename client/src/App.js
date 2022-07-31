@@ -86,6 +86,7 @@ export default class App extends React.Component {
         });
 
         socket.listenOnGameState((state) => {
+            console.log(state);
             if (state.nextTurnPlayer === null) {
                 return;
             }

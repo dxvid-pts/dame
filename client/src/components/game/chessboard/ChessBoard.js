@@ -29,7 +29,7 @@ export function ChessBoardGrid(props) {
                 const fieldState = props.globalState.tilePositions[selectedField.column][selectedField.row]
 
                 //player on field -> highlight fields
-                if (fieldState === 1 || fieldState === -1) {
+                if (fieldState !== 0) {
 
                     //get highlightedFields (fields where a tile can possibly move to) from shared code
                     let highlightedFields = [];
