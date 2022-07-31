@@ -9,10 +9,10 @@ class Board {
         let jump = false;
         let turns = [];
 
-        for(let x = 0; x < 8; x++){
-            for(let y = 0; y < 8; y++){
-                if (this.getField({x: x, y: y}) * player > 0) {
-                    const tileJumps = this.possibleTileJumps({x: x, y: y});
+        for (let x = 0; x < 8; x++) {
+            for (let y = 0; y < 8; y++) {
+                if (this.getField({ x: x, y: y }) * player > 0) {
+                    const tileJumps = this.possibleTileJumps({ x: x, y: y });
 
                     if (!jump && tileJumps.length !== 0) {
                         jump = true;
@@ -21,13 +21,15 @@ class Board {
 
                     if (jump) {
                         if (tileJumps.length !== 0) {
-                            turns.push({ from: {x: x, y: y}, to: tileJumps });
+                            turns.push({ from: { x: x, y: y }, to: tileJumps });
                         }
                     } else {
-
-                        const tileMoves = this.possibleTileMoves({x: x, y: y});
+                        const tileMoves = this.possibleTileMoves({
+                            x: x,
+                            y: y,
+                        });
                         if (tileMoves.length !== 0) {
-                            turns.push({ from: {x: x, y: y}, to: tileMoves });
+                            turns.push({ from: { x: x, y: y }, to: tileMoves });
                         }
                     }
                 }
@@ -99,7 +101,6 @@ class Board {
     }
 
     turn(from, to) {
-        
         if (Math.abs(from.x - to.x) === 2) {
             this.setField(
                 {
@@ -109,9 +110,9 @@ class Board {
                 0
             );
         }
-        if((to.y === 0 || to.y === 7) && Math.abs(this.getField(from)) === 1){
-            this.setField(to, this.getField(from)*2);
-        }else{
+        if ((to.y === 0 || to.y === 7) && Math.abs(this.getField(from)) === 1) {
+            this.setField(to, this.getField(from) * 2);
+        } else {
             this.setField(to, this.getField(from));
         }
         this.setField(from, 0);
@@ -145,7 +146,7 @@ class Board {
                         this.getField({
                             x: from.x + Math.floor((to.x - from.x) / 2),
                             y: from.y + Math.floor((to.y - from.y) / 2),
-                        }) < 0
+                        })*this.getField(from) < 0
                     ) {
                         return true;
                     }
@@ -157,7 +158,7 @@ class Board {
                         this.getField({
                             x: from.x + Math.floor((to.x - from.x) / 2),
                             y: from.y + Math.floor((to.y - from.y) / 2),
-                        }) > 0
+                        })*this.getField(from) < 0
                     ) {
                         return true;
                     }
