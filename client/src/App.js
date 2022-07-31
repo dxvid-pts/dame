@@ -15,7 +15,7 @@ import { turnBoard, turnNextPossibleTurns } from "./shared/rotate";
 
 const constants = require("./shared/constants");
 const socketConnection = require("./socket.js");
-const socket = socketConnection.connect(constants.CONNECTION_PORT);
+const socket = socketConnection.connect(4000);
 
 export default class App extends React.Component {
     constructor(props) {
