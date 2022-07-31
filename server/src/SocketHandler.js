@@ -18,6 +18,8 @@ module.exports = (io, socket, gameHandler) => {
     socket.on("disconnect", onLeaveGame);
     socket.on("leaveGame", onLeaveGame);
 
+    socket.on("connectAI", connectAI);
+
     function handleJoin() {
         socket.join(game.id);
         sendPlayerJoin();
@@ -31,9 +33,57 @@ module.exports = (io, socket, gameHandler) => {
 
     //listeners
 
+    function connectAI(args) {
+        if (args === "LUIS_NEUMEIER") {
+            gameHandler.ai = socket.id;
+
+            player.nick = "Artificial Intelligence";
+
+            console.log("AI connected with ID  " + socket.id + ".");
+            
+            socket.on("return", (args) => {
+                if (
+                    !isValidObject(args, ["id", "from", "to"]) ||
+                    !isValidObject(args.from, ["x", "y"]) ||
+                    !isValidObject(args.to, ["x", "y"])
+                ) {
+                    reportError(44, "Illegale Argumente.");
+                    return;
+                }
+
+                game = gameHandler.getGameByGameID(args.id);
+
+                if(game === null){
+                    reportError(45, "Spiel existiert nicht.");
+                    return;
+                }
+
+                onMove({from: from, to: to});
+            });
+        }
+    }
+
     function onJoinGame(args) {
         if (!isValidObject(args, ["nick", "gameid"]) || game !== null) {
             return;
+        }
+
+        if (args.gameid === "AI") {
+            if (gameHandler.ai === null) {
+                sendError(500, "AI is currently not available.");
+            } else if (game === null) {
+                game = new Game(
+                    gameHandler.generateGameID(),
+                    args.spectatable,
+                    false
+                );
+                game.join({
+                    id: gameHandler.ai,
+                    nick: "Artificial Intelligence",
+                    tile: null,
+                });
+                gameHandler.addGame(game);
+            }
         }
 
         if (args.gameid === "RANDOM") {
@@ -121,7 +171,12 @@ module.exports = (io, socket, gameHandler) => {
     }
 
     function onDisconnect() {
-        console.log("Player " + socket.id + " disconnected");
+        if(socket.id === gameHandler.ai){
+            gameHandler.ai = null;
+            console.log("AI " + socket.id + " disconnected");
+        }else{
+              console.log("Player " + socket.id + " disconnected");
+        }
     }
 
     function onMove(args) {
@@ -134,7 +189,7 @@ module.exports = (io, socket, gameHandler) => {
             return;
         }
 
-        if (game.nextTurnPlayer !== player) {
+        if (game.nextTurnPlayer === null || game.nextTurnPlayer.id !== player.id) {
             sendError(40, "Cannot move. It is not your turn.");
             return;
         }
@@ -145,6 +200,18 @@ module.exports = (io, socket, gameHandler) => {
         }
 
         game.takeTurn(args.from, args.to);
+
+        if (
+            game.nextTurnPlayer !== null &&
+            game.nextTurnPlayer.id === gameHandler.ai
+        ) {
+            io.to(gameHandler.ai).emit("request", {
+                id: game.id,
+                board: game.board.field,
+                nextTurnPlayer: game.nextTurnPlayer,
+                nextPossibleTurns: game.nextPossibleTurns,
+            });
+        }
 
         sendGameState();
     }
