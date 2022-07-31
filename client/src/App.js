@@ -119,7 +119,7 @@ export default class App extends React.Component {
     }
 
     getGamePath() {
-        return this.state.game === null ? "" : this.state.game.id;
+        return this.state.game === null ? "" : "/"+this.state.game.id;
     }
 
     render() {
@@ -160,7 +160,7 @@ export default class App extends React.Component {
                             element={<Navigate replace to="/" />}
                         ></Route>
                         <Route
-                            path="test"
+                            path="/test"
                             element={
                                 <GamePage
                                     socket={socket}
