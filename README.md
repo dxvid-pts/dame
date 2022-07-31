@@ -1,16 +1,26 @@
-# CHECKERS.ONLINE
+# CHECKERS ONLINE
 
 An online game to play dame with your friends and other players. If you want to go the extra mile, try to beat the AI!  
 The AI was developed on [Google Colab](https://colab.research.google.com/drive/17xtttdlepZ1xYUaP-f_Zw8k797lAug3T?usp=sharing).
 
+## Overview
+
+The project is organized in three components.
+- client
+- server
+- ai
+
+The client is a webserver using node.js and React serving the website for the players.
+The server is a webserver using node.js and socket.io enabling real time communication and cheating protected playing.
+The ai is a python program using a socket connection to connect to the server enabling players to play against a neural-network trained artificial intelligence.
+
+
 ## Installation
 
-The project is organized in three parts.
-- client
-- shared
-- server
+The easiest way to install and run Checkers Online is using `docker-compose`.
+Navigate into the root folder of Checkers Online and run `docker-compose up`.
+If you do not want to use docker you are also able to manually install each component by navigating in it's folder and following the steps shown in `Dockerfile`.
 
-To run the project locally you need to compile the client and the server.
 
 ### Installing the client
 
@@ -28,26 +38,3 @@ Note that you still need to run the server locally otherwise the website will no
 2. Run `npm install` to install all the needed components
 3. Run `NODE_ENV=production node src/start.js` to start the server in production mode. Make sure to have Node installed on you system.
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
