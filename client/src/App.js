@@ -11,9 +11,9 @@ import GamePage from "./pages/gamePage/GamePage";
 import StartPage from "./pages/startPage/StartPage";
 
 import Error from "./components/error/Error";
-import { turnBoard, turnNextPossibleTurns } from "shared/rotate";
+import { turnBoard, turnNextPossibleTurns } from "./shared/rotate";
 
-const constants = require("shared/constants");
+const constants = require("./shared/constants");
 const socketConnection = require("./socket.js");
 const socket = socketConnection.connect(constants.CONNECTION_PORT);
 

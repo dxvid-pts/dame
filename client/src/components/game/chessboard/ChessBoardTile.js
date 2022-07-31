@@ -1,6 +1,6 @@
 import {useState} from "react";
-import Images from "shared/images";
-import Constants from "shared/constants";
+import Images from "../../../shared/images";
+import Constants from "../../../shared/constants";
 import {PlayerTile} from "./PlayerTile";
 
 //a grid element of the chessboard containing the background and the tile
