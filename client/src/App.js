@@ -119,36 +119,11 @@ export default class App extends React.Component {
     }
 
     getGamePath() {
-        return this.state.game === null ? "" : "/"+this.state.game.id;
+        return this.state.game === null ? "" : "/" + this.state.game.id;
     }
 
     render() {
-        let test =  (
-            <div className="App">
-                {this.state.error}
-                <Router>
-                    <Routes>
-                        
-                        <Route
-                            exact path="/"
-                            element={
-                                <GamePage
-                                    socket={socket}
-                                    game={{
-                                        id: "TEST",
-                                        player: {id: null, tile: -1, nick: "TEST_PLAYER"},
-                                        nextTurn: null,
-                                        leaveGame: this.leaveGame,
-                                    }}
-                                    gameState={this.state.gameState}
-                                    msg={this.state.msg}
-                                />
-                            }
-                        />
-                    </Routes>
-                </Router>
-            </div>);
-        let real =  (
+        return (
             <div className="App">
                 {this.state.error}
                 <Router>
@@ -191,7 +166,11 @@ export default class App extends React.Component {
                                     socket={socket}
                                     game={{
                                         id: "TEST",
-                                        player: {id: null, tile: -1, nick: "TEST_PLAYER"},
+                                        player: {
+                                            id: null,
+                                            tile: -1,
+                                            nick: "TEST_PLAYER",
+                                        },
                                         nextTurn: null,
                                         leaveGame: this.leaveGame,
                                     }}
@@ -204,6 +183,5 @@ export default class App extends React.Component {
                 </Router>
             </div>
         );
-        return test;
     }
 }
