@@ -28,7 +28,7 @@
     margin: 0 16px 0 16px;
 }
 
-.Menu{
+.Menu {
     flex-grow: 2;
 }
 
@@ -52,7 +52,7 @@
     border-radius: 4px;
 }
 
-.Menu .Input{
+.Menu .Input {
     text-align: center;
 }
 
@@ -64,6 +64,6 @@
     font-size: 18px;
 }
 
-.PlayButton{
+.PlayButton {
     text-align: center;
 }

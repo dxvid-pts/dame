@@ -31,10 +31,7 @@ class GameHandler {
     }
 
     generateGameID() {
-        return (
-            this.openGamesCount.toString() +
-            Math.floor(Math.random() * 10000)
-        )
+        return (this.openGamesCount.toString() + Math.floor(Math.random() * 10000))
             .substring(0, 5)
             .toString();
     }

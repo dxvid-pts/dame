@@ -1,6 +1,5 @@
-
 export function connect(port) {
-    const { io } = require("socket.io-client");
+    const {io} = require("socket.io-client");
     var socketid = null;
     const socket = io(":" + port);
     socket.on("socketid", (id) => (socketid = id));
@@ -48,16 +47,14 @@ export function connect(port) {
     //create game event
     function sendCreateGame(nick, spectatable) {
         socket.emit("createGame", {
-            nick: nick,
-            spectatable: spectatable
+            nick: nick, spectatable: spectatable
         });
     }
 
     //join game event
     function sendJoinGame(nick, gameid) {
         socket.emit("joinGame", {
-            nick: nick,
-            gameid: gameid,
+            nick: nick, gameid: gameid,
         });
     }
 
@@ -83,8 +80,8 @@ export function connect(port) {
     //send game move
     function sendMove(fX, fY, tX, tY) {
         socket.emit("move", {
-             from: { x: fX, y: fY }, to: { x: tX, y: tY } },
-        );
+            from: {x: fX, y: fY}, to: {x: tX, y: tY}
+        },);
     }
 
     //Getters + Setters

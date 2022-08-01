@@ -140,8 +140,8 @@ Each time somebody in your game sends a message you will be informed.
         <td>Über jeder Komponente finden sich Kommentare.</td>
     </tr>
 <tr>
-        <td></td>
-        <td></td>
+        <td>Formatierung</td>
+        <td>Jede Datei wurde automatisch mittels WebStorm formatiert.</td>
     </tr>
 <tr>
         <td></td>

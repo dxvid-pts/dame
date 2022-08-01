@@ -7,7 +7,7 @@ export default class StartPage extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { nickname: null, gameid: ""};
+        this.state = {nickname: null, gameid: ""};
         this.socket = props.socket;
 
         this.onCreateGame = this.onCreateGame.bind(this);
@@ -25,7 +25,7 @@ export default class StartPage extends React.Component {
     }
 
     //on join event
-    onJoinGame(){
+    onJoinGame() {
         if (this.state.nickname === null || this.state.gameid === "") {
             return;
         }
@@ -49,8 +49,7 @@ export default class StartPage extends React.Component {
     }
 
     render() {
-        return (
-            <div className="StartPage">
+        return (<div className="StartPage">
                 <div className="Title">
                     <div className="Black">Checkers</div>
                     <div className="White">Online</div>
@@ -69,9 +68,7 @@ export default class StartPage extends React.Component {
                             placeholder="Nickname"
                             autoComplete="off"
                             required
-                            onChange={(event) =>
-                                this.setState({ nickname: event.target.value })
-                            }
+                            onChange={(event) => this.setState({nickname: event.target.value})}
                         ></input>
                     </div>
                     <div className="SubMenu">
@@ -88,9 +85,7 @@ export default class StartPage extends React.Component {
                             className="Input"
                             placeholder="Game ID"
                             autoComplete="off"
-                            onChange={(event) =>
-                                this.setState({ gameid: event.target.value })
-                            }
+                            onChange={(event) => this.setState({gameid: event.target.value})}
                         ></input>
                         <button
                             className="Button PlayButton"
@@ -113,7 +108,6 @@ export default class StartPage extends React.Component {
                         </button>
                     </div>
                 </form>
-            </div>
-        );
+            </div>);
     }
 }
