@@ -17,6 +17,7 @@ class Game {
         this.enemy = null;
     }
 
+    //start gane
     start() {
         this.nextTurnPlayer = this.enemy;
         this.nextPossibleTurns = this.board.possibleTurns(
@@ -24,6 +25,7 @@ class Game {
         );
     }
 
+    //handles player join
     join(player) {
         player.active = true;
 
@@ -49,6 +51,7 @@ class Game {
         }
     }
 
+    //handles player leave
     leave(player) {
         if (this.player !== null && this.player.id === player.id) {
             this.player.active = false;
@@ -57,6 +60,7 @@ class Game {
         }
     }
 
+    //handles player turn check
     isTurnAllowed(from, to) {
         let tile = this.nextPossibleTurns.find(
             (location) =>
@@ -76,6 +80,7 @@ class Game {
         return tile_to !== null;
     }
 
+    //handles player turn
     takeTurn(from, to) {
         this.board.turn(from, to);
 

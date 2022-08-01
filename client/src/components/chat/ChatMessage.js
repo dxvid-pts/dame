@@ -6,6 +6,7 @@ export default function ChatMessage(props) {
     const date = new Date(props.msg.time);
     const time = date.getHours() + ":" + date.getMinutes();
 
+    //extract class of sender
     function getMessageClass() {
         if (props.msg.sender === "sys") {
             return "sys";
@@ -17,6 +18,7 @@ export default function ChatMessage(props) {
         }
     }
 
+    //extract name of sender
     function getName() {
         return getMessageClass() !== "sys" ? (
             <div className="MessageInfo">{props.msg.sender.nick + ", " + time}</div>

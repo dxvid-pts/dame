@@ -14,6 +14,7 @@ class Board {
         ]
     }
 
+    //returns every possible turns a player can take
     possibleTurns(player) {
         let jump = false;
         let turns = [];
@@ -48,6 +49,7 @@ class Board {
         return turns;
     }
 
+    //returns every possible move a player can take
     possibleTileMoves(tile) {
         const moves = [];
 
@@ -70,6 +72,7 @@ class Board {
         return moves;
     }
 
+    //returns every possible jump a player can take
     possibleTileJumps(tile) {
         const jumps = [];
 
@@ -109,6 +112,7 @@ class Board {
         );
     }
 
+    //turn tile
     turn(from, to) {
         if (Math.abs(from.x - to.x) === 2) {
             this.setField(
@@ -127,6 +131,7 @@ class Board {
         this.setField(from, 0);
     }
 
+    //checks whether tile move is possible
     isTileMovePossible(from, to) {
         from.value = this.getField(from);
         to.value = this.getField(to);
@@ -145,6 +150,7 @@ class Board {
         return false;
     }
 
+    //checks whether tile jump is possible
     isTileJumpPossible(from, to) {
         from.value = this.getField(from);
         to.value = this.getField(to);

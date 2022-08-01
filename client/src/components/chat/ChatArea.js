@@ -1,6 +1,7 @@
 import ChatMessage from "./ChatMessage.js";
 import "./ChatArea.css";
 
+//chat component that displays all the messages in the chat area
 export default function ChatArea(props) {
     const socket = props.socket;
 

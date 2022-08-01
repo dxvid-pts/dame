@@ -4,6 +4,7 @@ import Header from "../../components/header/Header";
 
 import "./GamePage.css";
 
+//layout component for the chess grid
 export default function GamePage(props) {
     return (
         <div className="GamePage">

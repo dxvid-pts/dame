@@ -17,6 +17,7 @@ const constants = require("./shared/constants");
 const socketConnection = require("./socket.js");
 const socket = socketConnection.connect(4000);
 
+//root app component
 export default class App extends React.Component {
     constructor(props) {
         super(props);
@@ -41,6 +42,7 @@ export default class App extends React.Component {
     }
 
     componentDidMount() {
+        //on player join event
         socket.listenOnPlayerJoin((args) => {
             if (args.player.id === socket.getSocketID()) {
                 this.setState({
@@ -62,10 +64,12 @@ export default class App extends React.Component {
             this.setState({ msg: newMSG });
         });
 
+        //on error event
         socket.listenOnError((args) => {
             this.setState({ error: <Error msg={args.msg} render={true} /> });
         });
 
+        //message event
         socket.listenOnMessage((args) => {
             const newMSG = [...this.state.msg];
             newMSG.push({
@@ -76,6 +80,7 @@ export default class App extends React.Component {
             this.setState({ msg: newMSG });
         });
 
+        //player leave event
         socket.listenOnPlayerLeave((args) => {
             const newMSG = [...this.state.msg];
             newMSG.push({
@@ -86,6 +91,7 @@ export default class App extends React.Component {
             this.setState({ msg: newMSG });
         });
 
+        //game start event
         socket.listenOnGameState((state) => {
             if (state.nextTurnPlayer === null && state.winner === null) {
                 return;
@@ -117,11 +123,13 @@ export default class App extends React.Component {
         });
     }
 
+    //method to leave the game
     leaveGame() {
         socket.sendLeaveGame();
         this.setState({ game: null, msg: [] });
     }
 
+    //get path to web page
     getGamePath() {
         return this.state.game === null ? "" : "/" + this.state.game.id;
     }

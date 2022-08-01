@@ -52,6 +52,7 @@ function turnArray(array) {
     return array;
 }
 
+//swap items in an array
 Array.prototype.swapItems = function (a, b) {
     this[a] = this.splice(b, 1, this[a])[0];
     return this;
