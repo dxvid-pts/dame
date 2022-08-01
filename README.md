@@ -36,7 +36,7 @@ following the steps shown in `Dockerfile`.
 ### WARNING
 
 Using gitpod to run this program is currently not possible. This is a result of gitpod adding the port number in front
-of the domain name. This results in a problem where the client cannot establish a socket connection to the server.
+of the domain name. This results in a problem where the client cannot establish a socket connection to the server. Should there be any problems setting everything up locally, we offer personal help for the installation. Just send an email to: daves.mail424@gmail.com
 
 ## Projektfeatures
 
