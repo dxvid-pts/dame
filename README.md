@@ -19,11 +19,11 @@ neural-network trained artificial intelligence.
 
 ## Outline 
 
-| [Overview](https://github.com/DHBW-Vilas/dame/edit/master/README.md#overview)  |
+| [Overview](https://github.com/DHBW-Vilas/dame#overview)  |
 |---|
-|  [Installation](https://github.com/DHBW-Vilas/dame/edit/master/README.md#installation) |
-| [Features](https://github.com/DHBW-Vilas/dame/edit/master/README.md#projektfeatures)  |
-| [Documentation](https://github.com/DHBW-Vilas/dame/edit/master/README.md#documentation)  |
+|  [Installation](https://github.com/DHBW-Vilas/dame#installation) |
+| [Features](https://github.com/DHBW-Vilas/dame#projektfeatures)  |
+| [Documentation](https://github.com/DHBW-Vilas/dame#documentation)  |
 
 ## Installation
 
