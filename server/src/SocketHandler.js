@@ -26,6 +26,15 @@ module.exports = (io, socket, gameHandler) => {
 
         if (game.isFull()) {
             game.start();
+            if (game.nextTurnPlayer.Id === gameHandler.ai.id) {
+                console.log("Sending move to AI")
+                io.to(gameHandler.ai).emit("request", {
+                    id: game.id,
+                    board: game.board.field,
+                    nextTurnPlayer: game.nextTurnPlayer,
+                    nextPossibleTurns: game.nextPossibleTurns,
+                });
+            }
         }
      
         sendGameState();
