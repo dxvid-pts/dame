@@ -5,6 +5,31 @@ import json
 
 import ai_loader
 
+import socketio
+
+sio = socketio.AsyncClient()
+
+@sio.event
+async def connect():
+    print('connection established')
+
+@sio.event
+async def my_message(data):
+    print('message received with ', data)
+    await sio.emit('my response', {'response': 'my response'})
+
+@sio.event
+async def disconnect():
+    print('disconnected from server')
+
+async def main():
+    await sio.connect('http://localhost:4000')
+    await sio.wait()
+
+
+asyncio.run(main())
+
+
 class Connection:
 
     def __init__(self):
@@ -33,9 +58,10 @@ class Connection:
 
 
     async def main(self):
-        async with websockets.serve(self.handler, "localhost", 4000):
+        await websockets.send()
+        async with websockets.serve(self.handler, "localhost", 8001):
             await asyncio.Future()
 
 print("Setting up Connection...")
-c1 = Connection()
+#c1 = Connection()
     
