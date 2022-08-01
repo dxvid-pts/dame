@@ -157,3 +157,86 @@ Each time somebody in your game sends a message you will be informed.
   </tbody>
 </table>
 
+### Funktionen
+
+<table>
+  <thead>
+    <tr>
+      <th>Vorgabe</th>
+      <th>Umsetzung</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Login</td>
+      <td>Spieler können mittels game-id und nickname in Spielen beitreten.</td>
+    </tr>
+    <tr>
+      <td>Formulare</td>
+      <td>Implementierung eines kompletten Chats sowie Startformularen.</td>
+    </tr>
+    <tr>
+        <td>Validierung</td>
+        <td>Jeder Spielzug wird vom Server validiert um cheating zu verhindern.</td>
+    </tr>
+<tr>
+        <td>Sicherheit</td>
+        <td>grundlegender Schutz gegen Webangriffe gegeben; starke Validierung.</td>
+    </tr>
+<tr>
+        <td>Dynamik</td>
+        <td>Der Einsatz von React macht die Webseite zu dynamisch und gleichzeitig SEO-freundlich.</td>
+    </tr>
+<tr>
+        <td>Usecases berücksichtigt</td>
+        <td>Das Spiel wurde ausgiebig und getestet und geprüft und hat in unseren Tests einwandfrei funktioniert.</td>
+    </tr>
+<tr>
+        <td>Fehlermeldungen</td>
+<td>Starke Validierung und Fehlermeldungen in Form einer [Snackbar] (https://material.io/components/snackbars), direkt-Feedback und Tooltips bei falschen Formulareingaben.</td>
+</tr>
+<tr>
+        <td>Fehler vorhanden</td>
+<td>Umfangreiche Testung auf unseren Test-Computern.</td>
+</tr>
+<tr>
+        <td>KI</td>
+<td>Verwendung von Künstlicher Intelligenz im Backend-System.</td>
+</tr>
+  </tbody>
+</table>
+
+
+### Design
+
+<table>
+  <thead>
+    <tr>
+      <th>Vorgabe</th>
+      <th>Umsetzung</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Browserkompatibilität</td>
+      <td>Umfangreiche Testung auf allen modernen Browsern (Edge, Firefox, Chrome, Safari).</td>
+    </tr>
+    <tr>
+      <td>Seitenaufbau</td>
+      <td>Optimierung auf responsive Design und verständlicher Seitenaufbau.</td>
+    </tr>
+    <tr>
+        <td>Benutzbarkeit</td>
+        <td>Wer die Regeln von Dame kennt, wird sich auf der Seite super zurechtfinden.</td>
+    </tr>
+<tr>
+        <td>Hilfetexte</td>
+        <td>Hilfetexte und Tooltips vorhanden.</td>
+    </tr>
+<tr>
+        <td>W3C</td>
+        <td>Positive Validierung unserer Testwebsite (https://cerulean-souffle-da2b8a.netlify.app/) mittels validator.w3.org und sehr guter Lighthouse-Score.</td>
+    </tr>
+  </tbody>
+</table>
+
