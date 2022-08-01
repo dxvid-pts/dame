@@ -15,4 +15,4 @@ COPY . .
 
 EXPOSE 5000
 
-CMD python3 start.py
+CMD python3 connection.py
