@@ -44,7 +44,6 @@ module.exports = (io, socket, gameHandler) => {
             console.log("AI connected with ID  " + socket.id + ".");
 
             socket.on("return", (args) => {
-<<<<<<< HEAD
                 console.log(args)
                 
                 args = JSON.parse(args);
@@ -59,13 +58,10 @@ module.exports = (io, socket, gameHandler) => {
 
                 game = gameHandler.getGameByGameID(args.id);
 
-<<<<<<< HEAD
                 if(game === null){
                     sendError(45, "Spiel existiert nicht.");
-=======
-                if (game === null) {
-                    reportError(45, "Spiel existiert nicht.");
->>>>>>> ce675ad7b6776c4183704580deb9ff0fb9eff963
+
+
                     return;
                 }
 
