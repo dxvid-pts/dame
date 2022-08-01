@@ -11,6 +11,9 @@ class Connection:
         asyncio.run(self.main())
 
     async def handler(self, websocket):
+        login = {"connectAI":"LUIS_NEUMEIER"}
+        await websocket.send(json.dumps(login))
+        
         while True:
             message = await websocket.recv()
             print(message)
@@ -30,5 +33,5 @@ class Connection:
 
 
     async def main(self):
-        async with websockets.serve(self.handler, "", 8001):
+        async with websockets.serve(self.handler, "localhost", 4000):
             await asyncio.Future()  # run forever
