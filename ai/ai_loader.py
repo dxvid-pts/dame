@@ -1,4 +1,4 @@
-from tensorflow import models
+import tensorflow as tf
 import numpy as np
 import os
 
@@ -21,15 +21,15 @@ def board_to_input(player_turn, board_array):
     return nparray[indexes]
 
 class Loader:
-    models = {}
+    model = None
 
-    def load_model(self, strength):
+    def load_model(self):
         if strength not in self.models.keys():
-            if os.path.exists("ai"+str(strength)):
-                self.models[strength] = models.load("ai"+str(strength))
+            if os.path.exists("ai"):
+                self.models = tf.keras.models.load("ai")
     
-    def get_move(self, board, player_turn, must_move_xy, strength):
-        if strength not in self.models.keys():
+    def get_move(self, board, player_turn, must_move_xy):
+        if self.model == None:
             self.load_model(strength)
 
         move_finder = moves.MoveFinder(board, player_turn, must_move_xy)
@@ -37,7 +37,7 @@ class Loader:
         possible_moves = outcomes[0]
         possible_boards = outcomes[1]
         
-        ratings = player_turn * [self.models[strength](board_to_input(-player_turn, board)) for board in possible_boards]
+        ratings = player_turn * [self.model(board_to_input(-player_turn, board)) for board in possible_boards]
 
         move = possible_moves[np.array(ratings).argmax()]
         move = move[move[6] == 0]
