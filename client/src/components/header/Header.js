@@ -4,8 +4,7 @@ import "./Header.css";
 
 //copy the current game id to the clipboard when available
 const copyToClipboard = (str) => {
-    if (navigator && navigator.clipboard && navigator.clipboard.writeText)
-        return navigator.clipboard.writeText(str);
+    if (navigator && navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(str);
     return Promise.reject("The Clipboard API is not available.");
 };
 
@@ -30,8 +29,7 @@ export default function Header(props) {
         }
     }
 
-    return (
-        <div id="header" className="Header">
+    return (<div id="header" className="Header">
             <div className="HeaderElement">
                 <div className="HeaderText">{props.game.player.nick}</div>
             </div>
@@ -56,6 +54,5 @@ export default function Header(props) {
                     LEAVE
                 </button>
             </div>
-        </div>
-    );
+        </div>);
 }

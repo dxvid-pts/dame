@@ -6,12 +6,9 @@ function turnNextPossibleTurns(nextPossibleTurns) {
         for (const t of e.to) {
             newTo.push(turnPosition(t));
         }
-        newNextPossibleTurns.push(
-            {
-                from: turnPosition(e.from),
-                to: newTo,
-            }
-        );
+        newNextPossibleTurns.push({
+            from: turnPosition(e.from), to: newTo,
+        });
 
     }
     return newNextPossibleTurns;
@@ -20,8 +17,7 @@ function turnNextPossibleTurns(nextPossibleTurns) {
 //rotates a position object
 function turnPosition(position) {
     return {
-        x: turnValue(position.x),
-        y: turnValue(position.y),
+        x: turnValue(position.x), y: turnValue(position.y),
     };
 }
 
@@ -52,13 +48,12 @@ function turnArray(array) {
     return array;
 }
 
+//swap items in an array
 Array.prototype.swapItems = function (a, b) {
     this[a] = this.splice(b, 1, this[a])[0];
     return this;
 };
 
 module.exports = {
-    turnNextPossibleTurns,
-    turnValue,
-    turnBoard,
+    turnNextPossibleTurns, turnValue, turnBoard,
 };

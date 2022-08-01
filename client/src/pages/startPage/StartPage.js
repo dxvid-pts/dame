@@ -2,11 +2,12 @@ import React from "react";
 
 import "./StartPage.css";
 
+//component for the start page
 export default class StartPage extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = { nickname: null, gameid: ""};
+        this.state = {nickname: null, gameid: ""};
         this.socket = props.socket;
 
         this.onCreateGame = this.onCreateGame.bind(this);
@@ -15,6 +16,7 @@ export default class StartPage extends React.Component {
         this.onPlayRandom = this.onPlayRandom.bind(this);
     }
 
+    //on create game event
     onCreateGame() {
         if (this.state.nickname === null) {
             return;
@@ -22,13 +24,15 @@ export default class StartPage extends React.Component {
         this.socket.sendCreateGame(this.state.nickname, false);
     }
 
-    onJoinGame(){
+    //on join event
+    onJoinGame() {
         if (this.state.nickname === null || this.state.gameid === "") {
             return;
         }
         this.socket.sendJoinGame(this.state.nickname, this.state.gameid);
     }
 
+    //on play random event
     onPlayRandom() {
         if (this.state.nickname === null) {
             return;
@@ -36,6 +40,7 @@ export default class StartPage extends React.Component {
         this.socket.sendJoinGame(this.state.nickname, "RANDOM");
     }
 
+    //on play AI event
     onPlayAI() {
         if (this.state.nickname === null) {
             return;
@@ -44,8 +49,7 @@ export default class StartPage extends React.Component {
     }
 
     render() {
-        return (
-            <div className="StartPage">
+        return (<div className="StartPage">
                 <div className="Title">
                     <div className="Black">Checkers</div>
                     <div className="White">Online</div>
@@ -64,9 +68,7 @@ export default class StartPage extends React.Component {
                             placeholder="Nickname"
                             autoComplete="off"
                             required
-                            onChange={(event) =>
-                                this.setState({ nickname: event.target.value })
-                            }
+                            onChange={(event) => this.setState({nickname: event.target.value})}
                         ></input>
                     </div>
                     <div className="SubMenu">
@@ -83,9 +85,7 @@ export default class StartPage extends React.Component {
                             className="Input"
                             placeholder="Game ID"
                             autoComplete="off"
-                            onChange={(event) =>
-                                this.setState({ gameid: event.target.value })
-                            }
+                            onChange={(event) => this.setState({gameid: event.target.value})}
                         ></input>
                         <button
                             className="Button PlayButton"
@@ -108,7 +108,6 @@ export default class StartPage extends React.Component {
                         </button>
                     </div>
                 </form>
-            </div>
-        );
+            </div>);
     }
 }

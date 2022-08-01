@@ -5,11 +5,13 @@ class GameHandler {
         this.ai = null;
     }
 
+    //returns the game with the given id
     getGameByGameID(id) {
         const game = this.games.find((game) => game.id === id);
         return game === undefined ? null : game;
     }
 
+    //returns game by search
     getGameBySearching() {
         const game = this.games.find((game) => !game.isFull() && game.searching);
         return game === undefined ? null : game;
@@ -29,10 +31,7 @@ class GameHandler {
     }
 
     generateGameID() {
-        return (
-            this.openGamesCount.toString() +
-            Math.floor(Math.random() * 10000)
-        )
+        return (this.openGamesCount.toString() + Math.floor(Math.random() * 10000))
             .substring(0, 5)
             .toString();
     }

@@ -9,16 +9,16 @@
     border-bottom: solid 4px rgb(70, 0, 0);
 }
 
-.HeaderElement{
+.HeaderElement {
     display: flex;
     align-items: center;
 }
 
-#headerCenterText{
+#headerCenterText {
     max-width: 40vw;
 }
 
-.HeaderText{
+.HeaderText {
     color: white;
     margin-left: 4px;
     margin-right: 4px;
@@ -29,10 +29,10 @@
     max-width: 18vw;
 }
 
-.HeaderButton{
+.HeaderButton {
     color: white;
     box-shadow: 0 4px black;
-    height:30px;
+    height: 30px;
     padding-left: 12px;
     padding-right: 12px;
     font-size: 100%;
