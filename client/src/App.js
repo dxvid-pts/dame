@@ -76,24 +76,19 @@ export default class App extends React.Component {
         });
 
         //game start event
-        socket.listenOnGameState((state) => {
-            if (state.nextTurnPlayer === null && state.winner === null) {
-                return;
-            }
-            //if game is won = nextTurnPlayer is set to the winner
-            if (state.nextTurnPlayer === null && state.winner !== null) state.nextTurnPlayer = state.winner;
+        socket.listenOnGameState((args) => {
             //update renderer with results from server
             const g = {...this.state.game};
-            g.nextTurn = state.nextTurnPlayer.id;
-            g.winner = state.winner;
+            g.nextTurn = args.nextTurnPlayer.id;
+            g.winner = args.winner;
 
-            const playerBottom = state.nextTurnPlayer.id === socket.getSocketID() ? state.nextTurnPlayer.tile === -1 : state.nextTurnPlayer.tile === 1;
+            const playerBottom = args.nextTurnPlayer.id === socket.getSocketID() ? args.nextTurnPlayer.tile === -1 : args.nextTurnPlayer.tile === 1;
 
             //game logic
             let newGame = {...this.state.gameState};
-            newGame["tilePositions"] = playerBottom ? state.board : turnBoard(state.board);
-            newGame["nextPossibleTurns"] = playerBottom ? state.nextPossibleTurns : turnNextPossibleTurns(state.nextPossibleTurns);
-            newGame["nextTurnPlayer"] = state.nextTurnPlayer.id;
+            newGame["tilePositions"] = playerBottom ? args.board : turnBoard(args.board);
+            newGame["nextPossibleTurns"] = playerBottom ? args.nextPossibleTurns : turnNextPossibleTurns(args.nextPossibleTurns);
+            newGame["nextTurnPlayer"] = args.nextTurnPlayer.id;
             newGame["currentPlayerId"] = socket.getSocketID();
             newGame["playerBottom"] = playerBottom;
             this.setState({gameState: newGame, game: g});
