@@ -119,6 +119,8 @@ Each time somebody in your game sends a message you will be informed.
 
 # Projektfeatures
 
+### Programmcode
+
 <table>
   <thead>
     <tr>
@@ -144,16 +146,12 @@ Each time somebody in your game sends a message you will be informed.
         <td>Jede Datei wurde automatisch mittels WebStorm formatiert.</td>
     </tr>
 <tr>
-        <td></td>
-        <td></td>
+        <td>Gliederung</td>
+        <td>Es wurde ein großer Fokus darauf gelegt, jede Komponente in Unterkomponenten und Funktion in Unterfunktionen auzuteilen wo es Programmier- und Performancetechnisch Sinn gemacht hat.</td>
     </tr>
 <tr>
-        <td></td>
-        <td></td>
-    </tr>
-<tr>
-        <td></td>
-        <td></td>
+        <td>Programmiertechnik</td>
+        <td>Große Wertlegung in State-of-the-Art Frameworks wie React und Techniken wie Tensorflow/KI</td>
     </tr>
 
   </tbody>
