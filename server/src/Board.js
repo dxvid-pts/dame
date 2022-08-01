@@ -2,7 +2,16 @@ const Constants = require("./shared/constants");
 
 class Board {
     constructor() {
-        this.field = Constants.INITIAL_BOARD;
+        this.field = [
+            [1, 0, 1, 0, 1, 0, 1, 0],
+            [0, 1, 0, 1, 0, 1, 0, 1],
+            [1, 0, 1, 0, 1, 0, 1, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, -1, 0, -1, 0, -1, 0, -1],
+            [-1, 0, -1, 0, -1, 0, -1, 0],
+            [0, -1, 0, -1, 0, -1, 0, -1],
+        ]
     }
 
     possibleTurns(player) {
