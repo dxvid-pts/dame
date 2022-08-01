@@ -17,6 +17,15 @@ The server is a webserver using node.js and socket.io enabling real time communi
 The ai is a python program using a socket connection to connect to the server enabling players to play against a
 neural-network trained artificial intelligence.
 
+## Outline 
+
+| Outline  |
+|---|
+| [Overview](https://github.com/DHBW-Vilas/dame#overview) |
+|  [Installation](https://github.com/DHBW-Vilas/dame#installation) |
+| [Features](https://github.com/DHBW-Vilas/dame#projektfeatures)  |
+| [Documentation](https://github.com/DHBW-Vilas/dame#documentation)  |
+
 ## Installation
 
 The easiest way to install and run Checkers Online is using `docker-compose`.
@@ -29,95 +38,7 @@ following the steps shown in `Dockerfile`.
 Using gitpod to run this program is currently not possible. This is a result of gitpod adding the port number in front
 of the domain name. This results in a problem where the client cannot establish a socket connection to the server.
 
-## Documentation
-
-### Client
-
-#### General
-
-If you access the startpage you can create or join a game. You are also able to play vs an ai.
-After you selected your choice (see next points). You get redirected to the main game page. On the righthandside you see
-the Chat.
-Above the chat can see and copy the LobbyID. There is also a "leave" button. This brings you back to the startpage.
-On the lefthandside you can access the game. Above the game you can see the current state, like winner and the current
-turn.
-
-#### Play the Game
-
-You play the game by simply clicking the checker you want to move. The game shows you how the figure can move.
-Please be aware you are not allowed to move any checker if one can kill an enemy.
-
-#### Game start
-
-##### Creating a new Game
-
-Give yourself a nickname. If you want to create a new lobby, click "create game" after filling in your nickname.
-After you created the game you get redirected to the game page.
-
-##### Join a game
-
-If you want to join a game, please fill in your nickname and the lobbyID you want to join and click "join".
-
-### Server
-
-To use the server you need to establish a socket connection. Once established the server will respond to you with your
-Socket-ID. This is important for late when you are ingame.
-
-#### Querys
-
-Each query you can send to the server with its requirements.
-
-##### "joinGame"  requires JSON {nick, gameid}
-
-Checks if the game of gameid exists or if the gameid is specified as "RANDOM". If so it either connects to a open random
-game or if the game of gameid is not already full joins the game.
-
-##### "createGame" requires JSON {nick, spectatable}
-
-Creates a new game with a random gameid. Spectatable specifies if other people can watch the game, but is currently not
-implemented.
-
-##### "move" requires JSON {from, to}
-
-If you are ingame it checks if its your turn and if your move is allowed. If so it updates the gamestate.
-
-##### "message" requires JSON {msg}
-
-If you are ingame it sends the message to all people in the current game.
-
-##### "leaveGame" requires JSON {}
-
-If you are ingame it disconnects you from the game and informs the other people that you left. Only you are able to
-reconnect to the game. If there are no active players left in the game the game is deleted.
-
-#### Responses
-
-Each response the server sends depending on your previous action.
-
-##### "error" sends JSON {code, msg, time}
-
-If you send a illegal request you will be informed.
-
-##### "gameState" sends JSON {board, turns, nextTurnPlayer, nextPossibleTurns, winner, time}
-
-Each time the gameState changes it sends it to all connected players. `nextTurnPlayer` specifies whos turn it is, all
-possible turns are listed in `nextPossibleTurns`. If no turns are possible the winner is selected. You know if its your
-turn by looking at `nextTurnPlayer.id` it will match your Socket ID.
-
-##### "playerJoin" sends JSON {game, player, time}
-
-If you are another player joins your game you will be informed. `game` specifies the Game ID which can be used to
-connect to the game. `player` specifies who joined.
-
-##### "playerLeave" sends JSON {player, time}
-
-Informs you that a player left your game.
-
-##### "msg" sends JSON {msg, player, time}
-
-Each time somebody in your game sends a message you will be informed.
-
-# Projektfeatures
+## Projektfeatures
 
 ### Programmcode
 
@@ -131,7 +52,7 @@ Each time somebody in your game sends a message you will be informed.
   <tbody>
     <tr>
       <td>Verzeichnisse</td>
-      <td>Aufteilung des Projektes in die Verzeichisse `client`, `ai`und `server`. Diese wurden überlegt in weitere Unterverzeichnisse für eine bessere Organisation aufgeteilt.</td>
+      <td>Aufteilung des Projektes in die Verzeichisse client, ai und server. Diese wurden überlegt in weitere Unterverzeichnisse für eine bessere Organisation aufgeteilt.</td>
     </tr>
     <tr>
       <td>Dateistruktur</td>
@@ -240,3 +161,90 @@ Each time somebody in your game sends a message you will be informed.
   </tbody>
 </table>
 
+## Documentation
+
+### Client
+
+#### General
+
+If you access the startpage you can create or join a game. You are also able to play vs an ai.
+After you selected your choice (see next points). You get redirected to the main game page. On the righthandside you see
+the Chat.
+Above the chat can see and copy the LobbyID. There is also a "leave" button. This brings you back to the startpage.
+On the lefthandside you can access the game. Above the game you can see the current state, like winner and the current
+turn.
+
+#### Play the Game
+
+You play the game by simply clicking the checker you want to move. The game shows you how the figure can move.
+Please be aware you are not allowed to move any checker if one can kill an enemy.
+
+#### Game start
+
+##### Creating a new Game
+
+Give yourself a nickname. If you want to create a new lobby, click "create game" after filling in your nickname.
+After you created the game you get redirected to the game page.
+
+##### Join a game
+
+If you want to join a game, please fill in your nickname and the lobbyID you want to join and click "join".
+
+### Server
+
+To use the server you need to establish a socket connection. Once established the server will respond to you with your
+Socket-ID. This is important for late when you are ingame.
+
+#### Querys
+
+Each query you can send to the server with its requirements.
+
+##### "joinGame"  requires JSON {nick, gameid}
+
+Checks if the game of gameid exists or if the gameid is specified as "RANDOM". If so it either connects to a open random
+game or if the game of gameid is not already full joins the game.
+
+##### "createGame" requires JSON {nick, spectatable}
+
+Creates a new game with a random gameid. Spectatable specifies if other people can watch the game, but is currently not
+implemented.
+
+##### "move" requires JSON {from, to}
+
+If you are ingame it checks if its your turn and if your move is allowed. If so it updates the gamestate.
+
+##### "message" requires JSON {msg}
+
+If you are ingame it sends the message to all people in the current game.
+
+##### "leaveGame" requires JSON {}
+
+If you are ingame it disconnects you from the game and informs the other people that you left. Only you are able to
+reconnect to the game. If there are no active players left in the game the game is deleted.
+
+#### Responses
+
+Each response the server sends depending on your previous action.
+
+##### "error" sends JSON {code, msg, time}
+
+If you send a illegal request you will be informed.
+
+##### "gameState" sends JSON {board, turns, nextTurnPlayer, nextPossibleTurns, winner, time}
+
+Each time the gameState changes it sends it to all connected players. `nextTurnPlayer` specifies whos turn it is, all
+possible turns are listed in `nextPossibleTurns`. If no turns are possible the winner is selected. You know if its your
+turn by looking at `nextTurnPlayer.id` it will match your Socket ID.
+
+##### "playerJoin" sends JSON {game, player, time}
+
+If you are another player joins your game you will be informed. `game` specifies the Game ID which can be used to
+connect to the game. `player` specifies who joined.
+
+##### "playerLeave" sends JSON {player, time}
+
+Informs you that a player left your game.
+
+##### "msg" sends JSON {msg, player, time}
+
+Each time somebody in your game sends a message you will be informed.
