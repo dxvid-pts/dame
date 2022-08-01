@@ -33,7 +33,7 @@ export default function Header(props) {
     return (
         <div id="header" className="Header">
             <div className="HeaderElement">
-                <div className="HeaderText">{props.game.player.nick}</div>
+                <div className="HeaderText">{props.game.player != null ? props.game.player.nick : null}</div>
             </div>
             <div className="HeaderElement">
                 <div className="HeaderText" id="headerCenterText">

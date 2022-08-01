@@ -16,34 +16,29 @@ def connect():
 
 @sio.on('request')
 def request(data):
-    print('I received a message!')
-    print('message received with ', data)
+    # get board data
     game_id = data["id"]
-    print(type(data["board"]))
     board = np.asarray(data["board"])
     next_turn_player = int(data["nextTurnPlayer"]["tile"])
     next_possible_turns = data["nextPossibleTurns"]
 
-    
 
     from_tile = None
     for next_possible_turn in next_possible_turns:
         if from_tile == None:
             from_tile = next_possible_turn["from"]
-            must_move_xy = next_possible_turn["from"].values()
+            must_move_xy = list(next_possible_turn["from"].values())
         elif from_tile != next_possible_turn["from"]:
             must_move_xy = None
 
-    print(board)
-    print(next_turn_player)
-    print(must_move_xy)
-
+    # get move from ai
     move = loader.get_move(board, next_turn_player, must_move_xy)
     event = {
         "id": game_id,
-        "from": {"x":move[0], "y":move[1]},
-        "to": {"x":move[2], "y":move[3]}
+        "from": {"x":int(move[0]), "y":int(move[1])},
+        "to": {"x":int(move[2]), "y":int(move[3])}
     }
+    # return data
     sio.emit('return', json.dumps(event))
 
 @sio.event
@@ -56,7 +51,7 @@ def connect_error(data):
 
 def main():
     sio.connect('http://server:4000')
-    sio.emit("connectAI","LUIS_NEUMEIER")
+    sio.emit("connectAI","LUIS_NEUMEIER") # login with auth
     sio.wait()
 
 print("Setting up Connection...")

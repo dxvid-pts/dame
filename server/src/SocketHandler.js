@@ -44,23 +44,26 @@ module.exports = (io, socket, gameHandler) => {
             console.log("AI connected with ID  " + socket.id + ".");
             
             socket.on("return", (args) => {
+                console.log(args)
+                
+                args = JSON.parse(args);
                 if (
                     !isValidObject(args, ["id", "from", "to"]) ||
                     !isValidObject(args.from, ["x", "y"]) ||
                     !isValidObject(args.to, ["x", "y"])
                 ) {
-                    reportError(44, "Illegale Argumente.");
+                    sendError(44, "Illegale Argumente.");
                     return;
                 }
 
                 game = gameHandler.getGameByGameID(args.id);
 
                 if(game === null){
-                    reportError(45, "Spiel existiert nicht.");
+                    sendError(45, "Spiel existiert nicht.");
                     return;
                 }
 
-                onMove({from: from, to: to});
+                onMove({from: args.from, to: args.to});
             });
         }
     }
