@@ -34,9 +34,8 @@ class Connection:
 
     async def main(self):
         async with websockets.serve(self.handler, "localhost", 4000):
-            await asyncio.Future()  # run forever
+            await asyncio.Future()
 
-if __name__ == "main":
-    print("Setting up Connection...")
-    c1 = Connection()
+print("Setting up Connection...")
+c1 = Connection()
     
