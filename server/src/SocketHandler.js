@@ -79,16 +79,12 @@ module.exports = (io, socket, gameHandler) => {
             if (gameHandler.ai === null) {
                 sendError(500, "AI is currently not available.");
             } else if (game === null) {
-<<<<<<< HEAD
                 console.log("Creating game for AI")
                 game = new Game(
                     gameHandler.generateGameID(),
                     args.spectatable,
                     false
                 );
-=======
-                game = new Game(gameHandler.generateGameID(), args.spectatable, false);
->>>>>>> ce675ad7b6776c4183704580deb9ff0fb9eff963
                 game.join({
                     id: gameHandler.ai, nick: "Artificial Intelligence", tile: null,
                 });
@@ -188,15 +184,11 @@ module.exports = (io, socket, gameHandler) => {
 
         game.takeTurn(args.from, args.to);
 
-<<<<<<< HEAD
         if (
             game.nextTurnPlayer !== null &&
             game.nextTurnPlayer.id === gameHandler.ai
         ) {
             console.log("Sending move to AI")
-=======
-        if (game.nextTurnPlayer !== null && game.nextTurnPlayer.id === gameHandler.ai) {
->>>>>>> ce675ad7b6776c4183704580deb9ff0fb9eff963
             io.to(gameHandler.ai).emit("request", {
                 id: game.id,
                 board: game.board.field,
