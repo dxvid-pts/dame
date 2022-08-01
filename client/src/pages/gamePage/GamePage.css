@@ -9,7 +9,7 @@
 
 .GameContent {
     margin: 4px;
-    height: calc(100% - 64px);
+    height: calc(100% - 8px);
     width: calc(100% - 8px);
     max-width: 1600px;
     max-height: calc(1600px * 0.7);
@@ -22,7 +22,7 @@
     .GameContent {
         grid-template-columns: 100%;
         grid-template-rows: auto minmax(10%, 100%);
-        max-height: calc(100% - 90px);
+        max-height: calc(100% - 8px);
     }
 }
 
