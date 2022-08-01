@@ -38,5 +38,5 @@ class Connection:
 
 if __name__ == "main":
     print("Setting up Connection...")
-    c1 = new Connection()
+    c1 = Connection()
     
