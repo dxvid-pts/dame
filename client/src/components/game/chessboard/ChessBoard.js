@@ -82,12 +82,7 @@ export function ChessBoardGrid(props) {
                     props.setGlobalState(newGlobalState);
 
                     //send info to server (also updates every data again to prevent cheating)
-                    socket.sendMove(
-                        props.globalState.playerBottom ? fieldFrom.row : turnValue(fieldFrom.row),
-                        props.globalState.playerBottom ? fieldFrom.column : turnValue(fieldFrom.column),
-                        props.globalState.playerBottom ? fieldTo.row : turnValue(fieldTo.row),
-                        props.globalState.playerBottom ? fieldTo.column : turnValue(fieldTo.column)
-                    );
+                    socket.sendMove(props.globalState.playerBottom ? fieldFrom.row : turnValue(fieldFrom.row), props.globalState.playerBottom ? fieldFrom.column : turnValue(fieldFrom.column), props.globalState.playerBottom ? fieldTo.row : turnValue(fieldTo.row), props.globalState.playerBottom ? fieldTo.column : turnValue(fieldTo.column));
                 }
 
 

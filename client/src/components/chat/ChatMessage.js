@@ -6,6 +6,7 @@ export default function ChatMessage(props) {
     const date = new Date(props.msg.time);
     const time = date.getHours() + ":" + date.getMinutes();
 
+    //extract class of sender
     function getMessageClass() {
         if (props.msg.sender === "sys") {
             return "sys";
@@ -17,20 +18,20 @@ export default function ChatMessage(props) {
         }
     }
 
+    //extract name of sender
     function getName() {
         return getMessageClass() !== "sys" ? (
-            <div className="MessageInfo">{props.msg.sender.nick + ", " + time}</div>
-        ) : <div className="MessageInfo">{time}</div>;
+                <div className="MessageInfo">{props.msg.sender.nick + ", " + time}</div>) :
+            <div className="MessageInfo">{time}</div>;
     }
 
-    return (
-        <li className="Message">
+    return (<li className="Message">
             <div className={"Message-" + getMessageClass()}>
                 <div className={"Body-" + getMessageClass()}>
                     <div className="">{props.msg.content}</div>
-                </div>{getName()}
+                </div>
+                {getName()}
             </div>
-            
-        </li>
-    );
+
+        </li>);
 }

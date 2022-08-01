@@ -65,8 +65,7 @@ export function ChessBoardTile(props) {
         onMouseLeave={() => setIsHovered(false)}
         onClick={() => props.onClick({row: props.row, column: props.column})}
         style={{
-            gridArea: gridArea,
-            backgroundImage: "url(" + backgroundImgUrl + ")",
+            gridArea: gridArea, backgroundImage: "url(" + backgroundImgUrl + ")",
         }}>
         <div style={{
             backgroundColor: tileColor,
