@@ -77,6 +77,12 @@ export default class App extends React.Component {
 
         //game start event
         socket.listenOnGameState((args) => {
+            if (args.nextTurnPlayer === null && args.winner === null) {
+                return;
+            }
+            //if game is won = nextTurnPlayer is set to the winner
+            if(args.nextTurnPlayer === null && args.winner !== null) args.nextTurnPlayer = args.winner;
+
             //update renderer with results from server
             const g = {...this.state.game};
             g.nextTurn = args.nextTurnPlayer.id;
