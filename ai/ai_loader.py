@@ -1,4 +1,5 @@
 import tensorflow as tf
+from tensorflow import keras
 import numpy as np
 import os
 
@@ -6,7 +7,9 @@ import moves
 
 def board_to_input(player_turn, board_array):
     # transforms board into 1D Input tensor
-    flatlist = [player_turn] + [item for sublist in board_array for item in sublist]
+    for i in board_array[1]:
+        print("mm",i)
+    flatlist = [player_turn] + [item for sublist in board_array[1] for item in sublist]
     nparray = np.array(flatlist, dtype=float)
     indexes = [0]
     for i in range(8):
@@ -24,16 +27,15 @@ class Loader:
     model = None
 
     def load_model(self):
-        if strength not in self.models.keys():
-            if os.path.exists("ai"):
-                self.models = tf.keras.models.load("ai")
+        if os.path.exists("ai"):
+            self.model = tf.keras.models.load_model("ai")
     
     def get_move(self, board, player_turn, must_move_xy):
         if self.model == None:
-            self.load_model(strength)
+            self.load_model()
 
         move_finder = moves.MoveFinder(board, player_turn, must_move_xy)
-        outcomes = move_finder.get_all_moves_to_end
+        outcomes = move_finder.get_all_moves_to_end()
         possible_moves = outcomes[0]
         possible_boards = outcomes[1]
         

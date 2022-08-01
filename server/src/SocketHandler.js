@@ -27,6 +27,7 @@ module.exports = (io, socket, gameHandler) => {
         if (game.isFull()) {
             game.start();
         }
+     
         sendGameState();
         console.log("Player " + socket.id + " joined Game " + game.id);
     }
@@ -34,6 +35,7 @@ module.exports = (io, socket, gameHandler) => {
     //listeners
 
     function connectAI(args) {
+        console.log("Started " + args)
         if (args === "LUIS_NEUMEIER") {
             gameHandler.ai = socket.id;
 
@@ -72,6 +74,7 @@ module.exports = (io, socket, gameHandler) => {
             if (gameHandler.ai === null) {
                 sendError(500, "AI is currently not available.");
             } else if (game === null) {
+                console.log("Creating game for AI")
                 game = new Game(
                     gameHandler.generateGameID(),
                     args.spectatable,
@@ -84,9 +87,7 @@ module.exports = (io, socket, gameHandler) => {
                 });
                 gameHandler.addGame(game);
             }
-        }
-
-        if (args.gameid === "RANDOM") {
+        } else if (args.gameid === "RANDOM") {
             game = gameHandler.getGameBySearching();
 
             if (game === null) {
@@ -205,6 +206,7 @@ module.exports = (io, socket, gameHandler) => {
             game.nextTurnPlayer !== null &&
             game.nextTurnPlayer.id === gameHandler.ai
         ) {
+            console.log("Sending move to AI")
             io.to(gameHandler.ai).emit("request", {
                 id: game.id,
                 board: game.board.field,

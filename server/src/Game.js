@@ -47,6 +47,19 @@ class Game {
         } else if (this.enemy.id === player.id) {
             this.enemy.active = true;
         }
+
+        if (this.player != null) {
+            if (this.player.nick == "AI") {
+                console.log("Player is" + this.player.tile)
+            }
+        }
+        if (this.enemy != null) {
+            if (this.enemy.nick == "AI") {
+                console.log("Enemy is" + this.enemy.tile)
+            }
+        }
+        
+
     }
 
     leave(player) {

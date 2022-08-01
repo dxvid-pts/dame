@@ -1,8 +1,9 @@
-tensorboard==2.6.0
-tensorflow==2.6.0
-numpy==1.19.5
+tensorboard==2.8.0
+tensorflow==2.8.0
+keras==2.8.0
+numpy>=1.19.5
 pandas>=1.4.0
 asyncio
-python-socketio==4.5.1
+python-socketio[client]==5.4.*
 aiohttp
 protobuf==3.20.*
