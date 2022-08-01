@@ -11,6 +11,9 @@ const copyToClipboard = (str) => {
 //Header component
 export default function Header(props) {
     function getNextTurnString() {
+        if(props.game.player == null){
+return;
+}
         if (props.game.winner !== null) {
             if (props.game.winner.id === props.game.player.id) {
                 return "YOU WON";
