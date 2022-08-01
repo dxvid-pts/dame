@@ -7,8 +7,6 @@ import moves
 
 def board_to_input(player_turn, board_array):
     # transforms board into 1D Input tensor
-    for i in board_array[1]:
-        print("mm",i)
     flatlist = [player_turn] + [item for sublist in board_array[1] for item in sublist]
     nparray = np.array(flatlist, dtype=float)
     indexes = [0]
@@ -38,11 +36,12 @@ class Loader:
         outcomes = move_finder.get_all_moves_to_end()
         possible_moves = outcomes[0]
         possible_boards = outcomes[1]
+        print(possible_moves)
         
-        ratings = player_turn * [self.model(board_to_input(-player_turn, board)) for board in possible_boards]
+        ratings = player_turn * [self.model(np.expand_dims(board_to_input(-player_turn, board), axis=0)) for board in possible_boards]
 
         move = possible_moves[np.array(ratings).argmax()]
-        move = move[move[6] == 0]
+        move = move[move[6] == 0][0]
 
         print(move)
 

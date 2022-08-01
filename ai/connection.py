@@ -44,7 +44,7 @@ def request(data):
         "from": {"x":move[0], "y":move[1]},
         "to": {"x":move[2], "y":move[3]}
     }
-    sio.emit('connectAI', event)
+    sio.emit('return', json.dumps(event))
 
 @sio.event
 def disconnect():
